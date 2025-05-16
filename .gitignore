@@ -1,0 +1,37 @@
+# Maven target directory
+/target/
+
+# IntelliJ IDEA project files
+/.idea/
+/*.iml
+
+# VSCode settings
+/.vscode/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Java compiled class files
+*.class
+
+# Maven wrapper files
+.mvn/wrapper/maven-wrapper.jar
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Eclipse project files
+/.settings/
+/.project
+/.classpath
+
+# Ignore database files
+*.db
+*.sql~
