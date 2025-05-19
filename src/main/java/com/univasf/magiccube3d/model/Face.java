@@ -1,6 +1,8 @@
 package com.univasf.magiccube3d.model;
 
-//Classe que modela uma face do cubo mágico baseado em facelet
+import javafx.scene.paint.Color;
+
+// Classe que modela uma face do cubo mágico baseado em facelet
 public class Face {
     public static final int SIZE = 3; // Tamanho padrão para cubo 3x3
 
@@ -17,13 +19,13 @@ public class Face {
         facelets[row][col] = facelet;
     }
 
-    //Getter de um facetype
+    // Getter de um facetype
     public FaceType getFaceType() {
         return faceType;
     }
 
     // Construtor: inicializa todos os quadradinhos com a mesma cor
-    public Face(FaceType faceType, CubeColor initialColor) {
+    public Face(FaceType faceType, Color initialColor) {
         this.faceType = faceType;
         facelets = new Facelet[SIZE][SIZE];
         for (int i = 0; i < SIZE; i++) {
@@ -44,15 +46,26 @@ public class Face {
         facelets = rotated;
     }
 
-    // (Opcional) Exibir a face no terminal
+    // Exibir a face no terminal (usando representação aproximada da cor)
     public void printFace() {
         System.out.println("Face: " + faceType);
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                System.out.print(facelets[i][j].getColor().name().charAt(0) + " ");
+                Color c = facelets[i][j].getColor();
+                System.out.print(getColorInitial(c) + " ");
             }
             System.out.println();
         }
     }
-}
 
+    // Método auxiliar para representar cores por letras
+    private String getColorInitial(Color color) {
+        if (color.equals(Color.WHITE)) return "W";
+        if (color.equals(Color.YELLOW)) return "Y";
+        if (color.equals(Color.RED)) return "R";
+        if (color.equals(Color.ORANGE)) return "O";
+        if (color.equals(Color.GREEN)) return "G";
+        if (color.equals(Color.BLUE)) return "B";
+        return "?"; // Cor desconhecida
+    }
+}
