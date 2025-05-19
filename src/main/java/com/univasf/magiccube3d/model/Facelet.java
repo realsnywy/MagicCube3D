@@ -1,29 +1,28 @@
 package com.univasf.magiccube3d.model;
 
-import javafx.scene.paint.Color;
-
 // Representa uma única peça colorida (quadradinho) na face do cubo.
 public class Facelet {
-    private Color color;
+    private CubeColor color;
 
     // Getter da cor
-    public Color getColor() {
+    public CubeColor getColor() {
         return color;
     }
 
     // Setter da cor
-    public void setColor(Color color) {
+    public void setColor(CubeColor color) {
         this.color = color;
     }
 
     // Construtor que recebe a cor do facelet
-    public Facelet(Color color) {
+    public Facelet(CubeColor color) {
         this.color = color;
     }
 
-    // Metodo toString sobrescrito para facilitar a impressão (ex: 0xffffffff)
+    // Metodo toString sobrescrito para facilitar a impressão (ex: WHITE)
     @Override
     public String toString() {
-        return color.toString(); // ou color.toString().toUpperCase() para garantir consistência
+        return color.name();
     }
+
 }
