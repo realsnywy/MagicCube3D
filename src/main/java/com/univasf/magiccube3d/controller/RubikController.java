@@ -1,7 +1,7 @@
 package com.univasf.magiccube3d.controller;
 
-import com.example.rubikfx.model.Cube;
-import com.example.rubikfx.view.CubeView;
+import com.univasf.magiccube3d.model.Cube;
+import com.univasf.magiccube3d.view.CubeView;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Button;

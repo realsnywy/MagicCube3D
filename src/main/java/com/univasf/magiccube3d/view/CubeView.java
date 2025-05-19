@@ -1,6 +1,6 @@
 package com.univasf.magiccube3d.view;
 
-import com.example.rubikfx.model.Cube;
+import com.univasf.magiccube3d.model.Cube;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -11,11 +11,9 @@ import javafx.scene.shape.Box;
 // Para uma versão simples, pode começar com uma representação 2D ou placeholders.
 public class CubeView {
 
-    private Cube cubeModel;
     private Group cubeRootNode; // Nó raiz para todos os elementos 3D do cubo
 
     public CubeView(Cube cubeModel) {
-        this.cubeModel = cubeModel;
         this.cubeRootNode = new Group();
         buildCubeView();
     }
@@ -49,7 +47,7 @@ public class CubeView {
         return (x == 0 || x == 2 || y == 0 || y == 2 || z == 0 || z == 2);
     }
 
-    public NodegetViewNode() {
+    public Group NodegetViewNode() {
         return cubeRootNode;
     }
 
