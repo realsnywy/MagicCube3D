@@ -1,7 +1,6 @@
 package com.univasf.magiccube3d.controller;
 
 import com.univasf.magiccube3d.model.Cube;
-import com.univasf.magiccube3d.view.CubeView;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Button;
@@ -14,12 +13,8 @@ public class RubikController {
     @FXML
     private Button rotateFButton; // Exemplo de botão para girar a face Frontal
 
-    private Cube cubeModel;
-    private CubeView cubeView;
-
     public void initialize() {
-        cubeModel = new Cube();
-        // cubeView = new CubeView(cubeModel); // CubeView precisaria ser adaptado
+        new Cube();
 
         // mainPane.setCenter(cubeView.getViewNode()); // Adiciona a visualização do
         // cubo ao painel

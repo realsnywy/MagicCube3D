@@ -2,7 +2,6 @@ package com.univasf.magiccube3d.view;
 
 import com.univasf.magiccube3d.model.Cube;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
