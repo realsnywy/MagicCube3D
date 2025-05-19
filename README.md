@@ -40,13 +40,11 @@ projeto-ccmp0151/
 │   │   │       └── view/                 // Classes relacionadas à visualização
 │   │   │           └── CubeView.java     // Responsável pela renderização 3D do cubo
 │   │   └── resources/                    // Recursos não-código
-│   │       ├── com/univasf/magiccube3d/
-│   │       │   ├── view/
-│   │       │   │   └── RubikView.fxml    // Arquivo FXML para a UI principal
-│   │       │   └── styles/
-│   │       │       └── style.css         // Folha de estilos CSS
-│   │       └── META-INF/
-│   │           └── MANIFEST.MF           // (Se estiver construindo um JAR executável)
+│   │       └── com/univasf/magiccube3d/
+│   │           ├── view/
+│   │           │   └── RubikView.fxml    // Arquivo FXML para a UI principal
+│   │           └── styles/
+│   │               └── style.css         // Folha de estilos CSS
 ├── .gitignore                            // Arquivos e pastas a serem ignorados pelo Git
 └── README.md                             // Este arquivo
 ```
