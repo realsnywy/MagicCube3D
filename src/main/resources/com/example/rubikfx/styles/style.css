@@ -1,0 +1,25 @@
+/* Estilos Globais */
+.root {
+    -fx-font-family: "Arial";
+}
+
+.button {
+    -fx-background-color: #4CAF50;
+    /* Verde */
+    -fx-text-fill: white;
+    -fx-padding: 8px 15px;
+    -fx-font-size: 14px;
+}
+
+.button:hover {
+    -fx-background-color: #45a049;
+}
+
+.label {
+    -fx-font-size: 14px;
+}
+
+/* Estilo para o painel principal, se necessário */
+#mainPane {
+    -fx-background-color: #f0f0f0;
+}

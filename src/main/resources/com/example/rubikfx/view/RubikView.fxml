@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+<BorderPane fx:id="mainPane"
+    xmlns="http://javafx.com/javafx/11"
+    xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rubikfx.controller.RubikController">
+    <top>
+        <Label text="Rubik's Cube FX - Simples" style="-fx-font-size: 20px; -fx-padding: 10;" />
+    </top>
+    <center>
+        <!-- O cubo 3D será renderizado aqui, possivelmente dentro de um SubScene -->
+        <Label text="Área de Visualização do Cubo 3D" />
+    </center>
+    <right>
+        <VBox spacing="10" style="-fx-padding: 10;">
+            <Label text="Controles:"/>
+            <Button fx:id="rotateFButton" text="Girar Front (F)"/>
+            <Button text="Girar Up (U)"/>
+            <Button text="Girar Right (R)"/>
+            <!-- Adicionar mais botões conforme necessário -->
+        </VBox>
+    </right>
+</BorderPane>
