@@ -29,6 +29,7 @@ public class RubikController {
     private double anchorAngleX = -20, anchorAngleY = -30;
     private final Rotate rotateX = new Rotate(-20, Rotate.X_AXIS);
     private final Rotate rotateY = new Rotate(-30, Rotate.Y_AXIS);
+    private final Rotate rotateZ = new Rotate(0, Rotate.Z_AXIS);
 
     @FXML
     public void initialize() {
@@ -52,6 +53,35 @@ public class RubikController {
             rotateY.setAngle(anchorAngleY - (event.getSceneX() - anchorX));
         });
 
+        // Controle pelo teclado numérico
+        cubePane.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case NUMPAD8: // Cima
+                    rotateX.setAngle(rotateX.getAngle() - 10);
+                    break;
+                case NUMPAD2: // Baixo
+                    rotateX.setAngle(rotateX.getAngle() + 10);
+                    break;
+                case NUMPAD4: // Esquerda
+                    rotateY.setAngle(rotateY.getAngle() + 10);
+                    break;
+                case NUMPAD6: // Direita
+                    rotateY.setAngle(rotateY.getAngle() - 10);
+                    break;
+                case NUMPAD7: // Girar Z anti-horário
+                    groupRotateZ(-10);
+                    break;
+                case NUMPAD9: // Girar Z horário
+                    groupRotateZ(10);
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        // Permite foco para receber eventos de teclado
+        cubePane.setFocusTraversable(true);
+
         // Configurar ação do botão para girar a face frontal
         rotateFButton.setOnAction(_ -> {
             cube.rotateFace("FRONT", true);
@@ -59,6 +89,12 @@ public class RubikController {
         });
 
         System.out.println("RubikController inicializado.");
+    }
+
+    // Adiciona rotação em Z ao grupo do cubo
+    private void groupRotateZ(double angleDelta) {
+        rotateZ.setAngle(rotateZ.getAngle() + angleDelta);
+        updateCube3D();
     }
 
     // Atualiza a visualização do cubo 3D após rotação
@@ -105,7 +141,7 @@ public class RubikController {
         }
 
         // Add rotation transforms to the group
-        group.getTransforms().addAll(rotateX, rotateY);
+        group.getTransforms().addAll(rotateX, rotateY, rotateZ);
 
         SubScene subScene = new SubScene(group, 500, 500, true, null);
 

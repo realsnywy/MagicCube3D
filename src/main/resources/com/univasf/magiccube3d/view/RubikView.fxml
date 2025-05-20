@@ -8,23 +8,28 @@
 
 <BorderPane fx:id="mainPane"
     xmlns="http://javafx.com/javafx/11"
-    xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univasf.magiccube3d.controller.RubikController">
+    xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univasf.magiccube3d.controller.RubikController" stylesheets="@../styles/style.css">
     <top>
-        <Label text="MagicCube3D" style="-fx-font-size: 20px; -fx-padding: 10;" />
+        <Label text="MagicCube3D" styleClass="title-label" BorderPane.alignment="CENTER"/>
     </top>
     <center>
         <!-- O cubo 3D será renderizado aqui -->
-        <StackPane fx:id="cubePane" style="-fx-background-color: #222; -fx-padding: 20;">
+        <StackPane fx:id="cubePane" styleClass="cube-pane">
             <!-- SubScene 3D será injetada pelo controller -->
         </StackPane>
     </center>
     <right>
-        <VBox spacing="10" style="-fx-padding: 10;">
-            <Label text="Controles:"/>
+        <VBox spacing="15" styleClass="controls-pane">
+            <Label text="Controles:" styleClass="controls-label"/>
             <Button fx:id="rotateFButton" text="Girar Front (F)"/>
-            <Button text="Girar Up (U)"/>
-            <Button text="Girar Right (R)"/>
-            <!-- Adicionar mais botões conforme necessário -->
+            <Button fx:id="rotateBButton" text="Girar Back (B)"/>
+            <Button fx:id="rotateUButton" text="Girar Up (U)"/>
+            <Button fx:id="rotateDButton" text="Girar Down (D)"/>
+            <Button fx:id="rotateLButton" text="Girar Left (L)"/>
+            <Button fx:id="rotateRButton" text="Girar Right (R)"/>
+            <Button fx:id="shuffleButton" text="Embaralhar"/>
+            <Button fx:id="resetButton" text="Resetar"/>
+            <!-- <Button fx:id="solveButton" text="Resolver"/>  Opcional -->
         </VBox>
     </right>
 </BorderPane>
