@@ -56,7 +56,7 @@ projeto-ccmp0151/
 1. Clone o repositório:
 
   ```bash
-  git clone https://github.com/seu-usuario/projeto-ccmp0151.git
+  git clone https://github.com/realsnywy/projeto-ccmp0151.git
   cd projeto-ccmp0151
   ```
 
