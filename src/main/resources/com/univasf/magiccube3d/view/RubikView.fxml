@@ -2,6 +2,7 @@
 
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
@@ -12,8 +13,10 @@
         <Label text="MagicCube3D" style="-fx-font-size: 20px; -fx-padding: 10;" />
     </top>
     <center>
-        <!-- O cubo 3D será renderizado aqui, possivelmente dentro de um SubScene -->
-        <Label text="Área de Visualização do Cubo 3D" />
+        <!-- O cubo 3D será renderizado aqui -->
+        <StackPane fx:id="cubePane" style="-fx-background-color: #222; -fx-padding: 20;">
+            <!-- SubScene 3D será injetada pelo controller -->
+        </StackPane>
     </center>
     <right>
         <VBox spacing="10" style="-fx-padding: 10;">
