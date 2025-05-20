@@ -51,9 +51,23 @@ projeto-ccmp0151/
 
 ## 🚀 Execução
 
-1. **Requisitos:** JDK 24+, JavaFX SDK.
-2. Clone o repositório.
-3. Configure o JavaFX SDK em sua IDE.
-4. Execute a classe principal: `com.univasf.magiccube3d.MainApp.java`.
+### Como executar
+
+1. Clone o repositório:
+
+  ```bash
+  git clone https://github.com/seu-usuario/projeto-ccmp0151.git
+  cd projeto-ccmp0151
+  ```
+
+2. Compile e execute a aplicação usando o Maven Wrapper:
+
+  ```bash
+  ./mvnw javafx:run
+  ```
+
+  > No Windows, use `mvnw.cmd javafx:run`.
+
+3. Você também pode executar a classe principal `com.univasf.magiccube3d.MainApp` diretamente pela sua IDE.
 
 > Este é um projeto acadêmico desenvolvido para fins educacionais.
