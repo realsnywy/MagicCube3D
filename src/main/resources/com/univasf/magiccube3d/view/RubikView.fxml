@@ -7,9 +7,9 @@
 
 <BorderPane fx:id="mainPane"
     xmlns="http://javafx.com/javafx/11"
-    xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rubikfx.controller.RubikController">
+    xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univasf.magiccube3d.controller.RubikController">
     <top>
-        <Label text="Rubik's Cube FX - Simples" style="-fx-font-size: 20px; -fx-padding: 10;" />
+        <Label text="MagicCube3D" style="-fx-font-size: 20px; -fx-padding: 10;" />
     </top>
     <center>
         <!-- O cubo 3D será renderizado aqui, possivelmente dentro de um SubScene -->

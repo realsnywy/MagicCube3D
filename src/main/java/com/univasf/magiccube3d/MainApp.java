@@ -18,7 +18,7 @@ public class MainApp extends Application {
         Scene scene = new Scene(root, 800, 600);
         scene.getStylesheets().add(getClass().getResource("styles/style.css").toExternalForm());
 
-        primaryStage.setTitle("RubikFX Simplificado");
+        primaryStage.setTitle("MagicCube3D");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
