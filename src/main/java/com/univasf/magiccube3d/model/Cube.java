@@ -2,6 +2,7 @@ package com.univasf.magiccube3d.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import javafx.scene.paint.Color;
 
 // Esta classe representaria o estado do Cubo de Rubik
 // e conteria a lógica para as rotações das faces.
@@ -11,35 +12,36 @@ public class Cube {
     // correspondente
     private Map<FaceType, Face> faces = new HashMap<>();
 
-    // Exemplo: um array para armazenar as cores de cada facelet
-    private Facelet[][][] facelets; // Dimensões podem ser 3x3x6 (face, linha, coluna) ou similar
-
     public Cube() {
         // Inicializar o cubo ao seu estado resolvido
         initializeSolvedState();
     }
 
     private void initializeSolvedState() {
-        // Lógica para definir as cores iniciais de cada facelet
-        System.out.println("Cubo inicializado no estado resolvido.");
-
         // Para cada face do cubo, cria uma nova face com uma cor associada
-        faces.put(FaceType.UP, new Face(FaceType.UP, CubeColor.WHITE));
-        faces.put(FaceType.DOWN, new Face(FaceType.DOWN, CubeColor.YELLOW));
-        faces.put(FaceType.FRONT, new Face(FaceType.FRONT, CubeColor.RED));
-        faces.put(FaceType.BACK, new Face(FaceType.BACK, CubeColor.ORANGE));
-        faces.put(FaceType.LEFT, new Face(FaceType.LEFT, CubeColor.BLUE));
-        faces.put(FaceType.RIGHT, new Face(FaceType.RIGHT, CubeColor.GREEN));
-
+        faces.put(FaceType.UP, new Face(FaceType.UP, Color.WHITE));
+        faces.put(FaceType.DOWN, new Face(FaceType.DOWN, Color.YELLOW));
+        faces.put(FaceType.FRONT, new Face(FaceType.FRONT, Color.RED));
+        faces.put(FaceType.BACK, new Face(FaceType.BACK, Color.ORANGE));
+        faces.put(FaceType.LEFT, new Face(FaceType.LEFT, Color.BLUE));
+        faces.put(FaceType.RIGHT, new Face(FaceType.RIGHT, Color.GREEN));
+        System.out.println("Cubo inicializado no estado resolvido.");
     }
 
     public void rotateFace(String face, boolean clockwise) {
         FaceType faceType = FaceType.valueOf(face.toUpperCase());
         Face faceToRotate = faces.get(faceType);
 
-        faceToRotate.rotate(clockwise); // usa o novo méthod
+        if (clockwise) {
+            faceToRotate.rotateClockwise();
+        } else {
+            // Rotaciona 3 vezes no sentido horário para simular anti-horário
+            for (int i = 0; i < 3; i++) {
+                faceToRotate.rotateClockwise();
+            }
+        }
 
-        rotateAdjacentEdges(faceType, clockwise); // ainda será implementado
+        rotateAdjacentEdges(faceType, clockwise);
 
         System.out.println(
                 "Rotacionando face " + faceType + (clockwise ? " no sentido horário" : " no sentido anti-horário"));
@@ -48,7 +50,6 @@ public class Cube {
     // Gira as bordas das faces adjacentes à face especificada, simulando a rotação
     // de um cubo mágico real
     private void rotateAdjacentEdges(FaceType face, boolean clockwise) {
-        // Obtemos as seis faces do cubo
         Face up = faces.get(FaceType.UP);
         Face down = faces.get(FaceType.DOWN);
         Face left = faces.get(FaceType.LEFT);
@@ -56,132 +57,144 @@ public class Cube {
         Face front = faces.get(FaceType.FRONT);
         Face back = faces.get(FaceType.BACK);
 
-        // Para cada face, definimos como suas bordas vizinhas devem ser movidas
         switch (face) {
             case FRONT -> {
-                // Ao girar a face da frente, mexemos nas bordas: UP[2], RIGHT[0], DOWN[0],
-                // LEFT[2]
-                Facelet[] upRow = up.getRow(2); // Linha inferior da face superior
-                Facelet[] downRow = down.getRow(0); // Linha superior da face inferior
-                Facelet[] leftCol = left.getColumn(2); // Coluna direita da face esquerda
-                Facelet[] rightCol = right.getColumn(0); // Coluna esquerda da face direita
+                Facelet[] upRow = getRowCopy(up, 2);
+                Facelet[] downRow = getRowCopy(down, 0);
+                Facelet[] leftCol = getColumnCopy(left, 2);
+                Facelet[] rightCol = getColumnCopy(right, 0);
 
                 if (clockwise) {
-                    // Gira as arestas no sentido horário
-                    up.setRow(2, reverse(leftCol));
-                    right.setColumn(0, upRow);
-                    down.setRow(0, reverse(rightCol));
-                    left.setColumn(2, downRow);
+                    setRow(up, 2, reverse(leftCol));
+                    setColumn(right, 0, upRow);
+                    setRow(down, 0, reverse(rightCol));
+                    setColumn(left, 2, downRow);
                 } else {
-                    // Gira as arestas no sentido anti-horário
-                    up.setRow(2, rightCol);
-                    left.setColumn(2, upRow);
-                    down.setRow(0, leftCol);
-                    right.setColumn(0, reverse(downRow));
+                    setRow(up, 2, rightCol);
+                    setColumn(left, 2, upRow);
+                    setRow(down, 0, leftCol);
+                    setColumn(right, 0, reverse(downRow));
                 }
             }
-
             case BACK -> {
-                // Ao girar a face de trás, mexemos em UP[0], LEFT[0], DOWN[2], RIGHT[2]
-                Facelet[] upRow = up.getRow(0);
-                Facelet[] downRow = down.getRow(2);
-                Facelet[] leftCol = left.getColumn(0);
-                Facelet[] rightCol = right.getColumn(2);
+                Facelet[] upRow = getRowCopy(up, 0);
+                Facelet[] downRow = getRowCopy(down, 2);
+                Facelet[] leftCol = getColumnCopy(left, 0);
+                Facelet[] rightCol = getColumnCopy(right, 2);
 
                 if (clockwise) {
-                    up.setRow(0, rightCol);
-                    left.setColumn(0, upRow);
-                    down.setRow(2, leftCol);
-                    right.setColumn(2, reverse(downRow));
+                    setRow(up, 0, rightCol);
+                    setColumn(left, 0, upRow);
+                    setRow(down, 2, leftCol);
+                    setColumn(right, 2, reverse(downRow));
                 } else {
-                    up.setRow(0, reverse(leftCol));
-                    right.setColumn(2, upRow);
-                    down.setRow(2, reverse(rightCol));
-                    left.setColumn(0, downRow);
+                    setRow(up, 0, reverse(leftCol));
+                    setColumn(right, 2, upRow);
+                    setRow(down, 2, reverse(rightCol));
+                    setColumn(left, 0, downRow);
                 }
             }
-
             case UP -> {
-                // Girar a face de cima envolve: FRONT[0], RIGHT[0], BACK[0], LEFT[0]
-                Facelet[] frontRow = front.getRow(0);
-                Facelet[] rightRow = right.getRow(0);
-                Facelet[] backRow = back.getRow(0);
-                Facelet[] leftRow = left.getRow(0);
+                Facelet[] frontRow = getRowCopy(front, 0);
+                Facelet[] rightRow = getRowCopy(right, 0);
+                Facelet[] backRow = getRowCopy(back, 0);
+                Facelet[] leftRow = getRowCopy(left, 0);
 
                 if (clockwise) {
-                    front.setRow(0, leftRow);
-                    right.setRow(0, frontRow);
-                    back.setRow(0, reverse(rightRow));
-                    left.setRow(0, reverse(backRow));
+                    setRow(front, 0, leftRow);
+                    setRow(right, 0, frontRow);
+                    setRow(back, 0, reverse(rightRow));
+                    setRow(left, 0, reverse(backRow));
                 } else {
-                    front.setRow(0, rightRow);
-                    left.setRow(0, frontRow);
-                    back.setRow(0, reverse(leftRow));
-                    right.setRow(0, reverse(backRow));
+                    setRow(front, 0, rightRow);
+                    setRow(left, 0, frontRow);
+                    setRow(back, 0, reverse(leftRow));
+                    setRow(right, 0, reverse(backRow));
                 }
             }
-
             case DOWN -> {
-                // Girar a face de baixo envolve: FRONT[2], RIGHT[2], BACK[2], LEFT[2]
-                Facelet[] frontRow = front.getRow(2);
-                Facelet[] rightRow = right.getRow(2);
-                Facelet[] backRow = back.getRow(2);
-                Facelet[] leftRow = left.getRow(2);
+                Facelet[] frontRow = getRowCopy(front, 2);
+                Facelet[] rightRow = getRowCopy(right, 2);
+                Facelet[] backRow = getRowCopy(back, 2);
+                Facelet[] leftRow = getRowCopy(left, 2);
 
                 if (clockwise) {
-                    front.setRow(2, rightRow);
-                    right.setRow(2, backRow);
-                    back.setRow(2, reverse(leftRow));
-                    left.setRow(2, reverse(frontRow));
+                    setRow(front, 2, rightRow);
+                    setRow(right, 2, backRow);
+                    setRow(back, 2, reverse(leftRow));
+                    setRow(left, 2, reverse(frontRow));
                 } else {
-                    front.setRow(2, leftRow);
-                    right.setRow(2, frontRow);
-                    back.setRow(2, reverse(rightRow));
-                    left.setRow(2, reverse(backRow));
+                    setRow(front, 2, leftRow);
+                    setRow(right, 2, frontRow);
+                    setRow(back, 2, reverse(rightRow));
+                    setRow(left, 2, reverse(backRow));
                 }
             }
-
             case LEFT -> {
-                // Girar a face esquerda afeta: UP[0], FRONT[0], DOWN[0], BACK[2] (coluna
-                // direita)
-                Facelet[] upCol = up.getColumn(0);
-                Facelet[] frontCol = front.getColumn(0);
-                Facelet[] downCol = down.getColumn(0);
-                Facelet[] backCol = back.getColumn(2); // Coluna oposta na face BACK
+                Facelet[] upCol = getColumnCopy(up, 0);
+                Facelet[] frontCol = getColumnCopy(front, 0);
+                Facelet[] downCol = getColumnCopy(down, 0);
+                Facelet[] backCol = getColumnCopy(back, 2);
 
                 if (clockwise) {
-                    up.setColumn(0, backCol);
-                    front.setColumn(0, upCol);
-                    down.setColumn(0, frontCol);
-                    back.setColumn(2, reverse(downCol));
+                    setColumn(up, 0, backCol);
+                    setColumn(front, 0, upCol);
+                    setColumn(down, 0, frontCol);
+                    setColumn(back, 2, reverse(downCol));
                 } else {
-                    up.setColumn(0, frontCol);
-                    back.setColumn(2, upCol);
-                    down.setColumn(0, reverse(backCol));
-                    front.setColumn(0, downCol);
+                    setColumn(up, 0, frontCol);
+                    setColumn(back, 2, upCol);
+                    setColumn(down, 0, reverse(backCol));
+                    setColumn(front, 0, downCol);
                 }
             }
-
             case RIGHT -> {
-                // Girar a face direita afeta: UP[2], FRONT[2], DOWN[2], BACK[0] (coluna
-                // esquerda)
-                Facelet[] upCol = up.getColumn(2);
-                Facelet[] frontCol = front.getColumn(2);
-                Facelet[] downCol = down.getColumn(2);
-                Facelet[] backCol = back.getColumn(0); // Coluna oposta na face BACK
+                Facelet[] upCol = getColumnCopy(up, 2);
+                Facelet[] frontCol = getColumnCopy(front, 2);
+                Facelet[] downCol = getColumnCopy(down, 2);
+                Facelet[] backCol = getColumnCopy(back, 0);
 
                 if (clockwise) {
-                    up.setColumn(2, frontCol);
-                    back.setColumn(0, upCol);
-                    down.setColumn(2, reverse(backCol));
-                    front.setColumn(2, downCol);
+                    setColumn(up, 2, frontCol);
+                    setColumn(back, 0, upCol);
+                    setColumn(down, 2, reverse(backCol));
+                    setColumn(front, 2, downCol);
                 } else {
-                    up.setColumn(2, backCol);
-                    front.setColumn(2, upCol);
-                    down.setColumn(2, frontCol);
-                    back.setColumn(0, reverse(downCol));
+                    setColumn(up, 2, backCol);
+                    setColumn(front, 2, upCol);
+                    setColumn(down, 2, frontCol);
+                    setColumn(back, 0, reverse(downCol));
                 }
             }
+        }
+    }
+
+    // Métodos auxiliares para copiar linhas/colunas (evita referência direta)
+    private Facelet[] getRowCopy(Face face, int row) {
+        Facelet[] arr = new Facelet[Face.SIZE];
+        for (int i = 0; i < Face.SIZE; i++) {
+            arr[i] = face.getFacelet(row, i);
+        }
+        return arr;
+    }
+
+    private Facelet[] getColumnCopy(Face face, int col) {
+        Facelet[] arr = new Facelet[Face.SIZE];
+        for (int i = 0; i < Face.SIZE; i++) {
+            arr[i] = face.getFacelet(i, col);
+        }
+        return arr;
+    }
+
+    private void setRow(Face face, int row, Facelet[] arr) {
+        for (int i = 0; i < Face.SIZE; i++) {
+            face.setFacelet(row, i, new Facelet(arr[i].getColor()));
+        }
+    }
+
+    private void setColumn(Face face, int col, Facelet[] arr) {
+        for (int i = 0; i < Face.SIZE; i++) {
+            face.setFacelet(i, col, new Facelet(arr[i].getColor()));
         }
     }
 
@@ -193,7 +206,16 @@ public class Cube {
         return reversed;
     }
 
-    public Facelet[][][] getFacelets() {
-        return facelets;
+    // Exibe todas as faces do cubo no terminal
+    public void printCube() {
+        for (FaceType type : FaceType.values()) {
+            faces.get(type).printFace();
+            System.out.println();
+        }
+    }
+
+    // Getter para acessar uma face específica
+    public Face getFace(FaceType type) {
+        return faces.get(type);
     }
 }
