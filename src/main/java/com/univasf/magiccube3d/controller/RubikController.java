@@ -225,7 +225,7 @@ public class RubikController {
 
         group.getTransforms().addAll(rotateX, rotateY, rotateZ);
 
-        SubScene subScene = new SubScene(group, 500, 500, true, null);
+        SubScene subScene = new SubScene(group, 500, 500, true, javafx.scene.SceneAntialiasing.BALANCED);
         PerspectiveCamera camera = new PerspectiveCamera(true);
         camera.setTranslateZ(-350);
         camera.setNearClip(0.1);
