@@ -4,21 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.scene.paint.Color;
 
-// Esta classe representaria o estado do Cubo de Rubik
-// e conteria a lógica para as rotações das faces.
+// Representa o estado do Cubo de Rubik e contém a lógica para as rotações das faces.
 public class Cube {
 
-    // Mapa que associa cada tipo de face (FaceType) com o objeto Face
-    // correspondente
-    private Map<FaceType, Face> faces = new HashMap<>();
+    // Mapa que associa cada tipo de face (FaceType) com o objeto Face correspondente
+    private final Map<FaceType, Face> faces = new HashMap<>();
 
     public Cube() {
-        // Inicializar o cubo ao seu estado resolvido
         initializeSolvedState();
     }
 
+    // Inicializa o cubo ao seu estado resolvido
     private void initializeSolvedState() {
-        // Para cada face do cubo, cria uma nova face com uma cor associada
         faces.put(FaceType.UP, new Face(FaceType.UP, Color.WHITE));
         faces.put(FaceType.DOWN, new Face(FaceType.DOWN, Color.YELLOW));
         faces.put(FaceType.FRONT, new Face(FaceType.FRONT, Color.RED));
@@ -28,6 +25,7 @@ public class Cube {
         System.out.println("Cubo inicializado no estado resolvido.");
     }
 
+    // Rotaciona uma face do cubo
     public void rotateFace(String face, boolean clockwise) {
         FaceType faceType = FaceType.valueOf(face.toUpperCase());
         Face faceToRotate = faces.get(faceType);
@@ -47,8 +45,7 @@ public class Cube {
                 "Rotacionando face " + faceType + (clockwise ? " no sentido horário" : " no sentido anti-horário"));
     }
 
-    // Gira as bordas das faces adjacentes à face especificada, simulando a rotação
-    // de um cubo mágico real
+    // Gira as bordas das faces adjacentes à face especificada
     private void rotateAdjacentEdges(FaceType face, boolean clockwise) {
         Face up = faces.get(FaceType.UP);
         Face down = faces.get(FaceType.DOWN);

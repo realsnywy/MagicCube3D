@@ -9,15 +9,18 @@
 <BorderPane fx:id="mainPane"
     xmlns="http://javafx.com/javafx/11"
     xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univasf.magiccube3d.controller.RubikController" stylesheets="@../styles/style.css">
+
     <top>
         <Label text="MagicCube3D" styleClass="title-label" BorderPane.alignment="CENTER"/>
     </top>
+
     <center>
         <!-- O cubo 3D será renderizado aqui -->
         <StackPane fx:id="cubePane" styleClass="cube-pane">
             <!-- SubScene 3D será injetada pelo controller -->
         </StackPane>
     </center>
+
     <right>
         <VBox spacing="15" styleClass="controls-pane">
             <Label text="Controles:" styleClass="controls-label"/>
@@ -32,4 +35,5 @@
             <!-- <Button fx:id="solveButton" text="Resolver"/>  Opcional -->
         </VBox>
     </right>
+
 </BorderPane>

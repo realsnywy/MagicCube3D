@@ -4,10 +4,12 @@
     -fx-background-color: #181c22;
 }
 
+/* Main Pane */
 #mainPane {
     -fx-background-color: linear-gradient(to bottom right, #23272f, #181c22);
 }
 
+/* Título */
 .title-label {
     -fx-font-size: 28px;
     -fx-font-weight: bold;
@@ -16,6 +18,7 @@
     -fx-effect: dropshadow(gaussian, #000, 8, 0.2, 0, 2);
 }
 
+/* Cube Pane */
 .cube-pane {
     -fx-background-color: #23272f;
     -fx-padding: 30;
@@ -23,6 +26,7 @@
     -fx-effect: dropshadow(gaussian, #000, 24, 0.3, 0, 6);
 }
 
+/* Controls Pane */
 .controls-pane {
     -fx-padding: 20;
     -fx-background-color: #23272f;
@@ -31,6 +35,7 @@
     -fx-alignment: center;
 }
 
+/* Controls Label */
 .controls-label {
     -fx-font-size: 18px;
     -fx-font-weight: bold;
@@ -39,6 +44,7 @@
     -fx-effect: dropshadow(gaussian, #000, 4, 0.2, 0, 1);
 }
 
+/* Botões */
 .button {
     -fx-background-color: linear-gradient(to bottom, #388E3C, #222c22);
     -fx-text-fill: #fafafa;
@@ -57,6 +63,7 @@
     -fx-scale-y: 1.04;
 }
 
+/* Labels Gerais */
 .label {
     -fx-font-size: 14px;
     -fx-text-fill: #e0e7ef;

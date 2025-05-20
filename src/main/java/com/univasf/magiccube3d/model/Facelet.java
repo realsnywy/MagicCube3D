@@ -6,6 +6,11 @@ import javafx.scene.paint.Color;
 public class Facelet {
     private Color color;
 
+    // Construtor que recebe a cor do facelet
+    public Facelet(Color color) {
+        this.color = color;
+    }
+
     // Getter da cor
     public Color getColor() {
         return color;
@@ -16,14 +21,9 @@ public class Facelet {
         this.color = color;
     }
 
-    // Construtor que recebe a cor do facelet
-    public Facelet(Color color) {
-        this.color = color;
-    }
-
-    // Metodo toString sobrescrito para facilitar a impressão (ex: 0xffffffff)
+    // Método toString sobrescrito para facilitar a impressão (ex: 0xffffffff)
     @Override
     public String toString() {
-        return color.toString(); // ou color.toString().toUpperCase() para garantir consistência
+        return color.toString();
     }
 }
