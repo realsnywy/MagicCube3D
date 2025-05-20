@@ -11,8 +11,11 @@ public class Face {
 
     // Getter de um facelet específico
     public Facelet getFacelet(int row, int col) {
+        if (row < 0 || row >= SIZE || col < 0 || col >= SIZE)
+            throw new IllegalArgumentException("Invalid indices");
         return facelets[row][col];
     }
+
 
     // Setter de um facelet específico
     public void setFacelet(int row, int col, Facelet facelet) {
@@ -47,6 +50,19 @@ public class Face {
         rotated[1][1] = center; // Restaura o centro
         facelets = rotated;
     }
+
+    public void rotateCounterClockwise() {
+        Facelet center = facelets[1][1];
+        Facelet[][] rotated = new Facelet[SIZE][SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                rotated[SIZE - 1 - j][i] = facelets[i][j];
+            }
+        }
+        rotated[1][1] = center;
+        facelets = rotated;
+    }
+
 
     // Exibir a face no terminal (usando representação aproximada da cor)
     public void printFace() {
