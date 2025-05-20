@@ -10,10 +10,14 @@ import javafx.scene.SubScene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
+import javafx.util.Duration;
 
 public class RubikController {
 
@@ -24,6 +28,9 @@ public class RubikController {
     private Button rotateFButton, rotateBButton, rotateUButton, rotateDButton, rotateLButton, rotateRButton;
     @FXML
     private Button shuffleButton, resetButton;
+
+    @FXML
+    private VBox controlsPane;
 
     private Cube cube;
     private final StackPane cubePane = new StackPane();
@@ -45,6 +52,20 @@ public class RubikController {
         setupKeyboardControls();
         cubePane.setFocusTraversable(true);
         setupButtonActions();
+
+        controlsPane.setOpacity(0);
+        controlsPane.setTranslateX(50);
+        FadeTransition fade = new FadeTransition(Duration.millis(700), controlsPane);
+        fade.setFromValue(0);
+        fade.setToValue(1);
+        fade.setDelay(Duration.millis(300));
+        fade.play();
+
+        TranslateTransition slide = new TranslateTransition(Duration.millis(700), controlsPane);
+        slide.setFromX(50);
+        slide.setToX(0);
+        slide.setDelay(Duration.millis(300));
+        slide.play();
 
         System.out.println("RubikController inicializado.");
     }

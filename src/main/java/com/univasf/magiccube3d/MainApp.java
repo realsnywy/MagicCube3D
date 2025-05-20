@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.text.Font;
 
 import java.io.IOException;
 
@@ -12,8 +13,10 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        Font.loadFont(getClass().getResourceAsStream("/com/univasf/magiccube3d/fonts/Poppins-Regular.ttf"), 14);
+
         Parent root = FXMLLoader.load(getClass().getResource("view/RubikView.fxml"));
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 1024, 768);
         scene.getStylesheets().add(getClass().getResource("styles/style.css").toExternalForm());
 
         primaryStage.setTitle("MagicCube3D");

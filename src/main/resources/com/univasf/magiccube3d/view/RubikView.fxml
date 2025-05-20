@@ -22,7 +22,7 @@
     </center>
 
     <right>
-        <VBox spacing="15" styleClass="controls-pane">
+        <VBox fx:id="controlsPane" spacing="15" styleClass="controls-pane">
             <Label text="Controles:" styleClass="controls-label"/>
             <Button fx:id="rotateFButton" text="Girar Front (F)"/>
             <Button fx:id="rotateBButton" text="Girar Back (B)"/>
