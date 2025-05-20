@@ -62,11 +62,17 @@ projeto-ccmp0151/
 
 2. Compile e execute a aplicação usando o Maven Wrapper:
 
-  ```bash
-  ./mvnw javafx:run
-  ```
+* No **Linux/macOS**:
 
-  > No Windows, use `mvnw.cmd javafx:run`.
+    ```bash
+    ./mvnw javafx:run
+    ```
+
+* No **Windows**:
+
+    ```cmd
+    mvnw.cmd javafx:run
+    ```
 
 3. Você também pode executar a classe principal `com.univasf.magiccube3d.MainApp` diretamente pela sua IDE.
 
