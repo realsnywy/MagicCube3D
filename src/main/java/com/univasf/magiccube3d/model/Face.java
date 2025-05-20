@@ -37,12 +37,14 @@ public class Face {
 
     // Roda a face no sentido horário (90°)
     public void rotateClockwise() {
+        Facelet center = facelets[1][1]; // Salva o centro
         Facelet[][] rotated = new Facelet[SIZE][SIZE];
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 rotated[j][SIZE - 1 - i] = facelets[i][j];
             }
         }
+        rotated[1][1] = center; // Restaura o centro
         facelets = rotated;
     }
 
