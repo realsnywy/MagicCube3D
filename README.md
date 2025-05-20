@@ -60,20 +60,20 @@ projeto-ccmp0151/
   cd projeto-ccmp0151
   ```
 
-2. Compile e execute a aplicação usando o Maven Wrapper:
+2. Compile o projeto usando o Maven Wrapper:
 
-* No **Linux/macOS**:
+  ```bash
+  ./mvnw clean install   # Linux/macOS
+  mvnw.cmd clean install # Windows
+  ```
+
+3. Execute a aplicação:
 
     ```bash
-    ./mvnw javafx:run
+    ./mvnw javafx:run   # Linux/macOS
+    mvnw.cmd javafx:run # Windows
     ```
 
-* No **Windows**:
-
-    ```cmd
-    mvnw.cmd javafx:run
-    ```
-
-3. Você também pode executar a classe principal `com.univasf.magiccube3d.MainApp` diretamente pela sua IDE.
+4. Você também pode executar a classe principal `com.univasf.magiccube3d.MainApp` diretamente pela sua IDE.
 
 > Este é um projeto acadêmico desenvolvido para fins educacionais.
