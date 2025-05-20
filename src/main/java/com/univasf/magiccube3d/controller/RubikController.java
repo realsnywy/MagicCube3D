@@ -1,7 +1,6 @@
 package com.univasf.magiccube3d.controller;
 
 import com.univasf.magiccube3d.model.Cube;
-import com.univasf.magiccube3d.model.Face;
 import com.univasf.magiccube3d.model.FaceType;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
@@ -26,6 +25,11 @@ public class RubikController {
 
     private StackPane cubePane = new StackPane();
 
+    private double anchorX, anchorY;
+    private double anchorAngleX = -20, anchorAngleY = -30;
+    private final Rotate rotateX = new Rotate(-20, Rotate.X_AXIS);
+    private final Rotate rotateY = new Rotate(-30, Rotate.Y_AXIS);
+
     @FXML
     public void initialize() {
         cube = new Cube();
@@ -34,6 +38,19 @@ public class RubikController {
         SubScene cube3D = createCube3D(cube);
         cubePane.getChildren().add(cube3D);
         mainPane.setCenter(cubePane);
+
+        // Mouse controls for rotating the 3D view
+        cubePane.setOnMousePressed(event -> {
+            anchorX = event.getSceneX();
+            anchorY = event.getSceneY();
+            anchorAngleX = rotateX.getAngle();
+            anchorAngleY = rotateY.getAngle();
+        });
+
+        cubePane.setOnMouseDragged(event -> {
+            rotateX.setAngle(anchorAngleX + (event.getSceneY() - anchorY));
+            rotateY.setAngle(anchorAngleY - (event.getSceneX() - anchorX));
+        });
 
         // Configurar ação do botão para girar a face frontal
         rotateFButton.setOnAction(_ -> {
@@ -51,9 +68,6 @@ public class RubikController {
     }
 
     // Cria a SubScene 3D do cubo
-    // Java
-    // Java
-    // Java
     private SubScene createCube3D(Cube cube) {
         Group group = new Group();
         double size = 30;
@@ -90,6 +104,9 @@ public class RubikController {
             }
         }
 
+        // Add rotation transforms to the group
+        group.getTransforms().addAll(rotateX, rotateY);
+
         SubScene subScene = new SubScene(group, 500, 500, true, null);
 
         PerspectiveCamera camera = new PerspectiveCamera(true);
@@ -98,25 +115,6 @@ public class RubikController {
         camera.setFarClip(1000.0);
         subScene.setCamera(camera);
 
-        group.getTransforms().addAll(new Rotate(-20, Rotate.X_AXIS), new Rotate(-30, Rotate.Y_AXIS));
         return subScene;
-    }
-    // Retorna as posições 3D para cada face (apenas superfície)
-    private int[][] getFacePositions(FaceType faceType) {
-        int[][] positions = new int[9][3];
-        int idx = 0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                switch (faceType) {
-                    case FRONT -> positions[idx++] = new int[] { j - 1, i - 1, 1 };
-                    case BACK -> positions[idx++] = new int[] { 1 - j, i - 1, -1 };
-                    case UP -> positions[idx++] = new int[] { j - 1, -1, 1 - i };
-                    case DOWN -> positions[idx++] = new int[] { j - 1, 1, i - 1 };
-                    case LEFT -> positions[idx++] = new int[] { -1, i - 1, 1 - j };
-                    case RIGHT -> positions[idx++] = new int[] { 1, i - 1, j - 1 };
-                }
-            }
-        }
-        return positions;
     }
 }
