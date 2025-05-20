@@ -53,6 +53,7 @@ public class RubikController {
     // Cria a SubScene 3D do cubo
     // Java
     // Java
+    // Java
     private SubScene createCube3D(Cube cube) {
         Group group = new Group();
         double size = 30;
@@ -69,7 +70,6 @@ public class RubikController {
                         box.setTranslateZ((z - 1) * offset);
 
                         PhongMaterial mat = new PhongMaterial();
-                        // Example: color the box with the FRONT facelet color if on the front
                         if (z == 2) {
                             mat.setDiffuseColor(cube.getFace(FaceType.FRONT).getFacelet(y, x).getColor());
                         } else if (z == 0) {
@@ -90,8 +90,14 @@ public class RubikController {
             }
         }
 
-        SubScene subScene = new SubScene(group, 400, 400, true, null);
-        subScene.setCamera(new PerspectiveCamera());
+        SubScene subScene = new SubScene(group, 500, 500, true, null);
+
+        PerspectiveCamera camera = new PerspectiveCamera(true);
+        camera.setTranslateZ(-350); // Move camera further back
+        camera.setNearClip(0.1);
+        camera.setFarClip(1000.0);
+        subScene.setCamera(camera);
+
         group.getTransforms().addAll(new Rotate(-20, Rotate.X_AXIS), new Rotate(-30, Rotate.Y_AXIS));
         return subScene;
     }
