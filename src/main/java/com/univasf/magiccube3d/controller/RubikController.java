@@ -51,26 +51,41 @@ public class RubikController {
     }
 
     // Cria a SubScene 3D do cubo
+    // Java
+    // Java
     private SubScene createCube3D(Cube cube) {
         Group group = new Group();
-        double size = 30; // tamanho de cada cubo
-        double gap = 2; // espaço entre cubos
+        double size = 30;
+        double gap = 2;
+        double offset = (size + gap);
 
-        // Para cada face, desenhe apenas os cubos da superfície
-        for (FaceType faceType : FaceType.values()) {
-            Face face = cube.getFace(faceType);
-            int[][] positions = getFacePositions(faceType);
-            int idx = 0;
-            for (int i = 0; i < Face.SIZE; i++) {
-                for (int j = 0; j < Face.SIZE; j++) {
-                    int[] pos = positions[idx++];
-                    Box box = new Box(size, size, size);
-                    box.setTranslateX(pos[0] * (size + gap));
-                    box.setTranslateY(pos[1] * (size + gap));
-                    box.setTranslateZ(pos[2] * (size + gap));
-                    PhongMaterial mat = new PhongMaterial(face.getFacelet(i, j).getColor());
-                    box.setMaterial(mat);
-                    group.getChildren().add(box);
+        for (int x = 0; x < 3; x++) {
+            for (int y = 0; y < 3; y++) {
+                for (int z = 0; z < 3; z++) {
+                    if (x == 0 || x == 2 || y == 0 || y == 2 || z == 0 || z == 2) {
+                        Box box = new Box(size, size, size);
+                        box.setTranslateX((x - 1) * offset);
+                        box.setTranslateY((y - 1) * offset);
+                        box.setTranslateZ((z - 1) * offset);
+
+                        PhongMaterial mat = new PhongMaterial();
+                        // Example: color the box with the FRONT facelet color if on the front
+                        if (z == 2) {
+                            mat.setDiffuseColor(cube.getFace(FaceType.FRONT).getFacelet(y, x).getColor());
+                        } else if (z == 0) {
+                            mat.setDiffuseColor(cube.getFace(FaceType.BACK).getFacelet(y, 2 - x).getColor());
+                        } else if (y == 0) {
+                            mat.setDiffuseColor(cube.getFace(FaceType.UP).getFacelet(z, x).getColor());
+                        } else if (y == 2) {
+                            mat.setDiffuseColor(cube.getFace(FaceType.DOWN).getFacelet(z, 2 - x).getColor());
+                        } else if (x == 0) {
+                            mat.setDiffuseColor(cube.getFace(FaceType.LEFT).getFacelet(y, 2 - z).getColor());
+                        } else if (x == 2) {
+                            mat.setDiffuseColor(cube.getFace(FaceType.RIGHT).getFacelet(y, z).getColor());
+                        }
+                        box.setMaterial(mat);
+                        group.getChildren().add(box);
+                    }
                 }
             }
         }
@@ -80,7 +95,6 @@ public class RubikController {
         group.getTransforms().addAll(new Rotate(-20, Rotate.X_AXIS), new Rotate(-30, Rotate.Y_AXIS));
         return subScene;
     }
-
     // Retorna as posições 3D para cada face (apenas superfície)
     private int[][] getFacePositions(FaceType faceType) {
         int[][] positions = new int[9][3];
