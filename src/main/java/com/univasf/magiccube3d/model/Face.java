@@ -16,7 +16,6 @@ public class Face {
         return facelets[row][col];
     }
 
-
     // Setter de um facelet específico
     public void setFacelet(int row, int col, Facelet facelet) {
         facelets[row][col] = facelet;
@@ -63,7 +62,6 @@ public class Face {
         facelets = rotated;
     }
 
-
     // Exibir a face no terminal (usando representação aproximada da cor)
     public void printFace() {
         System.out.println("Face: " + faceType);
@@ -78,17 +76,17 @@ public class Face {
 
     // Método auxiliar para representar cores por letras
     private String getColorInitial(Color color) {
-        if (color.equals(Color.WHITE))
+        if (color.equals(Color.web("FFFFFF")))
             return "W";
-        if (color.equals(Color.YELLOW))
+        if (color.equals(Color.web("FFD600")))
             return "Y";
-        if (color.equals(Color.RED))
+        if (color.equals(Color.web("E53935")))
             return "R";
-        if (color.equals(Color.ORANGE))
+        if (color.equals(Color.web("FF9800")))
             return "O";
-        if (color.equals(Color.GREEN))
+        if (color.equals(Color.web("43A047")))
             return "G";
-        if (color.equals(Color.BLUE))
+        if (color.equals(Color.web("1E88E5")))
             return "B";
         return "?"; // Cor desconhecida
     }

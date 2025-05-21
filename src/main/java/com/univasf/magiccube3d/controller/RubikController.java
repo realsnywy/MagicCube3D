@@ -201,7 +201,7 @@ public class RubikController {
                         box.setTranslateX(boxCenterX);
                         box.setTranslateY(boxCenterY);
                         box.setTranslateZ(boxCenterZ);
-                        box.setMaterial(new PhongMaterial(javafx.scene.paint.Color.GREY));
+                        box.setMaterial(new PhongMaterial(javafx.scene.paint.Color.web("7D7D7D")));
 
                         // Faces
                         if (z == 2) // FRONT face
