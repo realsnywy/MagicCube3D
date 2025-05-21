@@ -32,6 +32,13 @@
             <Button fx:id="rotateRButton" text="Girar Right (R)"/>
             <Button fx:id="shuffleButton" text="Embaralhar"/>
             <Button fx:id="resetButton" text="Resetar"/>
+            <!-- Add these after the existing rotation buttons in the VBox -->
+            <Button fx:id="rotateFPrimeButton" text="Girar Front' (F')" />
+            <Button fx:id="rotateBPrimeButton" text="Girar Back' (B')" />
+            <Button fx:id="rotateUPrimeButton" text="Girar Up' (U')" />
+            <Button fx:id="rotateDPrimeButton" text="Girar Down' (D')" />
+            <Button fx:id="rotateLPrimeButton" text="Girar Left' (L')" />
+            <Button fx:id="rotateRPrimeButton" text="Girar Right' (R')" />
             <!-- <Button fx:id="solveButton" text="Resolver"/>  Opcional -->
         </VBox>
     </right>
