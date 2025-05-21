@@ -26,7 +26,13 @@ public class RubikController {
     private BorderPane mainPane;
 
     @FXML
-    private Button rotateFButton, rotateBButton, rotateUButton, rotateDButton, rotateLButton, rotateRButton;
+    private Button rotateXButton, rotateYButton, rotateFButton, rotateBButton, rotateUButton, rotateDButton,
+            rotateLButton, rotateRButton;
+
+    @FXML
+    private Button rotateXPrimeButton, rotateYPrimeButton, rotateFPrimeButton, rotateBPrimeButton, rotateUPrimeButton,
+            rotateDPrimeButton, rotateLPrimeButton, rotateRPrimeButton;
+
     @FXML
     private Button shuffleButton, resetButton;
 
@@ -106,30 +112,6 @@ public class RubikController {
                 case NUMPAD9:
                     groupRotateZ(10);
                     break;
-                /*
-                 * Anotações do Gabriel!
-                 * Tô pra bindar as teclas abaixo, para as mesmas teclas que estão definidas nos
-                 * botões para girar o cubo e tal.
-                 * Enfim, a base tá aí.
-                 */
-                case F:
-                    // Front
-                    break;
-                case B:
-                    // Back
-                    break;
-                case U:
-                    // Up
-                    break;
-                case D:
-                    // Down
-                    break;
-                case L:
-                    // Left
-                    break;
-                case R:
-                    // Right
-                    break;
                 default:
                     break;
             }
@@ -137,8 +119,33 @@ public class RubikController {
     }
 
     private void setupButtonActions() {
+        rotateXButton.setOnAction(_ -> {
+            cube.rotateCenter("X", true); // X
+            SoundPlayer.playSound("move.wav");
+            updateCube3D();
+        });
+        rotateXPrimeButton.setOnAction(_ -> {
+            cube.rotateCenter("X", false); // X'
+            SoundPlayer.playSound("move.wav");
+            updateCube3D();
+        });
+        rotateYButton.setOnAction(_ -> {
+            cube.rotateCenter("Y", true); // Y
+            SoundPlayer.playSound("move.wav");
+            updateCube3D();
+        });
+        rotateYPrimeButton.setOnAction(_ -> {
+            cube.rotateCenter("Y", false); // Y'
+            SoundPlayer.playSound("move.wav");
+            updateCube3D();
+        });
         rotateFButton.setOnAction(_ -> {
             cube.rotateFace("FRONT", true);
+            SoundPlayer.playSound("move.wav");
+            updateCube3D();
+        });
+        rotateFPrimeButton.setOnAction(_ -> {
+            cube.rotateFace("FRONT", false);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
@@ -147,12 +154,27 @@ public class RubikController {
             SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
+        rotateBPrimeButton.setOnAction(_ -> {
+            cube.rotateFace("BACK", false);
+            SoundPlayer.playSound("move.wav");
+            updateCube3D();
+        });
         rotateUButton.setOnAction(_ -> {
             cube.rotateFace("UP", true);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
+        rotateUPrimeButton.setOnAction(_ -> {
+            cube.rotateFace("UP", false);
+            SoundPlayer.playSound("move.wav");
+            updateCube3D();
+        });
         rotateDButton.setOnAction(_ -> {
+            cube.rotateFace("DOWN", false);
+            SoundPlayer.playSound("move.wav");
+            updateCube3D();
+        });
+        rotateDPrimeButton.setOnAction(_ -> {
             cube.rotateFace("DOWN", true);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
@@ -162,8 +184,18 @@ public class RubikController {
             SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
+        rotateLPrimeButton.setOnAction(_ -> {
+            cube.rotateFace("LEFT", false);
+            SoundPlayer.playSound("move.wav");
+            updateCube3D();
+        });
         rotateRButton.setOnAction(_ -> {
             cube.rotateFace("RIGHT", true);
+            SoundPlayer.playSound("move.wav");
+            updateCube3D();
+        });
+        rotateRPrimeButton.setOnAction(_ -> {
+            cube.rotateFace("RIGHT", false);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
@@ -171,7 +203,13 @@ public class RubikController {
             String[] faces = { "FRONT", "BACK", "UP", "DOWN", "LEFT", "RIGHT" };
             java.util.Random rand = new java.util.Random();
             for (int i = 0; i < 20; i++) {
-                cube.rotateFace(faces[rand.nextInt(6)], rand.nextBoolean());
+                // 60% de chance de girar uma face, 40% de girar um centro
+                if (rand.nextInt(10) < 6) {
+                    cube.rotateFace(faces[rand.nextInt(faces.length)], rand.nextBoolean());
+                } else {
+                    String[] centers = { "X", "Y" };
+                    cube.rotateCenter(centers[rand.nextInt(centers.length)], rand.nextBoolean());
+                }
             }
             SoundPlayer.playSound("mix.wav");
             updateCube3D();

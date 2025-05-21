@@ -26,6 +26,14 @@
         <VBox fx:id="controlsPane" spacing="15" styleClass="controls-pane">
             <Label text="Controles:" styleClass="controls-label"/>
             <HBox spacing="10">
+                <Button fx:id="rotateXButton" text="(X)"/>
+                <Button fx:id="rotateXPrimeButton" text="(X')"/>
+            </HBox>
+            <HBox spacing="10">
+                <Button fx:id="rotateYButton" text="(Y)"/>
+                <Button fx:id="rotateYPrimeButton" text="(Y')"/>
+            </HBox>
+            <HBox spacing="10">
                 <Button fx:id="rotateFButton" text="(F)"/>
                 <Button fx:id="rotateFPrimeButton" text="(F')" />
             </HBox>

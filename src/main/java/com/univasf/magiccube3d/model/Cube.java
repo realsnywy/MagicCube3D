@@ -46,8 +46,69 @@ public class Cube {
                 "Rotacionando face " + faceType + (clockwise ? " no sentido horário" : " no sentido anti-horário"));
     }
 
-    // Gira as bordas das faces adjacentes à face especificada
-    // In Cube.java
+    public void rotateCenter(String axis, boolean clockwise) {
+        if ("X".equals(axis)) {
+            rotateSliceX(1, clockwise);
+            System.out.println("Rotacionando camada central no eixo X"
+                    + (clockwise ? " no sentido horário" : " no sentido anti-horário"));
+        } else if ("Y".equals(axis)) {
+            rotateSliceY(1, clockwise);
+            System.out.println("Rotacionando camada central no eixo Y"
+                    + (clockwise ? " no sentido horário" : " no sentido anti-horário"));
+        }
+    }
+
+    // Rotates the middle horizontal slice (y=1) along the X axis
+    private void rotateSliceX(int y, boolean clockwise) {
+        // Faces: FRONT, RIGHT, BACK, LEFT (middle row)
+        Face front = faces.get(FaceType.FRONT);
+        Face right = faces.get(FaceType.RIGHT);
+        Face back = faces.get(FaceType.BACK);
+        Face left = faces.get(FaceType.LEFT);
+
+        Facelet[] frontRow = getRowCopy(front, y);
+        Facelet[] rightRow = getRowCopy(right, y);
+        Facelet[] backRow = getRowCopy(back, y);
+        Facelet[] leftRow = getRowCopy(left, y);
+
+        if (clockwise) {
+            setRow(front, y, leftRow);
+            setRow(right, y, frontRow);
+            setRow(back, y, rightRow);
+            setRow(left, y, backRow);
+        } else {
+            setRow(front, y, rightRow);
+            setRow(left, y, frontRow);
+            setRow(back, y, leftRow);
+            setRow(right, y, backRow);
+        }
+    }
+
+    // Rotates the middle vertical slice (x=1) along the Y axis
+    private void rotateSliceY(int x, boolean clockwise) {
+        // Faces: UP, FRONT, DOWN, BACK (middle column)
+        Face up = faces.get(FaceType.UP);
+        Face front = faces.get(FaceType.FRONT);
+        Face down = faces.get(FaceType.DOWN);
+        Face back = faces.get(FaceType.BACK);
+
+        Facelet[] upCol = getColumnCopy(up, x);
+        Facelet[] frontCol = getColumnCopy(front, x);
+        Facelet[] downCol = getColumnCopy(down, x);
+        Facelet[] backCol = getColumnCopy(back, 2 - x); // Note: back is mirrored
+
+        if (clockwise) {
+            setColumn(up, x, reverse(backCol));
+            setColumn(front, x, upCol);
+            setColumn(down, x, frontCol);
+            setColumn(back, 2 - x, reverse(downCol));
+        } else {
+            setColumn(up, x, frontCol);
+            setColumn(back, 2 - x, reverse(upCol));
+            setColumn(down, x, reverse(backCol));
+            setColumn(front, x, downCol);
+        }
+    }
 
     private void rotateAdjacentEdges(FaceType face, boolean clockwise) {
         switch (face) {
