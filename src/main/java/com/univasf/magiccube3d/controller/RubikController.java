@@ -105,6 +105,30 @@ public class RubikController {
                 case NUMPAD9:
                     groupRotateZ(10);
                     break;
+                /*
+                 * Anotações do Gabriel!
+                 * Tô pra bindar as teclas abaixo, para as mesmas teclas que estão definidas nos
+                 * botões para girar o cubo e tal.
+                 * Enfim, a base tá aí.
+                 */
+                case F:
+                    // Front
+                    break;
+                case B:
+                    // Back
+                    break;
+                case U:
+                    // Up
+                    break;
+                case D:
+                    // Down
+                    break;
+                case L:
+                    // Left
+                    break;
+                case R:
+                    // Right
+                    break;
                 default:
                     break;
             }
