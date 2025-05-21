@@ -1,13 +1,13 @@
 package com.univasf.magiccube3d.model;
 
 /**
- * Enumeração que define os seis lados (faces) possíveis de um cubo mágico.
+ * Enum que representa as seis faces de um cubo mágico.
  */
 public enum FaceType {
-    UP, // Face superior (topo do cubo)
-    DOWN, // Face inferior (base do cubo)
-    FRONT, // Face frontal (de frente para o usuário)
-    BACK, // Face traseira (oposta à frente)
+    UP, // Face superior
+    DOWN, // Face inferior
+    FRONT, // Face frontal
+    BACK, // Face traseira
     LEFT, // Face esquerda
     RIGHT // Face direita
 }

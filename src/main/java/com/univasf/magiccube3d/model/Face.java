@@ -2,31 +2,31 @@ package com.univasf.magiccube3d.model;
 
 import javafx.scene.paint.Color;
 
-// Classe que modela uma face do cubo mágico baseado em facelet
+// Classe que representa uma face do cubo mágico (3x3)
 public class Face {
-    public static final int SIZE = 3; // Tamanho padrão para cubo 3x3
+    public static final int SIZE = 3; // Tamanho padrão da face (3x3)
 
-    private Facelet[][] facelets; // Matriz 3x3 de facelets
-    private FaceType faceType; // Qual face é essa (UP, FRONT, etc.)
+    private Facelet[][] facelets; // Matriz de facelets da face
+    private FaceType faceType; // Tipo da face (ex: UP, FRONT, etc.)
 
-    // Getter de um facelet específico
+    // Retorna o facelet na posição especificada
     public Facelet getFacelet(int row, int col) {
         if (row < 0 || row >= SIZE || col < 0 || col >= SIZE)
             throw new IllegalArgumentException("Invalid indices");
         return facelets[row][col];
     }
 
-    // Setter de um facelet específico
+    // Define o facelet na posição especificada
     public void setFacelet(int row, int col, Facelet facelet) {
         facelets[row][col] = facelet;
     }
 
-    // Getter de um facetype
+    // Retorna o tipo da face
     public FaceType getFaceType() {
         return faceType;
     }
 
-    // Construtor: inicializa todos os quadradinhos com a mesma cor
+    // Construtor: inicializa a face com todos os facelets da mesma cor
     public Face(FaceType faceType, Color initialColor) {
         this.faceType = faceType;
         facelets = new Facelet[SIZE][SIZE];
@@ -37,7 +37,7 @@ public class Face {
         }
     }
 
-    // Roda a face no sentido horário (90°)
+    // Rotaciona a face 90° no sentido horário
     public void rotateClockwise() {
         Facelet center = facelets[1][1]; // Salva o centro
         Facelet[][] rotated = new Facelet[SIZE][SIZE];
@@ -46,10 +46,11 @@ public class Face {
                 rotated[j][SIZE - 1 - i] = facelets[i][j];
             }
         }
-        rotated[1][1] = center; // Restaura o centro
+        rotated[1][1] = center; // Mantém o centro fixo
         facelets = rotated;
     }
 
+    // Rotaciona a face 90° no sentido anti-horário
     public void rotateCounterClockwise() {
         Facelet center = facelets[1][1];
         Facelet[][] rotated = new Facelet[SIZE][SIZE];
@@ -62,7 +63,7 @@ public class Face {
         facelets = rotated;
     }
 
-    // Exibir a face no terminal (usando representação aproximada da cor)
+    // Imprime a face no terminal usando letras para representar as cores
     public void printFace() {
         System.out.println("Face: " + faceType);
         for (int i = 0; i < SIZE; i++) {
@@ -74,7 +75,7 @@ public class Face {
         }
     }
 
-    // Método auxiliar para representar cores por letras
+    // Retorna a letra correspondente à cor do facelet
     private String getColorInitial(Color color) {
         if (color.equals(Color.web("FFFFFF")))
             return "W";
@@ -88,6 +89,6 @@ public class Face {
             return "G";
         if (color.equals(Color.web("1E88E5")))
             return "B";
-        return "?"; // Cor desconhecida
+        return "?"; // Cor não reconhecida
     }
 }

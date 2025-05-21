@@ -4,18 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.scene.paint.Color;
 
-// Representa o estado do Cubo de Rubik e contém a lógica para as rotações das faces.
+// Representa o estado de um Cubo Mágico 3x3 e implementa a lógica de rotação das faces e camadas.
 public class Cube {
 
-    // Mapa que associa cada tipo de face (FaceType) com o objeto Face
-    // correspondente
+    // Mapeia cada FaceType para sua respectiva Face
     private final Map<FaceType, Face> faces = new HashMap<>();
 
     public Cube() {
         initializeSolvedState();
     }
 
-    // Inicializa o cubo ao seu estado resolvido
+    // Inicializa o cubo no estado resolvido (cada face com uma cor uniforme)
     private void initializeSolvedState() {
         faces.put(FaceType.UP, new Face(FaceType.UP, Color.web("FFFFFF")));
         faces.put(FaceType.DOWN, new Face(FaceType.DOWN, Color.web("FFD600")));
@@ -26,7 +25,7 @@ public class Cube {
         System.out.println("Cubo inicializado no estado resolvido.");
     }
 
-    // Rotaciona uma face do cubo
+    // Rotaciona uma face do cubo no sentido horário ou anti-horário
     public void rotateFace(String face, boolean clockwise) {
         FaceType faceType = FaceType.valueOf(face.toUpperCase());
         Face faceToRotate = faces.get(faceType);
@@ -46,6 +45,7 @@ public class Cube {
                 "Rotacionando face " + faceType + (clockwise ? " no sentido horário" : " no sentido anti-horário"));
     }
 
+    // Rotaciona a camada central do cubo em torno do eixo X ou Y
     public void rotateCenter(String axis, boolean clockwise) {
         if ("X".equals(axis)) {
             rotateSliceX(1, clockwise);
@@ -58,9 +58,9 @@ public class Cube {
         }
     }
 
-    // Rotates the middle horizontal slice (y=1) along the X axis
+    // Rotaciona a camada horizontal do meio (y=1) ao redor do eixo X
     private void rotateSliceX(int y, boolean clockwise) {
-        // Faces: FRONT, RIGHT, BACK, LEFT (middle row)
+        // Envolve as faces FRONT, RIGHT, BACK, LEFT (linha do meio)
         Face front = faces.get(FaceType.FRONT);
         Face right = faces.get(FaceType.RIGHT);
         Face back = faces.get(FaceType.BACK);
@@ -84,9 +84,9 @@ public class Cube {
         }
     }
 
-    // Rotates the middle vertical slice (x=1) along the Y axis
+    // Rotaciona a camada vertical do meio (x=1) ao redor do eixo Y
     private void rotateSliceY(int x, boolean clockwise) {
-        // Faces: UP, FRONT, DOWN, BACK (middle column)
+        // Envolve as faces UP, FRONT, DOWN, BACK (coluna do meio)
         Face up = faces.get(FaceType.UP);
         Face front = faces.get(FaceType.FRONT);
         Face down = faces.get(FaceType.DOWN);
@@ -95,7 +95,7 @@ public class Cube {
         Facelet[] upCol = getColumnCopy(up, x);
         Facelet[] frontCol = getColumnCopy(front, x);
         Facelet[] downCol = getColumnCopy(down, x);
-        Facelet[] backCol = getColumnCopy(back, 2 - x); // Note: back is mirrored
+        Facelet[] backCol = getColumnCopy(back, 2 - x); // BACK é invertida
 
         if (clockwise) {
             setColumn(up, x, reverse(backCol));
@@ -110,6 +110,7 @@ public class Cube {
         }
     }
 
+    // Rotaciona as bordas adjacentes à face especificada
     private void rotateAdjacentEdges(FaceType face, boolean clockwise) {
         switch (face) {
             case FRONT -> {
@@ -157,8 +158,9 @@ public class Cube {
         }
     }
 
-    // --- Helper methods for each face and its inverse ---
+    // --- Métodos auxiliares para rotação das bordas de cada face ---
 
+    // Rotaciona as bordas ao redor da face FRONT no sentido horário
     private void rotateFront() {
         Face up = faces.get(FaceType.UP);
         Face down = faces.get(FaceType.DOWN);
@@ -176,6 +178,7 @@ public class Cube {
         setColumn(left, 2, downRow);
     }
 
+    // Rotaciona as bordas ao redor da face FRONT no sentido anti-horário
     private void rotateFrontPrime() {
         Face up = faces.get(FaceType.UP);
         Face down = faces.get(FaceType.DOWN);
@@ -193,6 +196,7 @@ public class Cube {
         setColumn(right, 0, reverse(downRow));
     }
 
+    // Rotaciona as bordas ao redor da face BACK no sentido horário
     private void rotateBack() {
         Face up = faces.get(FaceType.UP);
         Face down = faces.get(FaceType.DOWN);
@@ -210,6 +214,7 @@ public class Cube {
         setColumn(right, 2, reverse(downRow));
     }
 
+    // Rotaciona as bordas ao redor da face BACK no sentido anti-horário
     private void rotateBackPrime() {
         Face up = faces.get(FaceType.UP);
         Face down = faces.get(FaceType.DOWN);
@@ -227,6 +232,7 @@ public class Cube {
         setColumn(left, 0, downRow);
     }
 
+    // Rotaciona as bordas ao redor da face UP no sentido horário
     private void rotateUp() {
         Face front = faces.get(FaceType.FRONT);
         Face right = faces.get(FaceType.RIGHT);
@@ -244,6 +250,7 @@ public class Cube {
         setRow(left, 0, backRow);
     }
 
+    // Rotaciona as bordas ao redor da face UP no sentido anti-horário
     private void rotateUpPrime() {
         Face front = faces.get(FaceType.FRONT);
         Face right = faces.get(FaceType.RIGHT);
@@ -261,6 +268,7 @@ public class Cube {
         setRow(right, 0, backRow);
     }
 
+    // Rotaciona as bordas ao redor da face DOWN no sentido horário
     private void rotateDown() {
         Face front = faces.get(FaceType.FRONT);
         Face right = faces.get(FaceType.RIGHT);
@@ -278,6 +286,7 @@ public class Cube {
         setRow(left, 2, frontRow);
     }
 
+    // Rotaciona as bordas ao redor da face DOWN no sentido anti-horário
     private void rotateDownPrime() {
         Face front = faces.get(FaceType.FRONT);
         Face right = faces.get(FaceType.RIGHT);
@@ -295,6 +304,7 @@ public class Cube {
         setRow(left, 2, backRow);
     }
 
+    // Rotaciona as bordas ao redor da face LEFT no sentido horário
     private void rotateLeft() {
         Face up = faces.get(FaceType.UP);
         Face front = faces.get(FaceType.FRONT);
@@ -312,6 +322,7 @@ public class Cube {
         setColumn(back, 2, downCol);
     }
 
+    // Rotaciona as bordas ao redor da face LEFT no sentido anti-horário
     private void rotateLeftPrime() {
         Face up = faces.get(FaceType.UP);
         Face front = faces.get(FaceType.FRONT);
@@ -329,6 +340,7 @@ public class Cube {
         setColumn(front, 0, downCol);
     }
 
+    // Rotaciona as bordas ao redor da face RIGHT no sentido horário
     private void rotateRight() {
         Face up = faces.get(FaceType.UP);
         Face front = faces.get(FaceType.FRONT);
@@ -346,6 +358,7 @@ public class Cube {
         setColumn(front, 2, downCol);
     }
 
+    // Rotaciona as bordas ao redor da face RIGHT no sentido anti-horário
     private void rotateRightPrime() {
         Face up = faces.get(FaceType.UP);
         Face front = faces.get(FaceType.FRONT);
@@ -363,7 +376,7 @@ public class Cube {
         setColumn(back, 0, downCol);
     }
 
-    // Métodos auxiliares para copiar linhas/colunas (evita referência direta)
+    // Copia uma linha da face (evita referência direta)
     private Facelet[] getRowCopy(Face face, int row) {
         Facelet[] arr = new Facelet[Face.SIZE];
         for (int i = 0; i < Face.SIZE; i++) {
@@ -372,6 +385,7 @@ public class Cube {
         return arr;
     }
 
+    // Copia uma coluna da face (evita referência direta)
     private Facelet[] getColumnCopy(Face face, int col) {
         Facelet[] arr = new Facelet[Face.SIZE];
         for (int i = 0; i < Face.SIZE; i++) {
@@ -380,18 +394,21 @@ public class Cube {
         return arr;
     }
 
+    // Define uma linha da face com base em um array de Facelet
     private void setRow(Face face, int row, Facelet[] arr) {
         for (int i = 0; i < Face.SIZE; i++) {
             face.setFacelet(row, i, new Facelet(arr[i].getColor()));
         }
     }
 
+    // Define uma coluna da face com base em um array de Facelet
     private void setColumn(Face face, int col, Facelet[] arr) {
         for (int i = 0; i < Face.SIZE; i++) {
             face.setFacelet(i, col, new Facelet(arr[i].getColor()));
         }
     }
 
+    // Retorna um array invertido de Facelet
     private Facelet[] reverse(Facelet[] arr) {
         Facelet[] reversed = new Facelet[arr.length];
         for (int i = 0; i < arr.length; i++) {
@@ -408,7 +425,7 @@ public class Cube {
         }
     }
 
-    // Getter para acessar uma face específica
+    // Retorna uma face específica do cubo
     public Face getFace(FaceType type) {
         return faces.get(type);
     }

@@ -7,21 +7,25 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 
 /**
- * Responsável por criar e gerenciar a representação 3D do Cubo de Rubik.
- * Para uma versão simples, pode começar com uma representação 2D ou
- * placeholders.
+ * Classe responsável por criar e gerenciar a visualização 3D do Cubo de Rubik.
+ * Esta implementação inicial utiliza peças externas como placeholders.
  */
 public class CubeView {
 
     private final Group cubeRootNode;
 
+    /**
+     * Construtor que inicializa a visualização do cubo a partir do modelo.
+     *
+     * @param cubeModel modelo do cubo (não utilizado nesta versão)
+     */
     public CubeView(Cube cubeModel) {
         this.cubeRootNode = new Group();
         buildCubeView();
     }
 
     /**
-     * Constrói a visualização 3D do cubo com peças externas.
+     * Constrói a estrutura 3D do cubo, adicionando apenas as peças externas.
      */
     private void buildCubeView() {
         for (int i = 0; i < 3; i++) {
@@ -42,21 +46,29 @@ public class CubeView {
     }
 
     /**
-     * Determina se a peça está na superfície do cubo 3x3x3.
+     * Verifica se a peça está localizada na superfície do cubo 3x3x3.
+     *
+     * @param x coordenada X da peça
+     * @param y coordenada Y da peça
+     * @param z coordenada Z da peça
+     * @return true se a peça está na superfície, false caso contrário
      */
     private boolean isOuterPiece(int x, int y, int z) {
         return (x == 0 || x == 2 || y == 0 || y == 2 || z == 0 || z == 2);
     }
 
     /**
-     * Retorna o nó raiz da visualização do cubo.
+     * Retorna o nó raiz da visualização do cubo para ser adicionado à cena.
+     *
+     * @return Group contendo a visualização do cubo
      */
     public Group getViewNode() {
         return cubeRootNode;
     }
 
     /**
-     * Atualiza a visualização do cubo com base no modelo.
+     * Atualiza a visualização do cubo de acordo com o modelo.
+     * (Implementação placeholder)
      */
     public void updateView() {
         System.out.println("Visualização do cubo atualizada.");

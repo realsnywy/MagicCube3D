@@ -1,14 +1,15 @@
-/* Estilos Globais */
+/* Estilo global da aplicação */
 .root {
     -fx-font-family: "Modern DOS 8x16", "Segoe UI", "Arial";
     -fx-background-color: #181c22;
 }
 
+/* Plano de fundo principal */
 #mainPane {
     -fx-background-color: linear-gradient(to bottom right, #23272f, #181c22);
 }
 
-/* Título */
+/* Estilo do título principal */
 .title-label {
     -fx-font-size: 28px;
     -fx-font-weight: bold;
@@ -22,7 +23,7 @@
     -fx-effect: dropshadow(gaussian, #81C784, 24, 0.6, 0, 4);
 }
 
-/* Painel do Cubo */
+/* Painel que exibe o cubo */
 .cube-pane {
     -fx-background-color: #23272f;
     -fx-padding: 30;
@@ -33,7 +34,7 @@
     -fx-border-radius: 18;
 }
 
-/* Painel de Controles */
+/* Painel dos controles */
 .controls-pane {
     -fx-padding: 20;
     -fx-background-color: #23272f;
@@ -42,6 +43,7 @@
     -fx-alignment: center;
 }
 
+/* Rótulo dos controles */
 .controls-label {
     -fx-font-size: 18px;
     -fx-font-weight: bold;
@@ -50,7 +52,7 @@
     -fx-effect: dropshadow(gaussian, #000, 4, 0.2, 0, 1);
 }
 
-/* Botões */
+/* Estilo dos botões */
 .button {
     -fx-background-color: linear-gradient(to bottom, #43ea7f, #388E3C 80%);
     -fx-text-fill: #fafafa;
@@ -76,7 +78,7 @@
     -fx-effect: dropshadow(gaussian, #111, 1, 0.1, 0, 0);
 }
 
-/* Labels Gerais */
+/* Estilo geral dos rótulos */
 .label {
     -fx-font-size: 14px;
     -fx-text-fill: #e0e7ef;

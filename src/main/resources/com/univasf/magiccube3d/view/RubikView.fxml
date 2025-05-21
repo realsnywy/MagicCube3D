@@ -16,9 +16,9 @@
     </top>
 
     <center>
-        <!-- O cubo 3D será renderizado aqui -->
+        <!-- Área onde o cubo 3D será exibido -->
         <StackPane fx:id="cubePane" styleClass="cube-pane">
-            <!-- SubScene 3D será injetada pelo controller -->
+            <!-- O SubScene 3D será adicionado pelo controller em tempo de execução -->
         </StackPane>
     </center>
 
