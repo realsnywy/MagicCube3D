@@ -21,6 +21,10 @@
         <version>${javafx.maven.plugin.version}</version>
         <configuration>
           <mainClass>com.univasf.magiccube3d.MainApp</mainClass>
+          <options>
+            <option>--add-modules</option>
+            <option>javafx.controls,javafx.fxml,javafx.media</option>
+          </options>
         </configuration>
       </plugin>
       <plugin>
