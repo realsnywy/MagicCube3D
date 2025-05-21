@@ -26,28 +26,28 @@
         <VBox fx:id="controlsPane" spacing="15" styleClass="controls-pane">
             <Label text="Controles:" styleClass="controls-label"/>
             <HBox spacing="10">
-                <Button fx:id="rotateFPrimeButton" text="(F')" />
                 <Button fx:id="rotateFButton" text="(F)"/>
+                <Button fx:id="rotateFPrimeButton" text="(F')" />
             </HBox>
             <HBox spacing="10">
-                <Button fx:id="rotateBPrimeButton" text="(B')" />
                 <Button fx:id="rotateBButton" text="(B)"/>
+                <Button fx:id="rotateBPrimeButton" text="(B')" />
             </HBox>
             <HBox spacing="10">
-                <Button fx:id="rotateUPrimeButton" text="(U')" />
                 <Button fx:id="rotateUButton" text="(U)"/>
+                <Button fx:id="rotateUPrimeButton" text="(U')" />
             </HBox>
             <HBox spacing="10">
-                <Button fx:id="rotateDPrimeButton" text="(D')" />
                 <Button fx:id="rotateDButton" text="(D)"/>
+                <Button fx:id="rotateDPrimeButton" text="(D')" />
             </HBox>
             <HBox spacing="10">
-                <Button fx:id="rotateLPrimeButton" text="(L')" />
                 <Button fx:id="rotateLButton" text="(L)"/>
+                <Button fx:id="rotateLPrimeButton" text="(L')" />
             </HBox>
             <HBox spacing="10">
-                <Button fx:id="rotateRPrimeButton" text="(R')" />
                 <Button fx:id="rotateRButton" text="(R)"/>
+                <Button fx:id="rotateRPrimeButton" text="(R')" />
             </HBox>
             <Button fx:id="shuffleButton" text="Embaralhar"/>
             <Button fx:id="resetButton" text="Resetar"/>

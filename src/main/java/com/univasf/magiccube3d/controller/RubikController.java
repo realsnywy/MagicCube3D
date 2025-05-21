@@ -22,7 +22,8 @@ import javafx.util.Duration;
 public class RubikController {
 
     @FXML
-    private Button rotateFPrimeButton, rotateBPrimeButton, rotateUPrimeButton, rotateDPrimeButton, rotateLPrimeButton, rotateRPrimeButton;
+    private Button rotateFPrimeButton, rotateBPrimeButton, rotateUPrimeButton, rotateDPrimeButton, rotateLPrimeButton,
+            rotateRPrimeButton;
 
     @FXML
     private BorderPane mainPane;
@@ -152,7 +153,7 @@ public class RubikController {
             updateCube3D();
         });
         rotateDButton.setOnAction(_ -> {
-            cube.rotateFace("DOWN", true);
+            cube.rotateFace("DOWN", false);
             updateCube3D();
         });
         rotateLButton.setOnAction(_ -> {
@@ -189,7 +190,7 @@ public class RubikController {
             updateCube3D();
         });
         rotateDPrimeButton.setOnAction(_ -> {
-            cube.rotateFace("DOWN", false);
+            cube.rotateFace("DOWN", true);
             updateCube3D();
         });
         rotateLPrimeButton.setOnAction(_ -> {
@@ -305,6 +306,5 @@ public class RubikController {
         }
         return face;
     }
-
 
 }

@@ -96,7 +96,7 @@ public class Cube {
         }
     }
 
-// --- Helper methods for each face and its inverse ---
+    // --- Helper methods for each face and its inverse ---
 
     private void rotateFront() {
         Face up = faces.get(FaceType.UP);
@@ -127,7 +127,7 @@ public class Cube {
         Facelet[] rightCol = getColumnCopy(right, 0);
 
         setRow(up, 2, rightCol);
-        setColumn(left, 2, upRow);
+        setColumn(left, 2, reverse(upRow));
         setRow(down, 0, leftCol);
         setColumn(right, 0, reverse(downRow));
     }
@@ -143,10 +143,10 @@ public class Cube {
         Facelet[] downRow = getRowCopy(down, 2);
         Facelet[] rightCol = getColumnCopy(right, 2);
 
-        setRow(up, 0, leftCol);
-        setColumn(right, 2, upRow);
-        setRow(down, 2, rightCol);
-        setColumn(left, 0, reverse(downRow));
+        setRow(up, 0, rightCol);
+        setColumn(left, 0, reverse(upRow));
+        setRow(down, 2, leftCol);
+        setColumn(right, 2, reverse(downRow));
     }
 
     private void rotateBackPrime() {
@@ -160,10 +160,10 @@ public class Cube {
         Facelet[] downRow = getRowCopy(down, 2);
         Facelet[] rightCol = getColumnCopy(right, 2);
 
-        setRow(up, 0, reverse(rightCol));
-        setColumn(left, 0, upRow);
-        setRow(down, 2, reverse(leftCol));
-        setColumn(right, 2, downRow);
+        setRow(up, 0, reverse(leftCol));
+        setColumn(right, 2, upRow);
+        setRow(down, 2, reverse(rightCol));
+        setColumn(left, 0, downRow);
     }
 
     private void rotateUp() {
