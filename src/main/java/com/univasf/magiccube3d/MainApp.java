@@ -13,7 +13,7 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Font.loadFont(getClass().getResourceAsStream("/com/univasf/magiccube3d/fonts/Poppins-Regular.ttf"), 14);
+        Font.loadFont(getClass().getResourceAsStream("/com/univasf/magiccube3d/fonts/ModernDOS8x16.ttf"), 14);
 
         Parent root = FXMLLoader.load(getClass().getResource("view/RubikView.fxml"));
         Scene scene = new Scene(root, 1024, 768);
