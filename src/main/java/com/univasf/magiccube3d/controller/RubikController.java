@@ -2,7 +2,6 @@ package com.univasf.magiccube3d.controller;
 
 import com.univasf.magiccube3d.model.Cube;
 import com.univasf.magiccube3d.model.FaceType;
-import com.univasf.magiccube3d.util.SoundPlayer;
 import javafx.fxml.FXML;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
@@ -139,32 +138,26 @@ public class RubikController {
     private void setupButtonActions() {
         rotateFButton.setOnAction(_ -> {
             cube.rotateFace("FRONT", true);
-            SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
         rotateBButton.setOnAction(_ -> {
             cube.rotateFace("BACK", true);
-            SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
         rotateUButton.setOnAction(_ -> {
             cube.rotateFace("UP", true);
-            SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
         rotateDButton.setOnAction(_ -> {
             cube.rotateFace("DOWN", true);
-            SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
         rotateLButton.setOnAction(_ -> {
             cube.rotateFace("LEFT", true);
-            SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
         rotateRButton.setOnAction(_ -> {
             cube.rotateFace("RIGHT", true);
-            SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
         shuffleButton.setOnAction(_ -> {
@@ -173,12 +166,10 @@ public class RubikController {
             for (int i = 0; i < 20; i++) {
                 cube.rotateFace(faces[rand.nextInt(6)], rand.nextBoolean());
             }
-            SoundPlayer.playSound("mix.wav");
             updateCube3D();
         });
         resetButton.setOnAction(_ -> {
             cube = new Cube();
-            SoundPlayer.playSound("reset.wav");
             updateCube3D();
         });
     }
