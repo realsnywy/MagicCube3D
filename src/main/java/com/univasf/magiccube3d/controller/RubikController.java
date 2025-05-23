@@ -354,23 +354,23 @@ public class RubikController {
     }
 
     private String getVisibleFace(double angleX, double angleY) {
-        // Normaliza ângulos entre 0 e 360
         double ax = (angleX % 360 + 360) % 360;
         double ay = (angleY % 360 + 360) % 360;
 
-        // Regras simplificadas para determinar face visível
         if ((ax >= 45 && ax <= 135)) {
-            return "DOWN";
-        } else if ((ax >= 225 && ax <= 315)) {
             return "UP";
+        } else if ((ax >= 225 && ax <= 315)) {
+            return "DOWN";
         } else if ((ay >= 45 && ay <= 135)) {
-            return "RIGHT";
-        } else if ((ay >= 225 && ay <= 315)) {
             return "LEFT";
-        } else if ((ay > 135 && ay < 225)) {
-            return "BACK";
-        } else {
+        } else if ((ay >= 225 && ay <= 315)) {
+            return "RIGHT";
+        } else if ((ay >= 135 && ay <= 225)) {  // inclui limites para BACK
             return "FRONT";
+        } else {
+            // Se não entrou em nenhum dos casos acima, é FRONT (vermelho)
+            return "BACK";
         }
     }
+
 }
