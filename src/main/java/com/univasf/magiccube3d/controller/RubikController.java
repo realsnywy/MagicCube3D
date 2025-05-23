@@ -359,20 +359,24 @@ public class RubikController {
         double ax = (angleX % 360 + 360) % 360;
         double ay = (angleY % 360 + 360) % 360;
 
-        if ((ax >= 45 && ax <= 135)) {
+        // Câmera está de cabeça para baixo (atrás do cubo)
+        boolean flipped = ax > 90 && ax < 270;
+
+        if (ax >= 45 && ax <= 135) {
             return "UP";
-        } else if ((ax >= 225 && ax <= 315)) {
+        } else if (ax >= 225 && ax <= 315) {
             return "DOWN";
-        } else if ((ay >= 45 && ay <= 135)) {
+        } else if (ay >= 45 && ay <= 135) {
             return "LEFT";
-        } else if ((ay >= 225 && ay <= 315)) {
+        } else if (ay >= 225 && ay <= 315) {
             return "RIGHT";
-        } else if ((ay >= 135 && ay <= 225)) {  // inclui limites para BACK
-            return "FRONT";
-        } else {
-            // Se não entrou em nenhum dos casos acima, é FRONT (vermelho)
-            return "BACK";
+        } else if ((ay <= 45 || ay >= 315)) {
+            return flipped ? "FRONT" : "BACK"; // vermelho = FRONT, mesmo com rotação inicial
+        } else { // (135 <= ay <= 225)
+            return flipped ? "BACK" : "FRONT"; // laranja vira FRONT só se não estiver "por trás"
         }
     }
+
+
 
 }
