@@ -12,6 +12,7 @@ import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -43,9 +44,14 @@ public class RubikController {
     @FXML
     private VBox controlsPane;
 
+    @FXML
+    private Label faceLabel;
+
     // Estado do cubo e elementos auxiliares
     private Cube cube;
+    @FXML
     private final StackPane cubePane = new StackPane();
+
 
     // Variáveis para controle de rotação via mouse
     private double anchorX, anchorY;
@@ -85,7 +91,6 @@ public class RubikController {
         System.out.println("RubikController inicializado.");
     }
 
-    // Configura rotação do cubo via mouse
     private void setupMouseControls() {
         cubePane.setOnMousePressed(event -> {
             anchorX = event.getSceneX();
@@ -97,8 +102,12 @@ public class RubikController {
         cubePane.setOnMouseDragged(event -> {
             rotateX.setAngle(anchorAngleX + (event.getSceneY() - anchorY));
             rotateY.setAngle(anchorAngleY - (event.getSceneX() - anchorX));
+
+            String face = getVisibleFace(rotateX.getAngle(), rotateY.getAngle());
+            faceLabel.setText("Face atual: " + face);
         });
     }
+
 
     // Configura rotação do cubo via teclado numérico
     private void setupKeyboardControls() {
@@ -131,7 +140,7 @@ public class RubikController {
     // Define ações dos botões de rotação, embaralhar e resetar
     private void setupButtonActions() {
         rotateXButton.setOnAction(_ -> {
-            cube.rotateCenter("X", true); // Rotação do eixo X
+            cube.rotateCenter("X", true);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
@@ -342,5 +351,26 @@ public class RubikController {
             face.setRotate(angle);
         }
         return face;
+    }
+
+    private String getVisibleFace(double angleX, double angleY) {
+        // Normaliza ângulos entre 0 e 360
+        double ax = (angleX % 360 + 360) % 360;
+        double ay = (angleY % 360 + 360) % 360;
+
+        // Regras simplificadas para determinar face visível
+        if ((ax >= 45 && ax <= 135)) {
+            return "DOWN";
+        } else if ((ax >= 225 && ax <= 315)) {
+            return "UP";
+        } else if ((ay >= 45 && ay <= 135)) {
+            return "RIGHT";
+        } else if ((ay >= 225 && ay <= 315)) {
+            return "LEFT";
+        } else if ((ay > 135 && ay < 225)) {
+            return "BACK";
+        } else {
+            return "FRONT";
+        }
     }
 }

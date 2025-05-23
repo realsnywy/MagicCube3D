@@ -8,12 +8,18 @@
 <?import javafx.scene.layout.HBox?>
 
 <BorderPane fx:id="mainPane"
-    xmlns="http://javafx.com/javafx/11"
-    xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univasf.magiccube3d.controller.RubikController" stylesheets="@../styles/style.css">
+            xmlns="http://javafx.com/javafx/11"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.univasf.magiccube3d.controller.RubikController"
+            stylesheets="@../styles/style.css">
 
     <top>
-        <Label text="MagicCube3D" styleClass="title-label" BorderPane.alignment="CENTER"/>
+        <VBox alignment="CENTER">
+            <Label text="MagicCube3D" styleClass="title-label" />
+            <Label fx:id="faceLabel" text="Face atual: ???" styleClass="face-label" />
+        </VBox>
     </top>
+
 
     <center>
         <!-- Área onde o cubo 3D será exibido -->
