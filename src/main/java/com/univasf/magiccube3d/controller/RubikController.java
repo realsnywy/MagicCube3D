@@ -55,9 +55,9 @@ public class RubikController {
 
     // Variáveis para controle de rotação via mouse
     private double anchorX, anchorY;
-    private double anchorAngleX = -20, anchorAngleY = -30;
-    private final Rotate rotateX = new Rotate(-20, Rotate.X_AXIS);
-    private final Rotate rotateY = new Rotate(-30, Rotate.Y_AXIS);
+    private double anchorAngleX = 0, anchorAngleY = 180;
+    private final Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
+    private final Rotate rotateY = new Rotate(180, Rotate.Y_AXIS);
     private final Rotate rotateZ = new Rotate(0, Rotate.Z_AXIS);
 
     // Inicialização do controlador e interface
@@ -134,6 +134,8 @@ public class RubikController {
                 default:
                     break;
             }
+            String face = getVisibleFace(rotateX.getAngle(), rotateY.getAngle());
+            faceLabel.setText("Face atual: " + face);
         });
     }
 
