@@ -366,10 +366,10 @@ public class RubikController {
         } else if ((ay >= 225 && ay <= 315)) {
             return "RIGHT";
         } else if ((ay >= 135 && ay <= 225)) {  // inclui limites para BACK
-            return "FRONT";
+            return "BACK";
         } else {
             // Se não entrou em nenhum dos casos acima, é FRONT (vermelho)
-            return "BACK";
+            return "FRONT";
         }
     }
 
