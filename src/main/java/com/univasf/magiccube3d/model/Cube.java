@@ -167,15 +167,18 @@ public class Cube {
         Face left = faces.get(FaceType.LEFT);
         Face right = faces.get(FaceType.RIGHT);
 
-        Facelet[] upRow = getRowCopy(up, 2);
-        Facelet[] leftCol = getColumnCopy(left, 2);
-        Facelet[] downRow = getRowCopy(down, 0);
-        Facelet[] rightCol = getColumnCopy(right, 0);
+        // Salva temporariamente as bordas já preparadas (com inversão quando necessário)
+        Facelet[] upRow = getRowCopy(up, 2);         // linha inferior do UP
+        Facelet[] leftCol = getColumnCopy(left, 0);  // coluna direita do LEFT
+        Facelet[] downRow = getRowCopy(down, 2);     // linha superior do DOWN
+        Facelet[] rightCol = getColumnCopy(right, 0); // coluna esquerda do RIGHT
 
-        setRow(up, 2, reverse(leftCol));
-        setColumn(right, 0, upRow);
-        setRow(down, 0, reverse(rightCol));
-        setColumn(left, 2, downRow);
+// Atualizando as bordas adjacentes, tomando cuidado com inversões
+        setRow(up, 2, reverse(leftCol));      // linha inferior do UP recebe coluna direita do LEFT invertida
+        setColumn(right, 0, upRow);           // coluna esquerda do RIGHT recebe linha inferior do UP sem inverter
+        setRow(down, 2, reverse(rightCol));   // linha superior do DOWN recebe coluna esquerda do RIGHT invertida
+        setColumn(left, 0, downRow);          // coluna direita do LEFT recebe linha superior do DOWN sem inverter
+
     }
 
     // Rotaciona as bordas ao redor da face FRONT no sentido anti-horário
@@ -190,10 +193,10 @@ public class Cube {
         Facelet[] downRow = getRowCopy(down, 0);
         Facelet[] rightCol = getColumnCopy(right, 0);
 
-        setRow(up, 2, rightCol);
-        setColumn(left, 2, reverse(upRow));
-        setRow(down, 0, leftCol);
-        setColumn(right, 0, reverse(downRow));
+        setRow(up, 2, reverse(rightCol));
+        setColumn(left, 2, upRow);
+        setRow(down, 0, reverse(leftCol));
+        setColumn(right, 0, downRow);
     }
 
     // Rotaciona as bordas ao redor da face BACK no sentido horário
