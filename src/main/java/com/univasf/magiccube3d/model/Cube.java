@@ -16,12 +16,12 @@ public class Cube {
 
     // Inicializa o cubo no estado resolvido (cada face com uma cor uniforme)
     private void initializeSolvedState() {
-        faces.put(FaceType.UP, new Face(FaceType.UP, Color.web("FFFFFF")));
-        faces.put(FaceType.DOWN, new Face(FaceType.DOWN, Color.web("FFD600")));
-        faces.put(FaceType.FRONT, new Face(FaceType.FRONT, Color.web("E53935")));
-        faces.put(FaceType.BACK, new Face(FaceType.BACK, Color.web("FF9800")));
-        faces.put(FaceType.LEFT, new Face(FaceType.LEFT, Color.web("1E88E5")));
-        faces.put(FaceType.RIGHT, new Face(FaceType.RIGHT, Color.web("43A047")));
+        faces.put(FaceType.UP, new Face(FaceType.UP, Color.web("FFD600")));      // Yellow on top
+        faces.put(FaceType.DOWN, new Face(FaceType.DOWN, Color.web("FFFFFF")));  // White on bottom
+        faces.put(FaceType.FRONT, new Face(FaceType.FRONT, Color.web("E53935"))); // Red front
+        faces.put(FaceType.BACK, new Face(FaceType.BACK, Color.web("FF9800")));   // Orange back
+        faces.put(FaceType.LEFT, new Face(FaceType.LEFT, Color.web("43A047")));   // Green left
+        faces.put(FaceType.RIGHT, new Face(FaceType.RIGHT, Color.web("1E88E5"))); // Blue right
         System.out.println("Cubo inicializado no estado resolvido.");
     }
 
