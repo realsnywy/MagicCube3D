@@ -51,7 +51,7 @@ public class Cube {
             rotateSliceX(1, clockwise);
             System.out.println("Rotacionando camada central no eixo X"
                     + (clockwise ? " no sentido horário" : " no sentido anti-horário"));
-        } else if ("Y".equals(axis)) {
+        } else if ("M".equals(axis)) {
             rotateSliceY(1, clockwise);
             System.out.println("Rotacionando camada central no eixo Y"
                     + (clockwise ? " no sentido horário" : " no sentido anti-horário"));

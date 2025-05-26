@@ -31,11 +31,11 @@ public class RubikController {
     private BorderPane mainPane;
 
     @FXML
-    private Button rotateXButton, rotateYButton, rotateFButton, rotateBButton, rotateUButton, rotateDButton,
+    private Button rotateEButton, rotateMButton, rotateFButton, rotateBButton, rotateUButton, rotateDButton,
             rotateLButton, rotateRButton;
 
     @FXML
-    private Button rotateXPrimeButton, rotateYPrimeButton, rotateFPrimeButton, rotateBPrimeButton, rotateUPrimeButton,
+    private Button rotateEPrimeButton, rotateMPrimeButton, rotateFPrimeButton, rotateBPrimeButton, rotateUPrimeButton,
             rotateDPrimeButton, rotateLPrimeButton, rotateRPrimeButton;
 
     @FXML
@@ -141,23 +141,23 @@ public class RubikController {
 
     // Define ações dos botões de rotação, embaralhar e resetar
     private void setupButtonActions() {
-        rotateXButton.setOnAction(_ -> {
+        rotateEButton.setOnAction(_ -> {
             cube.rotateCenter("X", false); // was true, now false
             SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
-        rotateXPrimeButton.setOnAction(_ -> {
+        rotateEPrimeButton.setOnAction(_ -> {
             cube.rotateCenter("X", true); // was false, now true
             SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
-        rotateYButton.setOnAction(_ -> {
-            cube.rotateCenter("Y", false); // was true, now false
+        rotateMButton.setOnAction(_ -> {
+            cube.rotateCenter("M", false); // was true, now false
             SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
-        rotateYPrimeButton.setOnAction(_ -> {
-            cube.rotateCenter("Y", true); // was false, now true
+        rotateMPrimeButton.setOnAction(_ -> {
+            cube.rotateCenter("M", true); // was false, now true
             SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
@@ -202,23 +202,22 @@ public class RubikController {
             updateCube3D();
         });
 
-// L (Left)
-        rotateLButton.setOnAction(_ -> {
+        rotateRButton.setOnAction(_ -> {
             cube.rotateFace("LEFT", false); // was true, now false
             SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
-        rotateLPrimeButton.setOnAction(_ -> {
+        rotateRPrimeButton.setOnAction(_ -> {
             cube.rotateFace("LEFT", true); // was false, now true
             SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
-        rotateRButton.setOnAction(_ -> {
+        rotateLButton.setOnAction(_ -> {
             cube.rotateFace("RIGHT", true); // Rotação da face direita
             SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
-        rotateRPrimeButton.setOnAction(_ -> {
+        rotateLPrimeButton.setOnAction(_ -> {
             cube.rotateFace("RIGHT", false); // Rotação inversa da face direita
             SoundPlayer.playSound("move.wav");
             updateCube3D();
