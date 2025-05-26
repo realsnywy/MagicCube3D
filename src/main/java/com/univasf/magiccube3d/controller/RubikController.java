@@ -11,6 +11,7 @@ import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -91,6 +92,19 @@ public class RubikController {
         System.out.println("RubikController inicializado.");
     }
 
+    private void showCongratulationsWindow() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Parabéns!");
+        alert.setHeaderText(null);
+        alert.setContentText("Você resolveu o Cubo Mágico!");
+        alert.showAndWait();
+    }
+
+    private void checkSolved() {
+        if (cube.isSolved()) {
+            showCongratulationsWindow();
+        }
+    }
     private void setupMouseControls() {
         cubePane.setOnMousePressed(event -> {
             anchorX = event.getSceneX();
@@ -145,92 +159,110 @@ public class RubikController {
             cube.rotateCenter("X", false); // was true, now false
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         rotateEPrimeButton.setOnAction(_ -> {
             cube.rotateCenter("X", true); // was false, now true
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         rotateMButton.setOnAction(_ -> {
             cube.rotateCenter("M", false); // was true, now false
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         rotateMPrimeButton.setOnAction(_ -> {
             cube.rotateCenter("M", true); // was false, now true
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         rotateFButton.setOnAction(_ -> {
             cube.rotateFace("FRONT", true); // Rotação da face frontal
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         rotateFPrimeButton.setOnAction(_ -> {
             cube.rotateFace("FRONT", false); // Rotação inversa da face frontal
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         rotateSButton.setOnAction(_ -> {
             cube.rotateCenter("S", false);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         rotateSPrimeButton.setOnAction(_ -> {
             cube.rotateCenter("S", true);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         rotateBButton.setOnAction(_ -> {
             cube.rotateFace("BACK", false); // was true, now false
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         rotateBPrimeButton.setOnAction(_ -> {
             cube.rotateFace("BACK", true); // was false, now true
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         rotateUButton.setOnAction(_ -> {
             cube.rotateFace("UP", false); // was true, now false
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         rotateUPrimeButton.setOnAction(_ -> {
             cube.rotateFace("UP", true); // was false, now true
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         rotateDButton.setOnAction(_ -> {
             cube.rotateFace("DOWN", true); // was false, now true
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         rotateDPrimeButton.setOnAction(_ -> {
             cube.rotateFace("DOWN", false); // was true, now false
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
 
         rotateRButton.setOnAction(_ -> {
             cube.rotateFace("LEFT", false); // was true, now false
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         rotateRPrimeButton.setOnAction(_ -> {
             cube.rotateFace("LEFT", true); // was false, now true
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         rotateLButton.setOnAction(_ -> {
             cube.rotateFace("RIGHT", true); // Rotação da face direita
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         rotateLPrimeButton.setOnAction(_ -> {
             cube.rotateFace("RIGHT", false); // Rotação inversa da face direita
             SoundPlayer.playSound("move.wav");
             updateCube3D();
+            checkSolved();
         });
         shuffleButton.setOnAction(_ -> {
             // Embaralha o cubo com movimentos aleatórios

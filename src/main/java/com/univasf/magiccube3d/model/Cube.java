@@ -25,6 +25,20 @@ public class Cube {
         System.out.println("Cubo inicializado no estado resolvido.");
     }
 
+    public boolean isSolved() {
+        for (Face face : faces.values()) {
+            Color baseColor = face.getFacelet(1, 1).getColor(); // Cor do centro é a cor base fixa
+            for (int i = 0; i < Face.SIZE; i++) {
+                for (int j = 0; j < Face.SIZE; j++) {
+                    if (!face.getFacelet(i, j).getColor().equals(baseColor)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     // Rotaciona uma face do cubo no sentido horário ou anti-horário
     public void rotateFace(String face, boolean clockwise) {
         FaceType faceType = FaceType.valueOf(face.toUpperCase());
