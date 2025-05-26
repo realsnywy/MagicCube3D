@@ -48,6 +48,10 @@
                 <Button fx:id="rotateFPrimeButton" text="(F')" />
             </HBox>
             <HBox spacing="10">
+                <Button fx:id="rotateSButton" text="(S)"/>
+                <Button fx:id="rotateSPrimeButton" text="(S')" />
+            </HBox>
+            <HBox spacing="10">
                 <Button fx:id="rotateBButton" text="(B)"/>
                 <Button fx:id="rotateBPrimeButton" text="(B')" />
             </HBox>

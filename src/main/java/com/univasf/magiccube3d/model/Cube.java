@@ -55,6 +55,10 @@ public class Cube {
             rotateSliceY(1, clockwise);
             System.out.println("Rotacionando camada central no eixo Y"
                     + (clockwise ? " no sentido horário" : " no sentido anti-horário"));
+        } else if ("S".equals(axis)) {
+            rotateSliceS(1, clockwise);
+            System.out.println("Rotacionando camada central S"
+                    + (clockwise ? " no sentido horário" : " no sentido anti-horário"));
         }
     }
 
@@ -107,6 +111,30 @@ public class Cube {
             setColumn(back, 2 - x, reverse(upCol));
             setColumn(down, x, reverse(backCol));
             setColumn(front, x, downCol);
+        }
+    }
+    private void rotateSliceS(int z, boolean clockwise) {
+        // S slice: middle layer parallel to FRONT (z=1), affects UP, RIGHT, DOWN, LEFT (row/col at z=1)
+        Face up = faces.get(FaceType.UP);
+        Face right = faces.get(FaceType.RIGHT);
+        Face down = faces.get(FaceType.DOWN);
+        Face left = faces.get(FaceType.LEFT);
+
+        Facelet[] upRow = getRowCopy(up, 1);
+        Facelet[] rightCol = getColumnCopy(right, 1);
+        Facelet[] downRow = getRowCopy(down, 1);
+        Facelet[] leftCol = getColumnCopy(left, 1);
+
+        if (clockwise) {
+            setRow(up, 1, reverse(leftCol));
+            setColumn(right, 1, upRow);
+            setRow(down, 1, reverse(rightCol));
+            setColumn(left, 1, downRow);
+        } else {
+            setRow(up, 1, rightCol);
+            setColumn(left, 1, reverse(upRow));
+            setRow(down, 1, leftCol);
+            setColumn(right, 1, reverse(downRow));
         }
     }
 

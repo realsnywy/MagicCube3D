@@ -31,11 +31,11 @@ public class RubikController {
     private BorderPane mainPane;
 
     @FXML
-    private Button rotateEButton, rotateMButton, rotateFButton, rotateBButton, rotateUButton, rotateDButton,
+    private Button rotateEButton, rotateMButton, rotateFButton, rotateSButton, rotateBButton, rotateUButton, rotateDButton,
             rotateLButton, rotateRButton;
 
     @FXML
-    private Button rotateEPrimeButton, rotateMPrimeButton, rotateFPrimeButton, rotateBPrimeButton, rotateUPrimeButton,
+    private Button rotateEPrimeButton, rotateMPrimeButton, rotateFPrimeButton, rotateSPrimeButton, rotateBPrimeButton, rotateUPrimeButton,
             rotateDPrimeButton, rotateLPrimeButton, rotateRPrimeButton;
 
     @FXML
@@ -168,6 +168,16 @@ public class RubikController {
         });
         rotateFPrimeButton.setOnAction(_ -> {
             cube.rotateFace("FRONT", false); // Rotação inversa da face frontal
+            SoundPlayer.playSound("move.wav");
+            updateCube3D();
+        });
+        rotateSButton.setOnAction(_ -> {
+            cube.rotateCenter("S", false);
+            SoundPlayer.playSound("move.wav");
+            updateCube3D();
+        });
+        rotateSPrimeButton.setOnAction(_ -> {
+            cube.rotateCenter("S", true);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
         });
