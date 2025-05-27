@@ -6,6 +6,9 @@ package com.univasf.magiccube3d.controller;
 import com.univasf.magiccube3d.model.Cube;
 import com.univasf.magiccube3d.model.FaceType;
 import com.univasf.magiccube3d.util.SoundPlayer;
+
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
@@ -21,8 +24,7 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class RubikController {
@@ -32,11 +34,13 @@ public class RubikController {
     private BorderPane mainPane;
 
     @FXML
-    private Button rotateEButton, rotateMButton, rotateFButton, rotateSButton, rotateBButton, rotateUButton, rotateDButton,
+    private Button rotateEButton, rotateMButton, rotateFButton, rotateSButton, rotateBButton, rotateUButton,
+            rotateDButton,
             rotateLButton, rotateRButton;
 
     @FXML
-    private Button rotateEPrimeButton, rotateMPrimeButton, rotateFPrimeButton, rotateSPrimeButton, rotateBPrimeButton, rotateUPrimeButton,
+    private Button rotateEPrimeButton, rotateMPrimeButton, rotateFPrimeButton, rotateSPrimeButton, rotateBPrimeButton,
+            rotateUPrimeButton,
             rotateDPrimeButton, rotateLPrimeButton, rotateRPrimeButton;
 
     @FXML
@@ -48,11 +52,13 @@ public class RubikController {
     @FXML
     private Label faceLabel;
 
+    @FXML
+    private StackPane title3DPane;
+
     // Estado do cubo e elementos auxiliares
     private Cube cube;
     @FXML
     private final StackPane cubePane = new StackPane();
-
 
     // Variáveis para controle de rotação via mouse
     private double anchorX, anchorY;
@@ -73,6 +79,63 @@ public class RubikController {
         setupKeyboardControls();
         cubePane.setFocusTraversable(true);
         setupButtonActions();
+
+        // Cria o texto animado para o título 3D
+        javafx.scene.text.Text text3D = new javafx.scene.text.Text("MagicCube3D");
+        text3D.setFont(javafx.scene.text.Font.font("Comic Sans MS", javafx.scene.text.FontWeight.BOLD, 48));
+        text3D.setFill(javafx.scene.paint.Color.WHITE);
+        text3D.setStroke(javafx.scene.paint.Color.BLACK);
+        text3D.setStrokeWidth(2);
+
+        // Aplica sombra para dar profundidade ao texto
+        javafx.scene.effect.DropShadow shadow = new javafx.scene.effect.DropShadow();
+        shadow.setRadius(10);
+        shadow.setColor(javafx.scene.paint.Color.BLACK);
+        text3D.setEffect(shadow);
+
+        // Mede o texto para centralizar o pivô de rotação
+        new javafx.scene.Scene(new javafx.scene.Group(text3D));
+        double textWidth = text3D.getLayoutBounds().getWidth();
+        double textHeight = text3D.getLayoutBounds().getHeight();
+
+        // Agrupa o texto para aplicar transformações 3D
+        javafx.scene.Group textGroup = new javafx.scene.Group(text3D);
+
+        // Define rotações 3D com pivô centralizado
+        double pivotX = textWidth / 2;
+        double pivotY = textHeight / 2;
+        Rotate rx = new Rotate(0, pivotX, pivotY, 0, Rotate.X_AXIS);
+        Rotate ry = new Rotate(0, pivotX, pivotY, 0, Rotate.Y_AXIS);
+        Rotate rz = new Rotate(0, pivotX, pivotY, 0, Rotate.Z_AXIS);
+        textGroup.getTransforms().addAll(rx, ry, rz);
+
+        // Anima o texto rotacionando nos eixos X, Y e Z, além de alterar cor e escala
+        javafx.animation.AnimationTimer rotator = new javafx.animation.AnimationTimer() {
+            double t = 0;
+
+            @Override
+            public void handle(long now) {
+                t += 0.035;
+                rx.setAngle(Math.sin(t * 1.1) * 25);
+                ry.setAngle(Math.sin(t * 0.7) * 65);
+                rz.setAngle(Math.cos(t * 0.9) * 18);
+
+                // Animação de cor RGB dinâmica
+                double r = (Math.sin(t * 2) + 1) / 2;
+                double g = (Math.sin(t * 3 + 2) + 1) / 2;
+                double b = (Math.sin(t * 4 + 4) + 1) / 2;
+                text3D.setFill(javafx.scene.paint.Color.color(r, g, b));
+
+                // Efeito de escala para dar sensação de profundidade
+                double scale = 1 + 0.07 * Math.sin(t * 1.2);
+                textGroup.setScaleX(scale);
+                textGroup.setScaleY(scale);
+            }
+        };
+        rotator.start();
+
+        // Adiciona o texto animado ao painel do título
+        title3DPane.getChildren().add(textGroup);
 
         // Animação de entrada dos controles
         controlsPane.setOpacity(0);
@@ -97,14 +160,23 @@ public class RubikController {
         alert.setTitle("Parabéns!");
         alert.setHeaderText(null);
         alert.setContentText("Você resolveu o Cubo Mágico!");
+
+        // Define o ícone do alerta igual ao da aplicação
+        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+        alertStage.getIcons().add(
+                new javafx.scene.image.Image(
+                        getClass().getResourceAsStream("/com/univasf/magiccube3d/icons/icon.png")));
+
         alert.showAndWait();
     }
 
     private void checkSolved() {
         if (cube.isSolved()) {
+            SoundPlayer.playSound("solved.wav");
             showCongratulationsWindow();
         }
     }
+
     private void setupMouseControls() {
         cubePane.setOnMousePressed(event -> {
             anchorX = event.getSceneX();
@@ -121,7 +193,6 @@ public class RubikController {
             faceLabel.setText("Face atual: " + face);
         });
     }
-
 
     // Configura rotação do cubo via teclado numérico
     private void setupKeyboardControls() {
@@ -419,7 +490,5 @@ public class RubikController {
             return flipped ? "BACK" : "FRONT"; // laranja vira FRONT só se não estiver "por trás"
         }
     }
-
-
 
 }

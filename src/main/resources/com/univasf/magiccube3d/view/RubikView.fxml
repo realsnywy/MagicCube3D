@@ -8,14 +8,12 @@
 <?import javafx.scene.layout.HBox?>
 
 <BorderPane fx:id="mainPane"
-            xmlns="http://javafx.com/javafx/11"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.univasf.magiccube3d.controller.RubikController"
-            stylesheets="@../styles/style.css">
+    xmlns="http://javafx.com/javafx/11"
+    xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.univasf.magiccube3d.controller.RubikController" stylesheets="@../styles/style.css">
 
     <top>
         <VBox alignment="CENTER">
-            <Label text="MagicCube3D" styleClass="title-label" />
+            <StackPane fx:id="title3DPane" minHeight="80" />
             <Label fx:id="faceLabel" text="Face atual: ???" styleClass="face-label" />
         </VBox>
     </top>

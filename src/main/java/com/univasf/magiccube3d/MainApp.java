@@ -31,13 +31,19 @@ public class MainApp extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("view/RubikView.fxml"));
 
         // Cria a cena principal com tamanho definido
-        Scene scene = new Scene(root, 1024, 768);
+        Scene scene = new Scene(root, 900, 800);
 
         // Aplica o arquivo de estilos CSS à cena
         scene.getStylesheets().add(getClass().getResource("styles/style.css").toExternalForm());
 
         // Configura e exibe a janela principal
         primaryStage.setTitle("MagicCube3D");
+
+        // Adiciona o ícone à janela
+        primaryStage.getIcons().add(
+                new javafx.scene.image.Image(
+                        getClass().getResourceAsStream("/com/univasf/magiccube3d/icons/icon.png")));
+
         primaryStage.setScene(scene);
         primaryStage.show();
     }
