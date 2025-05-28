@@ -321,6 +321,7 @@ public class Cube {
     }
 
     // Rotaciona as bordas ao redor da face DOWN no sentido horário
+// Rotaciona as bordas ao redor da face DOWN no sentido horário
     private void rotateDown() {
         Face front = faces.get(FaceType.FRONT);
         Face right = faces.get(FaceType.RIGHT);
@@ -332,11 +333,12 @@ public class Cube {
         Facelet[] backRow = getRowCopy(back, 2);
         Facelet[] leftRow = getRowCopy(left, 2);
 
-        setRow(front, 2, rightRow);
-        setRow(right, 2, backRow);
-        setRow(back, 2, leftRow);
-        setRow(left, 2, frontRow);
+        setRow(front, 2, reverse(leftRow));               // FRONT bottom ← LEFT bottom
+        setRow(right, 2, frontRow);              // RIGHT bottom ← FRONT bottom
+        setRow(back, 2, reverse(rightRow));      // BACK bottom ← RIGHT bottom (reversed)
+        setRow(left, 2, backRow);       // LEFT bottom ← BACK bottom (reversed)
     }
+
 
     // Rotaciona as bordas ao redor da face DOWN no sentido anti-horário
     private void rotateDownPrime() {
@@ -350,10 +352,10 @@ public class Cube {
         Facelet[] backRow = getRowCopy(back, 2);
         Facelet[] leftRow = getRowCopy(left, 2);
 
-        setRow(front, 2, leftRow);
-        setRow(right, 2, frontRow);
-        setRow(back, 2, rightRow);
-        setRow(left, 2, backRow);
+        setRow(front, 2, reverse(rightRow));
+        setRow(right, 2, backRow);
+        setRow(back, 2, reverse(leftRow));
+        setRow(left, 2, frontRow);
     }
 
     // Rotaciona as bordas ao redor da face LEFT no sentido horário
