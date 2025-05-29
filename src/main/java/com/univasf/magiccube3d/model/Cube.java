@@ -90,15 +90,15 @@ public class Cube {
         Facelet[] leftRow = getRowCopy(left, y);
 
         if (clockwise) {
-            setRow(front, y, leftRow);
-            setRow(right, y, frontRow);
-            setRow(back, y, rightRow);
-            setRow(left, y, backRow);
+            setRow(front, y, reverse(leftRow));
+            setRow(right, y, reverse(frontRow));
+            setRow(back, y, reverse(rightRow));
+            setRow(left, y, reverse(backRow));
         } else {
-            setRow(front, y, rightRow);
-            setRow(left, y, frontRow);
-            setRow(back, y, leftRow);
-            setRow(right, y, backRow);
+            setRow(front, y, reverse(rightRow));
+            setRow(left, y, reverse(frontRow));
+            setRow(back, y, reverse(leftRow));
+            setRow(right, y, reverse(backRow));
         }
     }
 
