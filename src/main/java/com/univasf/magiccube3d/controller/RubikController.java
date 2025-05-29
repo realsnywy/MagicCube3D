@@ -174,7 +174,7 @@ public class RubikController {
         if (cube.isSolved()) {
             SoundPlayer.playSound("solved.wav");
             showCongratulationsWindow();
-
+            cube = new Cube();
         }
     }
 

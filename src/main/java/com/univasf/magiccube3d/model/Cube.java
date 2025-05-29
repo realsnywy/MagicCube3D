@@ -20,8 +20,8 @@ public class Cube {
         faces.put(FaceType.DOWN, new Face(FaceType.DOWN, Color.web("FFFFFF")));  // White on bottom
         faces.put(FaceType.FRONT, new Face(FaceType.FRONT, Color.web("E53935"))); // Red front
         faces.put(FaceType.BACK, new Face(FaceType.BACK, Color.web("FF9800")));   // Orange back
-        faces.put(FaceType.LEFT, new Face(FaceType.LEFT, Color.web("43A047")));   // Green left
-        faces.put(FaceType.RIGHT, new Face(FaceType.RIGHT, Color.web("1E88E5"))); // Blue right
+        faces.put(FaceType.LEFT, new Face(FaceType.LEFT, Color.web("43A047")));   // Blue left
+        faces.put(FaceType.RIGHT, new Face(FaceType.RIGHT, Color.web("1E88E5"))); // Green right
         System.out.println("Cubo inicializado no estado resolvido.");
     }
 
@@ -45,12 +45,12 @@ public class Cube {
         Face faceToRotate = faces.get(faceType);
 
         if (clockwise) {
-            faceToRotate.rotateClockwise();
-        } else {
             // Rotaciona 3 vezes no sentido horário para simular anti-horário
             for (int i = 0; i < 3; i++) {
                 faceToRotate.rotateClockwise();
             }
+        } else {
+            faceToRotate.rotateClockwise();
         }
 
         rotateAdjacentEdges(faceType, clockwise);
@@ -306,9 +306,9 @@ public class Cube {
         Facelet[] leftRow = getRowCopy(left, 0);
 
         setRow(front, 0, reverse(leftRow));      // FRONT top ← LEFT top (reversed)
-        setRow(right, 0, frontRow);              // RIGHT top ← FRONT top
+        setRow(right, 0, reverse(frontRow));              // RIGHT top ← FRONT top
         setRow(back, 0, reverse(rightRow));      // BACK top ← RIGHT top (reversed)
-        setRow(left, 0, backRow);                // LEFT top ← BACK top
+        setRow(left, 0, reverse(backRow));                // LEFT top ← BACK top
 
     }
 
@@ -324,9 +324,9 @@ public class Cube {
         Facelet[] backRow = getRowCopy(back, 0);
         Facelet[] leftRow = getRowCopy(left, 0);
 
-        setRow(front, 0, rightRow);              // FRONT top ← RIGHT top
+        setRow(front, 0, reverse(rightRow));              // FRONT top ← RIGHT top
         setRow(right, 0, reverse(backRow));      // RIGHT top ← BACK top (reversed)
-        setRow(back, 0, leftRow);                // BACK top ← LEFT top
+        setRow(back, 0, reverse(leftRow));                // BACK top ← LEFT top
         setRow(left, 0, reverse(frontRow));      // LEFT top ← FRONT top (reversed)
 
     }
