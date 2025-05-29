@@ -334,25 +334,8 @@ public class Cube {
     // Rotaciona as bordas ao redor da face DOWN no sentido horário
 // Rotaciona as bordas ao redor da face DOWN no sentido horário
     private void rotateDown() {
-        Face front = faces.get(FaceType.FRONT);
-        Face right = faces.get(FaceType.RIGHT);
-        Face back = faces.get(FaceType.BACK);
-        Face left = faces.get(FaceType.LEFT);
-
-        Facelet[] frontRow = getRowCopy(front, 2);
-        Facelet[] rightRow = getRowCopy(right, 2);
-        Facelet[] backRow = getRowCopy(back, 2);
-        Facelet[] leftRow = getRowCopy(left, 2);
-
-        setRow(front, 2, reverse(leftRow));               // FRONT bottom ← LEFT bottom
-        setRow(right, 2, frontRow);              // RIGHT bottom ← FRONT bottom
-        setRow(back, 2, reverse(rightRow));      // BACK bottom ← RIGHT bottom (reversed)
-        setRow(left, 2, backRow);       // LEFT bottom ← BACK bottom (reversed)
-    }
 
 
-    // Rotaciona as bordas ao redor da face DOWN no sentido anti-horário
-    private void rotateDownPrime() {
         Face front = faces.get(FaceType.FRONT);
         Face right = faces.get(FaceType.RIGHT);
         Face back = faces.get(FaceType.BACK);
@@ -364,9 +347,31 @@ public class Cube {
         Facelet[] leftRow = getRowCopy(left, 2);
 
         setRow(front, 2, reverse(rightRow));
-        setRow(right, 2, backRow);
+        setRow(right, 2, reverse(backRow));
         setRow(back, 2, reverse(leftRow));
-        setRow(left, 2, frontRow);
+        setRow(left, 2, reverse(frontRow));
+
+    }
+
+
+    // Rotaciona as bordas ao redor da face DOWN no sentido anti-horário
+    private void rotateDownPrime() {
+
+        Face front = faces.get(FaceType.FRONT);
+        Face right = faces.get(FaceType.RIGHT);
+        Face back = faces.get(FaceType.BACK);
+        Face left = faces.get(FaceType.LEFT);
+
+        Facelet[] frontRow = getRowCopy(front, 2);
+        Facelet[] rightRow = getRowCopy(right, 2);
+        Facelet[] backRow = getRowCopy(back, 2);
+        Facelet[] leftRow = getRowCopy(left, 2);
+
+        setRow(front, 2, reverse(leftRow));               // FRONT bottom ← LEFT bottom
+        setRow(right, 2, reverse(frontRow));              // RIGHT bottom ← FRONT bottom
+        setRow(back, 2, reverse(rightRow));      // BACK bottom ← RIGHT bottom (reversed)
+        setRow(left, 2, reverse(backRow));       // LEFT bottom ← BACK bottom (reversed)
+
     }
 
     // Rotaciona as bordas ao redor da face LEFT no sentido horário
