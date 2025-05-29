@@ -312,13 +312,13 @@ public class RubikController {
         });
 
         rotateRButton.setOnAction(_ -> {
-            cube.rotateFace("LEFT", false); // was true, now false
+            cube.rotateFace("LEFT", true); // was true, now false
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
         });
         rotateRPrimeButton.setOnAction(_ -> {
-            cube.rotateFace("LEFT", true); // was false, now true
+            cube.rotateFace("LEFT", false); // was false, now true
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();

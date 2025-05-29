@@ -248,6 +248,7 @@ public class Cube {
 
     // Rotaciona as bordas ao redor da face BACK no sentido horário
     private void rotateBack() {
+
         Face up = faces.get(FaceType.UP);
         Face down = faces.get(FaceType.DOWN);
         Face left = faces.get(FaceType.LEFT);
@@ -258,10 +259,11 @@ public class Cube {
         Facelet[] downRow = getRowCopy(down, 2);
         Facelet[] rightCol = getColumnCopy(right, 0);
 
-        setRow(up, 0, reverse(leftCol));
-        setColumn(right, 0, upRow);
-        setRow(down, 2, reverse(rightCol));
-        setColumn(left, 2, downRow);
+        setRow(up, 0, rightCol);
+        setColumn(left, 2, reverse(upRow));
+        setRow(down, 2, leftCol);
+        setColumn(right, 0, reverse(downRow));
+
     }
 
 
@@ -278,10 +280,10 @@ public class Cube {
         Facelet[] downRow = getRowCopy(down, 2);
         Facelet[] rightCol = getColumnCopy(right, 0);
 
-        setRow(up, 0, rightCol);
-        setColumn(left, 2, reverse(upRow));
-        setRow(down, 2, leftCol);
-        setColumn(right, 0, reverse(downRow));
+        setRow(up, 0, reverse(leftCol));
+        setColumn(right, 0, upRow);
+        setRow(down, 2, reverse(rightCol));
+        setColumn(left, 2, downRow);
 
     }
 
@@ -400,15 +402,15 @@ public class Cube {
         Face down = faces.get(FaceType.DOWN);
         Face back = faces.get(FaceType.BACK);
 
-        Facelet[] upCol = getColumnCopy(up, 2);
-        Facelet[] frontCol = getColumnCopy(front, 2);
-        Facelet[] downCol = getColumnCopy(down, 2);
-        Facelet[] backCol = getColumnCopy(back, 0);
+        Facelet[] upCol = getColumnCopy(up, 0);
+        Facelet[] frontCol = getColumnCopy(front, 0);
+        Facelet[] downCol = getColumnCopy(down, 0);
+        Facelet[] backCol = getColumnCopy(back, 2);
 
-        setColumn(up, 2, reverse(backCol));
-        setColumn(front, 2, upCol);
-        setColumn(down, 2, frontCol);
-        setColumn(back, 0, reverse(downCol));
+        setColumn(up, 0, reverse(backCol));
+        setColumn(front, 0, upCol);
+        setColumn(down, 0, frontCol);
+        setColumn(back, 2, reverse(downCol));
     }
 
     // Rotaciona as bordas ao redor da face RIGHT no sentido anti-horário
@@ -418,15 +420,15 @@ public class Cube {
         Face down = faces.get(FaceType.DOWN);
         Face back = faces.get(FaceType.BACK);
 
-        Facelet[] upCol = getColumnCopy(up, 2);
-        Facelet[] frontCol = getColumnCopy(front, 2);
-        Facelet[] downCol = getColumnCopy(down, 2);
-        Facelet[] backCol = getColumnCopy(back, 0);
+        Facelet[] upCol = getColumnCopy(up, 0);
+        Facelet[] frontCol = getColumnCopy(front, 0);
+        Facelet[] downCol = getColumnCopy(down, 0);
+        Facelet[] backCol = getColumnCopy(back, 2);
 
-        setColumn(up, 2, frontCol);
-        setColumn(back, 0, reverse(upCol));
-        setColumn(down, 2, reverse(backCol));
-        setColumn(front, 2, downCol);
+        setColumn(up, 0, frontCol);
+        setColumn(back, 2, reverse(upCol));
+        setColumn(down, 0, reverse(backCol));
+        setColumn(front, 0, downCol);
     }
 
     // Copia uma linha da face (evita referência direta)
