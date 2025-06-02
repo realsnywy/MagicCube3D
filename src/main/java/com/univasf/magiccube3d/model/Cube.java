@@ -20,8 +20,8 @@ public class Cube {
         faces.put(FaceType.DOWN, new Face(FaceType.DOWN, Color.web("FFFFFF")));  // White on bottom
         faces.put(FaceType.FRONT, new Face(FaceType.FRONT, Color.web("E53935"))); // Red front
         faces.put(FaceType.BACK, new Face(FaceType.BACK, Color.web("FF9800")));   // Orange back
-        faces.put(FaceType.LEFT, new Face(FaceType.LEFT, Color.web("43A047")));   // Blue left
-        faces.put(FaceType.RIGHT, new Face(FaceType.RIGHT, Color.web("1E88E5"))); // Green right
+        faces.put(FaceType.LEFT, new Face(FaceType.LEFT, Color.web("1E88E5")));   // Blue left
+        faces.put(FaceType.RIGHT, new Face(FaceType.RIGHT, Color.web("43A047"))); // Green right
         System.out.println("Cubo inicializado no estado resolvido.");
     }
 

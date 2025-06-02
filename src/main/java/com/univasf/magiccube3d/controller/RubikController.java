@@ -418,19 +418,18 @@ public class RubikController {
                                     cube.getFace(FaceType.DOWN).getFacelet(2 - z, x).getColor(),
                                     boxCenterX, boxCenterY + size / 2 + faceOffset, boxCenterZ,
                                     90, new Point3D(1, 0, 0)));
-                        if (x == 0) // Face ESQUERDA
+                        if (x == 2) // Face ESQUERDA
                             group.getChildren().add(createFaceRect(
                                     size,
-                                    cube.getFace(FaceType.LEFT).getFacelet(y, 2 - z).getColor(),
-                                    boxCenterX - size / 2 - faceOffset, boxCenterY, boxCenterZ,
-                                    -90, new Point3D(0, 1, 0)));
-                        if (x == 2) // Face DIREITA
-                            group.getChildren().add(createFaceRect(
-                                    size,
-                                    cube.getFace(FaceType.RIGHT).getFacelet(y, z).getColor(),
+                                    cube.getFace(FaceType.LEFT).getFacelet(y, z).getColor(),
                                     boxCenterX + size / 2 + faceOffset, boxCenterY, boxCenterZ,
                                     90, new Point3D(0, 1, 0)));
-
+                        if (x == 0) // Face DIREITA
+                            group.getChildren().add(createFaceRect(
+                                    size,
+                                    cube.getFace(FaceType.RIGHT).getFacelet(y, 2 - z).getColor(),
+                                    boxCenterX - size / 2 - faceOffset, boxCenterY, boxCenterZ,
+                                    -90, new Point3D(0, 1, 0)));
                         group.getChildren().add(box);
                     }
                 }
