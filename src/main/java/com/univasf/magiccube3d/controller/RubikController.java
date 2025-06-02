@@ -264,13 +264,13 @@ public class RubikController {
             checkSolved();
         });
         rotateLButton.setOnAction(_ -> {
-            cube.rotateFace("LEFT", true); // Rotação da face direita
+            cube.rotateFace("LEFT", false); // Rotação da face direita
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
         });
         rotateLPrimeButton.setOnAction(_ -> {
-            cube.rotateFace("LEFT", false); // Rotação inversa da face direita
+            cube.rotateFace("LEFT", true); // Rotação inversa da face direita
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
@@ -288,13 +288,13 @@ public class RubikController {
             checkSolved();
         });
         rotateRButton.setOnAction(_ -> {
-            cube.rotateFace("RIGHT", true); // was true, now false
+            cube.rotateFace("RIGHT", false); // was true, now false
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
         });
         rotateRPrimeButton.setOnAction(_ -> {
-            cube.rotateFace("RIGHT", false); // was false, now true
+            cube.rotateFace("RIGHT", true); // was false, now true
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
