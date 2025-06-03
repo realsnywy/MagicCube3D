@@ -92,7 +92,8 @@ public class RubikController {
         setupMouseControls();
         setupKeyboardControls();
         cubePane.setFocusTraversable(true);
-        cubePane.requestFocus();
+        // Solicita o foco após a interface estar pronta
+        javafx.application.Platform.runLater(() -> cubePane.requestFocus());
         setupButtonActions();
 
         // Botão para resetar a câmera
@@ -200,6 +201,8 @@ public class RubikController {
 
     private void setupMouseControls() {
         cubePane.setOnMousePressed(event -> {
+            // Sempre solicita foco ao clicar no cubo
+            cubePane.requestFocus();
             // Só inicia rotação se NÃO estiver pressionando Shift
             if (!event.isShiftDown()) {
                 anchorX = event.getSceneX();
