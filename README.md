@@ -67,13 +67,46 @@ projeto-ccmp0151/
   mvnw.cmd clean install  # Para Windows
   ```
 
-  3. Execute a aplicação:
+3. Execute a aplicação:
 
   ```bash
   ./mvnw javafx:run       # Para Linux/macOS
   mvnw.cmd javafx:run     # Para Windows
   ```
 
-  4. Você também pode executar a classe principal `com.univasf.magiccube3d.MainApp` diretamente pela sua IDE.
+4. Você também pode executar a classe principal `com.univasf.magiccube3d.MainApp` diretamente pela sua IDE.
 
-> Este é um projeto acadêmico desenvolvido para fins educacionais.
+---
+
+## ⌨️ Atalhos de Teclado
+
+Você pode controlar o cubo usando os seguintes atalhos de teclado:
+
+### Rotação das faces e centros
+
+| Tecla | Movimento         | Tecla (inversa) | Movimento inverso   |
+|-------|-------------------|-----------------|---------------------|
+| U     | Up (U)            | Q               | Up' (U')            |
+| E     | Eixo X (E)        | W               | Eixo X' (E')        |
+| F     | Front (F)         | G               | Front' (F')         |
+| S     | Eixo S (S)        | A               | Eixo S' (S')        |
+| B     | Back (B)          | V               | Back' (B')          |
+| D     | Down (D)          | X               | Down' (D')          |
+| L     | Left (L)          | K               | Left' (L')          |
+| M     | Eixo M (M)        | N               | Eixo M' (M')        |
+| R     | Right (R)         | T               | Right' (R')         |
+
+### Outros comandos
+
+| Tecla         | Função                |
+|---------------|----------------------|
+| Espaço (Space)| Embaralhar (Shuffle) |
+| Backspace     | Resetar cubo         |
+| Numpad 8/2/4/6| Girar visualização   |
+| Numpad 7/9    | Girar eixo Z         |
+
+**Observação:** Os atalhos funcionam apenas quando o cubo está com o foco (clique sobre o cubo antes de usar o teclado).
+
+---
+
+> Este projeto é de caráter acadêmico e foi desenvolvido exclusivamente para fins educacionais.

@@ -217,6 +217,70 @@ public class RubikController {
                 case NUMPAD9:
                     groupRotateZ(10);
                     break;
+                // Atalhos para rotação das faces
+                case U: // U
+                    rotateUButton.fire();
+                    break;
+                case E: // E
+                    rotateEButton.fire();
+                    break;
+                case F: // F
+                    rotateFButton.fire();
+                    break;
+                case S: // S
+                    rotateSButton.fire();
+                    break;
+                case B: // B
+                    rotateBButton.fire();
+                    break;
+                case D: // D
+                    rotateDButton.fire();
+                    break;
+                case L: // L
+                    rotateLButton.fire();
+                    break;
+                case M: // M
+                    rotateMButton.fire();
+                    break;
+                case R: // R
+                    rotateRButton.fire();
+                    break;
+                // Atalhos para rotação inversa (Shift + letra)
+                case Q: // U'
+                    rotateUPrimeButton.fire();
+                    break;
+                case W: // E'
+                    rotateEPrimeButton.fire();
+                    break;
+                case G: // F'
+                    rotateFPrimeButton.fire();
+                    break;
+                case A: // S'
+                    rotateSPrimeButton.fire();
+                    break;
+                case V: // B'
+                    rotateBPrimeButton.fire();
+                    break;
+                case X: // D'
+                    rotateDPrimeButton.fire();
+                    break;
+                case K: // L'
+                    rotateLPrimeButton.fire();
+                    break;
+                case N: // M'
+                    rotateMPrimeButton.fire();
+                    break;
+                case T: // R'
+                    rotateRPrimeButton.fire();
+                    break;
+                // Shuffle (embaralhar)
+                case SPACE:
+                    shuffleButton.fire();
+                    break;
+                // Reset
+                case BACK_SPACE:
+                    resetButton.fire();
+                    break;
                 default:
                     break;
             }
