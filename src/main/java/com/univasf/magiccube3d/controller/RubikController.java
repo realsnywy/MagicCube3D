@@ -55,6 +55,9 @@ public class RubikController {
     @FXML
     private StackPane title3DPane;
 
+    @FXML
+    private Button resetCameraButton; // Adicione no seu FXML
+
     // Estado do cubo e elementos auxiliares
     private Cube cube;
     @FXML
@@ -66,6 +69,17 @@ public class RubikController {
     private final Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
     private final Rotate rotateY = new Rotate(180, Rotate.Y_AXIS);
     private final Rotate rotateZ = new Rotate(0, Rotate.Z_AXIS);
+
+    // Adicione estas variáveis de câmera:
+    private PerspectiveCamera camera;
+    private double cameraDistance = -350;
+    private double cameraFov = 45;
+    private double cameraPanX = 0;
+    private double cameraPanY = 0;
+
+    // Limites para o zoom da câmera
+    private final double CAMERA_DISTANCE_MIN = -800;
+    private final double CAMERA_DISTANCE_MAX = -120;
 
     // Inicialização do controlador e interface
     @FXML
@@ -80,6 +94,11 @@ public class RubikController {
         cubePane.setFocusTraversable(true);
         cubePane.requestFocus();
         setupButtonActions();
+
+        // Botão para resetar a câmera
+        if (resetCameraButton != null) {
+            resetCameraButton.setOnAction(_ -> resetCameraPosition());
+        }
 
         // Cria o texto animado para o título 3D
         javafx.scene.text.Text text3D = new javafx.scene.text.Text("MagicCube3D");
@@ -181,18 +200,24 @@ public class RubikController {
 
     private void setupMouseControls() {
         cubePane.setOnMousePressed(event -> {
-            anchorX = event.getSceneX();
-            anchorY = event.getSceneY();
-            anchorAngleX = rotateX.getAngle();
-            anchorAngleY = rotateY.getAngle();
+            // Só inicia rotação se NÃO estiver pressionando Shift
+            if (!event.isShiftDown()) {
+                anchorX = event.getSceneX();
+                anchorY = event.getSceneY();
+                anchorAngleX = rotateX.getAngle();
+                anchorAngleY = rotateY.getAngle();
+            }
         });
 
         cubePane.setOnMouseDragged(event -> {
-            rotateX.setAngle(anchorAngleX + (event.getSceneY() - anchorY));
-            rotateY.setAngle(anchorAngleY - (event.getSceneX() - anchorX));
+            // Só rotaciona se NÃO estiver pressionando Shift
+            if (!event.isShiftDown()) {
+                rotateX.setAngle(anchorAngleX + (event.getSceneY() - anchorY));
+                rotateY.setAngle(anchorAngleY - (event.getSceneX() - anchorX));
 
-            String face = getVisibleFace(rotateX.getAngle(), rotateY.getAngle());
-            faceLabel.setText("Face atual: " + face);
+                String face = getVisibleFace(rotateX.getAngle(), rotateY.getAngle());
+                faceLabel.setText("Face atual: " + face);
+            }
         });
     }
 
@@ -281,6 +306,9 @@ public class RubikController {
                 // Reset
                 case BACK_SPACE:
                     resetButton.fire();
+                    break;
+                case C:
+                    resetCameraButton.fire();
                     break;
                 default:
                     break;
@@ -437,7 +465,7 @@ public class RubikController {
         cubePane.getChildren().add(createCube3D(cube));
     }
 
-    // Cria a cena 3D do cubo com suas peças e faces coloridas
+    // Atualize o método createCube3D:
     private SubScene createCube3D(Cube cube) {
         Group group = new Group();
         double size = 30, gap = 2, offset = (size + gap);
@@ -505,11 +533,55 @@ public class RubikController {
 
         // Cria a sub-cena 3D com câmera e antialiasing
         SubScene subScene = new SubScene(group, 500, 500, true, javafx.scene.SceneAntialiasing.BALANCED);
-        PerspectiveCamera camera = new PerspectiveCamera(true);
-        camera.setTranslateZ(-350);
+
+        // Revamp da câmera
+        camera = new PerspectiveCamera(true);
+        camera.setFieldOfView(cameraFov);
+        camera.setTranslateZ(cameraDistance);
+        camera.setTranslateX(cameraPanX);
+        camera.setTranslateY(cameraPanY);
         camera.setNearClip(0.1);
         camera.setFarClip(1000.0);
         subScene.setCamera(camera);
+
+        // Eventos de zoom e pan
+        subScene.setOnScroll(event -> {
+            if (event.isControlDown()) {
+                cameraFov = Math.max(10, Math.min(100, cameraFov - event.getDeltaY() * 0.05));
+                camera.setFieldOfView(cameraFov);
+                event.consume();
+            } else {
+                double delta = event.getDeltaY();
+                cameraDistance += delta * 0.7;
+                // Aplica limites ao zoom
+                cameraDistance = Math.max(CAMERA_DISTANCE_MIN, Math.min(CAMERA_DISTANCE_MAX, cameraDistance));
+                camera.setTranslateZ(cameraDistance);
+            }
+        });
+
+        // Pan com Shift + arrastar
+        final double[] lastMouse = new double[2];
+        subScene.setOnMousePressed(event -> {
+            if (event.isShiftDown()) {
+                lastMouse[0] = event.getSceneX();
+                lastMouse[1] = event.getSceneY();
+            }
+        });
+        subScene.setOnMouseDragged(event -> {
+            if (event.isShiftDown()) {
+                double dx = event.getSceneX() - lastMouse[0];
+                double dy = event.getSceneY() - lastMouse[1];
+                cameraPanX -= dx * 0.5;
+                cameraPanY -= dy * 0.5;
+                // Limites de panning
+                cameraPanX = Math.max(-200, Math.min(200, cameraPanX));
+                cameraPanY = Math.max(-200, Math.min(200, cameraPanY));
+                camera.setTranslateX(cameraPanX);
+                camera.setTranslateY(cameraPanY);
+                lastMouse[0] = event.getSceneX();
+                lastMouse[1] = event.getSceneY();
+            }
+        });
 
         return subScene;
     }
@@ -554,6 +626,18 @@ public class RubikController {
         } else { // (135 <= ay <= 225)
             return flipped ? "BACK" : "FRONT"; // laranja vira FRONT só se não estiver "por trás"
         }
+    }
+
+    @FXML
+    private void resetCameraPosition() {
+        cameraDistance = -350;
+        cameraFov = 45;
+        cameraPanX = 0;
+        cameraPanY = 0;
+        rotateX.setAngle(0);
+        rotateY.setAngle(180);
+        rotateZ.setAngle(0);
+        updateCube3D();
     }
 
 }

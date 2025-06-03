@@ -98,12 +98,14 @@ Você pode controlar o cubo usando os seguintes atalhos de teclado:
 
 ### Outros comandos
 
-| Tecla         | Função                |
-|---------------|----------------------|
-| Espaço (Space)| Embaralhar (Shuffle) |
-| Backspace     | Resetar cubo         |
-| Numpad 8/2/4/6| Girar visualização   |
-| Numpad 7/9    | Girar eixo Z         |
+| Tecla           | Função                              |
+|-----------------|-------------------------------------|
+| Espaço (Space)  | Embaralhar o cubo                   |
+| Backspace       | Resetar o cubo                      |
+| C               | Resetar a câmera                    |
+| Numpad 8 / 2    | Girar visualização (vertical)       |
+| Numpad 4 / 6    | Girar visualização (horizontal)     |
+| Numpad 7 / 9    | Girar visualização (eixo Z)         |
 
 **Observação:** Os atalhos funcionam apenas quando o cubo está com o foco (clique sobre o cubo antes de usar o teclado).
 

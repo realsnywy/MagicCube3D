@@ -2,84 +2,95 @@
 .root {
     -fx-font-family: "Modern DOS 8x16", "Segoe UI", "Arial";
     -fx-background-color: #181c22;
+    -fx-font-size: 15px;
+    /* Fonte base confortável */
 }
 
 /* Plano de fundo principal */
 #mainPane {
     -fx-background-color: linear-gradient(to bottom right, #23272f, #181c22);
+    -fx-padding: 10 8 10 8;
+    /* Mais compacto */
+    -fx-spacing: 8;
 }
 
 /* Estilo do título principal */
 .title-label {
-    -fx-font-size: 28px;
+    -fx-font-size: 24px;
+    /* Maior destaque */
     -fx-font-weight: bold;
-    -fx-padding: 20 0 20 0;
+    -fx-padding: 8 0 8 0;
     -fx-text-fill: #fafafa;
-    -fx-effect: dropshadow(gaussian, #4CAF50, 12, 0.4, 0, 2);
-    -fx-transition: -fx-effect 0.4s;
+    -fx-effect: dropshadow(gaussian, #4CAF50, 6, 0.2, 0, 1);
+    -fx-alignment: center;
 }
 
 .title-label:hover {
-    -fx-effect: dropshadow(gaussian, #81C784, 24, 0.6, 0, 4);
+    -fx-effect: dropshadow(gaussian, #81C784, 12, 0.4, 0, 2);
 }
 
 /* Painel que exibe o cubo */
 .cube-pane {
     -fx-background-color: #23272f;
-    -fx-padding: 30;
-    -fx-background-radius: 20;
-    -fx-effect: dropshadow(gaussian, #000, 24, 0.3, 0, 6);
+    -fx-padding: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, #000, 8, 0.15, 0, 2);
     -fx-border-color: #43ea7f;
-    -fx-border-width: 2;
-    -fx-border-radius: 18;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-min-width: 180;
+    -fx-min-height: 180;
 }
 
 /* Painel dos controles */
 .controls-pane {
-    -fx-padding: 20;
+    -fx-padding: 8;
     -fx-background-color: #23272f;
-    -fx-background-radius: 15;
-    -fx-effect: dropshadow(gaussian, #111, 12, 0.3, 0, 3);
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, #111, 6, 0.15, 0, 1);
     -fx-alignment: center;
+    -fx-spacing: 6;
 }
 
 /* Rótulo dos controles */
 .controls-label {
-    -fx-font-size: 18px;
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-text-fill: #43ea7f;
-    -fx-padding: 0 0 10 0;
-    -fx-effect: dropshadow(gaussian, #000, 4, 0.2, 0, 1);
+    -fx-padding: 0 0 4 0;
+    -fx-effect: dropshadow(gaussian, #000, 1, 0.08, 0, 1);
 }
 
 /* Estilo dos botões */
 .button {
     -fx-background-color: linear-gradient(to bottom, #43ea7f, #388E3C 80%);
     -fx-text-fill: #fafafa;
-    -fx-padding: 10 20;
-    -fx-font-size: 15px;
-    -fx-background-radius: 8;
-    -fx-effect: dropshadow(gaussian, #222, 2, 0.2, 0, 1);
+    -fx-padding: 4 10;
+    -fx-font-size: 14px;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(gaussian, #222, 1, 0.08, 0, 1);
     -fx-cursor: hand;
     -fx-border-color: #4CAF50;
-    -fx-border-width: 1.5;
-    -fx-transition: all 0.2s cubic-bezier(.4, 0, .2, 1);
+    -fx-border-width: 1;
+    -fx-min-width: 60;
+    -fx-transition: all 0.13s cubic-bezier(.4, 0, .2, 1);
 }
 
 .button:hover {
     -fx-background-color: linear-gradient(to bottom, #4CAF50, #2e7031);
-    -fx-scale-x: 1.04;
-    -fx-scale-y: 1.04;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
 }
 
 .button:pressed {
     -fx-background-color: linear-gradient(to bottom, #256029, #1a1f1a);
-    -fx-translate-y: 2;
-    -fx-effect: dropshadow(gaussian, #111, 1, 0.1, 0, 0);
+    -fx-translate-y: 1;
+    -fx-effect: dropshadow(gaussian, #111, 1, 0.08, 0, 0);
 }
 
 /* Estilo geral dos rótulos */
 .label {
     -fx-font-size: 14px;
     -fx-text-fill: #e0e7ef;
+    -fx-padding: 1 0 1 0;
 }
