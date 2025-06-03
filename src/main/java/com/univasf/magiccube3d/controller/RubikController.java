@@ -228,10 +228,80 @@ public class RubikController {
     private void setupKeyboardControls() {
         cubePane.setOnKeyPressed(event -> {
             switch (event.getCode()) {
+                // Q, W, E: Up, rotate X center, Down
+                case Q:
+                    rotateUButton.fire();
+                    break;
+                case W:
+                    rotateEButton.fire();
+                    break;
+                case E:
+                    rotateDButton.fire();
+                    break;
+                // A, S, D: Left, rotate Y center, Right
+                case A:
+                    rotateLButton.fire();
+                    break;
+                case S:
+                    rotateMButton.fire();
+                    break;
+                case D:
+                    rotateRButton.fire();
+                    break;
+                // Z, X, C: Front, rotate Z center, Back
+                case Z:
+                    rotateFButton.fire();
+                    break;
+                case X:
+                    rotateSButton.fire();
+                    break;
+                case C:
+                    rotateBButton.fire();
+                    break;
+                // Inverses: Y, U, I, H, J, K, B, N, M
+                case Y:
+                    rotateUPrimeButton.fire();
+                    break;
+                case U:
+                    rotateEPrimeButton.fire();
+                    break;
+                case I:
+                    rotateDPrimeButton.fire();
+                    break;
+                case H:
+                    rotateLPrimeButton.fire();
+                    break;
+                case J:
+                    rotateMPrimeButton.fire();
+                    break;
+                case K:
+                    rotateRPrimeButton.fire();
+                    break;
+                case B:
+                    rotateFPrimeButton.fire();
+                    break;
+                case N:
+                    rotateSPrimeButton.fire();
+                    break;
+                case M:
+                    rotateBPrimeButton.fire();
+                    break;
+                // Reset camera: R
+                case R:
+                    resetCameraButton.fire();
+                    break;
+                // Shuffle and reset
+                case SPACE:
+                    shuffleButton.fire();
+                    break;
+                case BACK_SPACE:
+                    resetButton.fire();
+                    break;
+                // Optional: keep numpad for view rotation if desired
                 case NUMPAD8:
                     rotateX.setAngle(rotateX.getAngle() - 10);
                     break;
-                case NUMPAD2:
+                case NUMPAD5:
                     rotateX.setAngle(rotateX.getAngle() + 10);
                     break;
                 case NUMPAD4:
@@ -246,73 +316,6 @@ public class RubikController {
                 case NUMPAD9:
                     groupRotateZ(10);
                     break;
-                // Atalhos para rotação das faces
-                case U: // U
-                    rotateUButton.fire();
-                    break;
-                case E: // E
-                    rotateEButton.fire();
-                    break;
-                case F: // F
-                    rotateFButton.fire();
-                    break;
-                case S: // S
-                    rotateSButton.fire();
-                    break;
-                case B: // B
-                    rotateBButton.fire();
-                    break;
-                case D: // D
-                    rotateDButton.fire();
-                    break;
-                case L: // L
-                    rotateLButton.fire();
-                    break;
-                case M: // M
-                    rotateMButton.fire();
-                    break;
-                case R: // R
-                    rotateRButton.fire();
-                    break;
-                // Atalhos para rotação inversa (Shift + letra)
-                case Q: // U'
-                    rotateUPrimeButton.fire();
-                    break;
-                case W: // E'
-                    rotateEPrimeButton.fire();
-                    break;
-                case G: // F'
-                    rotateFPrimeButton.fire();
-                    break;
-                case A: // S'
-                    rotateSPrimeButton.fire();
-                    break;
-                case V: // B'
-                    rotateBPrimeButton.fire();
-                    break;
-                case X: // D'
-                    rotateDPrimeButton.fire();
-                    break;
-                case K: // L'
-                    rotateLPrimeButton.fire();
-                    break;
-                case N: // M'
-                    rotateMPrimeButton.fire();
-                    break;
-                case T: // R'
-                    rotateRPrimeButton.fire();
-                    break;
-                // Shuffle (embaralhar)
-                case SPACE:
-                    shuffleButton.fire();
-                    break;
-                // Reset
-                case BACK_SPACE:
-                    resetButton.fire();
-                    break;
-                case C:
-                    resetCameraButton.fire();
-                    break;
                 default:
                     break;
             }
@@ -323,26 +326,27 @@ public class RubikController {
 
     // Define ações dos botões de rotação, embaralhar e resetar
     private void setupButtonActions() {
+        // In setupButtonActions()
         rotateUButton.setOnAction(_ -> {
-            cube.rotateFace("UP", true); // was true, now false
+            cube.rotateFace("UP", false); // right/clockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
         });
         rotateUPrimeButton.setOnAction(_ -> {
-            cube.rotateFace("UP", false); // was false, now true
+            cube.rotateFace("UP", true); // left/counterclockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
         });
         rotateEButton.setOnAction(_ -> {
-            cube.rotateCenter("X", true); // was true, now false
+            cube.rotateCenter("X", false); // right/clockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
         });
         rotateEPrimeButton.setOnAction(_ -> {
-            cube.rotateCenter("X", false); // was false, now true
+            cube.rotateCenter("X", true); // left/counterclockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
@@ -359,26 +363,27 @@ public class RubikController {
             updateCube3D();
             checkSolved();
         });
+        // LEFT (A) - should be counterclockwise (true)
         rotateLButton.setOnAction(_ -> {
-            cube.rotateFace("LEFT", false); // Rotação da face direita
+            cube.rotateFace("LEFT", true); // counterclockwise: top moves up
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
         });
         rotateLPrimeButton.setOnAction(_ -> {
-            cube.rotateFace("LEFT", true); // Rotação inversa da face direita
+            cube.rotateFace("LEFT", false); // clockwise: top moves down
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
         });
         rotateMButton.setOnAction(_ -> {
-            cube.rotateCenter("M", true); // was true, now false
+            cube.rotateCenter("M", false); // right/clockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
         });
         rotateMPrimeButton.setOnAction(_ -> {
-            cube.rotateCenter("M", false); // was false, now true
+            cube.rotateCenter("M", true); // left/counterclockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
@@ -420,17 +425,16 @@ public class RubikController {
             checkSolved();
         });
         rotateBButton.setOnAction(_ -> {
-            cube.rotateFace("BACK", true); // was true, now false
+            cube.rotateFace("BACK", false); // right/clockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
         });
         rotateBPrimeButton.setOnAction(_ -> {
-            cube.rotateFace("BACK", false); // was false, now true
+            cube.rotateFace("BACK", false); // left/counterclockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
-
         });
         shuffleButton.setOnAction(_ -> {
             // Embaralha o cubo com movimentos aleatórios
