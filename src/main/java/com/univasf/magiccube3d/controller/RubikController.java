@@ -78,6 +78,7 @@ public class RubikController {
         setupMouseControls();
         setupKeyboardControls();
         cubePane.setFocusTraversable(true);
+        cubePane.requestFocus();
         setupButtonActions();
 
         // Cria o texto animado para o título 3D
