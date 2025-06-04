@@ -80,8 +80,6 @@ projeto-ccmp0151/
 
 4. Você também pode executar a classe principal `com.univasf.magiccube3d.MainApp` diretamente pela sua IDE.
 
----
-
 ## ⌨️ Atalhos de Teclado
 
 Você pode controlar o cubo usando os seguintes atalhos de teclado (lembre-se de clicar sobre o cubo para garantir o foco):
