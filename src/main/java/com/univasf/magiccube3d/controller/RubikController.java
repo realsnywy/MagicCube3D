@@ -317,36 +317,42 @@ public class RubikController {
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         rotateUPrimeButton.setOnAction(_ -> {
             cube.rotateFace("UP", true); // left/counterclockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         rotateEButton.setOnAction(_ -> {
             cube.rotateCenter("X", false); // right/clockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         rotateEPrimeButton.setOnAction(_ -> {
             cube.rotateCenter("X", true); // left/counterclockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         rotateDButton.setOnAction(_ -> {
             cube.rotateFace("DOWN", true); // was false, now true
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         rotateDPrimeButton.setOnAction(_ -> {
             cube.rotateFace("DOWN", false); // was true, now false
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         // LEFT (A) - should be counterclockwise (true)
         rotateLButton.setOnAction(_ -> {
@@ -354,72 +360,84 @@ public class RubikController {
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         rotateLPrimeButton.setOnAction(_ -> {
             cube.rotateFace("LEFT", false); // clockwise: top moves down
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         rotateMButton.setOnAction(_ -> {
             cube.rotateCenter("M", false); // right/clockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         rotateMPrimeButton.setOnAction(_ -> {
             cube.rotateCenter("M", true); // left/counterclockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         rotateRButton.setOnAction(_ -> {
             cube.rotateFace("RIGHT", false); // was true, now false
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         rotateRPrimeButton.setOnAction(_ -> {
             cube.rotateFace("RIGHT", true); // was false, now true
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         rotateFButton.setOnAction(_ -> {
             cube.rotateFace("FRONT", true); // Rotação da face frontal
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         rotateFPrimeButton.setOnAction(_ -> {
             cube.rotateFace("FRONT", false); // Rotação inversa da face frontal
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         rotateSButton.setOnAction(_ -> {
             cube.rotateCenter("S", true);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         rotateSPrimeButton.setOnAction(_ -> {
             cube.rotateCenter("S", false);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         rotateBButton.setOnAction(_ -> {
             cube.rotateFace("BACK", false); // right/clockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         rotateBPrimeButton.setOnAction(_ -> {
             cube.rotateFace("BACK", false); // left/counterclockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
+            cubePane.requestFocus();
         });
         shuffleButton.setOnAction(_ -> {
             // Embaralha o cubo com movimentos aleatórios
@@ -436,12 +454,14 @@ public class RubikController {
             }
             SoundPlayer.playSound("mix.wav");
             updateCube3D();
+            cubePane.requestFocus();
         });
         resetButton.setOnAction(_ -> {
             // Reseta o cubo para o estado inicial
             cube = new Cube();
             SoundPlayer.playSound("reset.wav");
             updateCube3D();
+            cubePane.requestFocus();
         });
 
         musicButton.setOnAction(_ -> {
@@ -458,6 +478,7 @@ public class RubikController {
                 isMusicPlaying = false;
                 musicButton.setText("Play Música");
             }
+            cubePane.requestFocus();
         });
     }
 
