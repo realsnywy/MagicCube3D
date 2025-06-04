@@ -1,6 +1,6 @@
 # MagicCube3D
 
-**MagicCube3D** é uma aplicação JavaFX para simulação interativa de um Cubo Mágico 3D. Este projeto é desenvolvido para a disciplina de Programação Orientada à Objetos (CCMP0151).
+**MagicCube3D** é uma aplicação JavaFX para simulação interativa de um Cubo Mágico 3D. Este projeto é desenvolvido para a disciplina de Programação Orientada a Objetos (CCMP0151).
 
 ## 🎯 Objetivos
 
@@ -15,6 +15,8 @@
 * Visualização 3D interativa do Cubo Mágico.
 * Manipulação básica das faces do cubo.
 * Interface gráfica intuitiva.
+* Atalhos de teclado para rotação e controle da visualização.
+* Música de fundo opcional.
 
 ## 🛠️ Tecnologias
 
@@ -30,23 +32,25 @@ projeto-ccmp0151/
 ├── src/
 │   ├── main/
 │   │   ├── java/
-│   │   │   └── com/univasf/magiccube3d/  // Pacote raiz da aplicação
-│   │   │       ├── MainApp.java          // Classe principal que inicia a aplicação
-│   │   │       ├── model/                // Classes de modelo de dados
-│   │   │       │   ├── Cube.java         // Lógica e estado do Cubo Mágico
-│   │   │       │   └── Facelet.java      // Representa uma peça colorida do cubo
-│   │   │       ├── controller/           // Classes de controle (lógica da UI)
-│   │   │       │   └── RubikController.java // Gerencia interações do usuário
-│   │   │       └── view/                 // Classes relacionadas à visualização
-│   │   │           └── CubeView.java     // Responsável pela renderização 3D do cubo
-│   │   └── resources/                    // Recursos não-código
+│   │   │   └── com/univasf/magiccube3d/
+│   │   │       ├── MainApp.java
+│   │   │       ├── model/
+│   │   │       │   ├── Cube.java
+│   │   │       │   └── Facelet.java
+│   │   │       ├── controller/
+│   │   │       │   └── RubikController.java
+│   │   │       └── view/
+│   │   │           └── CubeView.java
+│   │   └── resources/
 │   │       └── com/univasf/magiccube3d/
 │   │           ├── view/
-│   │           │   └── RubikView.fxml    // Arquivo FXML para a UI principal
-│   │           └── styles/
-│   │               └── style.css         // Folha de estilos CSS
-├── .gitignore                            // Arquivos e pastas a serem ignorados pelo Git
-└── README.md                             // Este arquivo
+│   │           │   └── RubikView.fxml
+│   │           ├── styles/
+│   │           │   └── style.css
+│   │           └── music/
+│   │               └── *.mod
+├── .gitignore
+└── README.md
 ```
 
 ## 🚀 Execução
@@ -55,24 +59,24 @@ projeto-ccmp0151/
 
 1. Clone o repositório:
 
-  ```bash
-  git clone https://github.com/realsnywy/projeto-ccmp0151.git
-  cd projeto-ccmp0151
-  ```
+   ```bash
+   git clone https://github.com/realsnywy/projeto-ccmp0151.git
+   cd projeto-ccmp0151
+   ```
 
 2. Compile o projeto usando o Maven Wrapper:
 
-  ```bash
-  ./mvnw clean install    # Para Linux/macOS
-  mvnw.cmd clean install  # Para Windows
-  ```
+   ```bash
+   ./mvnw clean install    # Para Linux/macOS
+   mvnw.cmd clean install  # Para Windows
+   ```
 
 3. Execute a aplicação:
 
-  ```bash
-  ./mvnw javafx:run       # Para Linux/macOS
-  mvnw.cmd javafx:run     # Para Windows
-  ```
+   ```bash
+   ./mvnw javafx:run       # Para Linux/macOS
+   mvnw.cmd javafx:run     # Para Windows
+   ```
 
 4. Você também pode executar a classe principal `com.univasf.magiccube3d.MainApp` diretamente pela sua IDE.
 
@@ -80,32 +84,36 @@ projeto-ccmp0151/
 
 ## ⌨️ Atalhos de Teclado
 
-Você pode controlar o cubo usando os seguintes atalhos de teclado:
+Você pode controlar o cubo usando os seguintes atalhos de teclado (lembre-se de clicar sobre o cubo para garantir o foco):
 
 ### Rotação das faces e centros
 
 | Tecla | Movimento         | Tecla (inversa) | Movimento inverso   |
 |-------|-------------------|-----------------|---------------------|
-| U     | Up (U)            | Q               | Up' (U')            |
-| E     | Eixo X (E)        | W               | Eixo X' (E')        |
-| F     | Front (F)         | G               | Front' (F')         |
-| S     | Eixo S (S)        | A               | Eixo S' (S')        |
-| B     | Back (B)          | V               | Back' (B')          |
-| D     | Down (D)          | X               | Down' (D')          |
-| L     | Left (L)          | K               | Left' (L')          |
-| M     | Eixo M (M)        | N               | Eixo M' (M')        |
-| R     | Right (R)         | T               | Right' (R')         |
+| Q     | Up (U)            | Y               | Up' (U')            |
+| W     | Eixo X (E)        | U               | Eixo X' (E')        |
+| E     | Down (D)          | I               | Down' (D')          |
+| A     | Left (L)          | H               | Left' (L')          |
+| S     | Eixo M (M)        | J               | Eixo M' (M')        |
+| D     | Right (R)         | K               | Right' (R')         |
+| Z     | Front (F)         | B               | Front' (F')         |
+| X     | Eixo S (S)        | N               | Eixo S' (S')        |
+| C     | Back (B)          | M               | Back' (B')          |
 
 ### Outros comandos
 
-| Tecla           | Função                              |
-|-----------------|-------------------------------------|
-| Espaço (Space)  | Embaralhar o cubo                   |
-| Backspace       | Resetar o cubo                      |
-| C               | Resetar a câmera                    |
-| Numpad 8 / 2    | Girar visualização (vertical)       |
-| Numpad 4 / 6    | Girar visualização (horizontal)     |
-| Numpad 7 / 9    | Girar visualização (eixo Z)         |
+| Tecla / Mouse               | Função                              |
+|-----------------------------|-------------------------------------|
+| Espaço (Space)              | Embaralhar o cubo                   |
+| Backspace                   | Resetar o cubo                      |
+| R                           | Resetar a câmera                    |
+| P                           | Tocar/parar música de fundo         |
+| Numpad 8 / 5                | Girar visualização (vertical)       |
+| Numpad 4 / 6                | Girar visualização (horizontal)     |
+| Numpad 7 / 9                | Girar visualização (eixo Z)         |
+| Clique direito + arrastar   | Rotacionar a câmera em torno do cubo|
+| Clique do meio + arrastar   | Panorâmica da câmera                |
+| Scroll                      | Zoom (aproxima/afasta)              |
 
 **Observação:** Os atalhos funcionam apenas quando o cubo está com o foco (clique sobre o cubo antes de usar o teclado).
 

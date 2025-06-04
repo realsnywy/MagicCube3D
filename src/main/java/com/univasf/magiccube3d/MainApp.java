@@ -44,6 +44,7 @@ public class MainApp extends Application {
                 new javafx.scene.image.Image(
                         getClass().getResourceAsStream("/com/univasf/magiccube3d/icons/icon.png")));
 
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

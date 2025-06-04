@@ -6,6 +6,8 @@ package com.univasf.magiccube3d.controller;
 import com.univasf.magiccube3d.model.Cube;
 import com.univasf.magiccube3d.model.FaceType;
 import com.univasf.magiccube3d.util.SoundPlayer;
+import com.univasf.magiccube3d.util.MusicPlayer;
+import com.univasf.magiccube3d.util.AudioConfig;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
@@ -58,14 +60,14 @@ public class RubikController {
     @FXML
     private Button resetCameraButton; // Adicione no seu FXML
 
+    @FXML
+    private Button musicButton;
+
     // Estado do cubo e elementos auxiliares
     private Cube cube;
     @FXML
     private final StackPane cubePane = new StackPane();
 
-    // Variáveis para controle de rotação via mouse
-    private double anchorX, anchorY;
-    private double anchorAngleX = 0, anchorAngleY = 180;
     private final Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
     private final Rotate rotateY = new Rotate(180, Rotate.Y_AXIS);
     private final Rotate rotateZ = new Rotate(0, Rotate.Z_AXIS);
@@ -81,6 +83,8 @@ public class RubikController {
     private final double CAMERA_DISTANCE_MIN = -800;
     private final double CAMERA_DISTANCE_MAX = -120;
 
+    private boolean isMusicPlaying = false;
+
     // Inicialização do controlador e interface
     @FXML
     public void initialize() {
@@ -89,7 +93,6 @@ public class RubikController {
         cubePane.getChildren().add(cube3D);
         mainPane.setCenter(cubePane);
 
-        setupMouseControls();
         setupKeyboardControls();
         cubePane.setFocusTraversable(true);
         // Solicita o foco após a interface estar pronta
@@ -100,6 +103,10 @@ public class RubikController {
         if (resetCameraButton != null) {
             resetCameraButton.setOnAction(_ -> resetCameraPosition());
         }
+
+        musicButton.setText("Play Música");
+
+        AudioConfig.setGlobalVolume(0.6); // Define o volume global para 60%
 
         // Cria o texto animado para o título 3D
         javafx.scene.text.Text text3D = new javafx.scene.text.Text("MagicCube3D");
@@ -199,31 +206,6 @@ public class RubikController {
         }
     }
 
-    private void setupMouseControls() {
-        cubePane.setOnMousePressed(event -> {
-            // Sempre solicita foco ao clicar no cubo
-            cubePane.requestFocus();
-            // Só inicia rotação se NÃO estiver pressionando Shift
-            if (!event.isShiftDown()) {
-                anchorX = event.getSceneX();
-                anchorY = event.getSceneY();
-                anchorAngleX = rotateX.getAngle();
-                anchorAngleY = rotateY.getAngle();
-            }
-        });
-
-        cubePane.setOnMouseDragged(event -> {
-            // Só rotaciona se NÃO estiver pressionando Shift
-            if (!event.isShiftDown()) {
-                rotateX.setAngle(anchorAngleX + (event.getSceneY() - anchorY));
-                rotateY.setAngle(anchorAngleY - (event.getSceneX() - anchorX));
-
-                String face = getVisibleFace(rotateX.getAngle(), rotateY.getAngle());
-                faceLabel.setText("Face atual: " + face);
-            }
-        });
-    }
-
     // Configura rotação do cubo via teclado numérico
     private void setupKeyboardControls() {
         cubePane.setOnKeyPressed(event -> {
@@ -315,6 +297,9 @@ public class RubikController {
                     break;
                 case NUMPAD9:
                     groupRotateZ(10);
+                    break;
+                case P:
+                    musicButton.fire();
                     break;
                 default:
                     break;
@@ -458,6 +443,22 @@ public class RubikController {
             SoundPlayer.playSound("reset.wav");
             updateCube3D();
         });
+
+        musicButton.setOnAction(_ -> {
+            if (!isMusicPlaying) {
+                String modFile = getRandomModFile();
+                System.out.println("Arquivo escolhido: " + modFile); // Debug
+                if (modFile != null) {
+                    MusicPlayer.playMusic(modFile);
+                    isMusicPlaying = true;
+                    musicButton.setText("Parar Música");
+                }
+            } else {
+                MusicPlayer.stopMusic();
+                isMusicPlaying = false;
+                musicButton.setText("Play Música");
+            }
+        });
     }
 
     // Rotação do grupo em torno do eixo Z
@@ -553,34 +554,39 @@ public class RubikController {
 
         // Eventos de zoom e pan
         subScene.setOnScroll(event -> {
-            if (event.isControlDown()) {
-                cameraFov = Math.max(10, Math.min(100, cameraFov - event.getDeltaY() * 0.05));
-                camera.setFieldOfView(cameraFov);
-                event.consume();
-            } else {
-                double delta = event.getDeltaY();
-                cameraDistance += delta * 0.7;
-                // Aplica limites ao zoom
-                cameraDistance = Math.max(CAMERA_DISTANCE_MIN, Math.min(CAMERA_DISTANCE_MAX, cameraDistance));
-                camera.setTranslateZ(cameraDistance);
-            }
+            double delta = event.getDeltaY();
+            cameraDistance += delta * 0.7;
+            // Aplica limites ao zoom
+            cameraDistance = Math.max(CAMERA_DISTANCE_MIN, Math.min(CAMERA_DISTANCE_MAX, cameraDistance));
+            camera.setTranslateZ(cameraDistance);
         });
 
-        // Pan com Shift + arrastar
         final double[] lastMouse = new double[2];
+        final double[] anchor = new double[4]; // [0]=X, [1]=Y, [2]=angleX, [3]=angleY
+
         subScene.setOnMousePressed(event -> {
-            if (event.isShiftDown()) {
+            if (event.getButton() == javafx.scene.input.MouseButton.SECONDARY) {
+                anchor[0] = event.getSceneX();
+                anchor[1] = event.getSceneY();
+                anchor[2] = rotateX.getAngle();
+                anchor[3] = rotateY.getAngle();
+            } else if (event.getButton() == javafx.scene.input.MouseButton.MIDDLE) {
                 lastMouse[0] = event.getSceneX();
                 lastMouse[1] = event.getSceneY();
             }
         });
+
         subScene.setOnMouseDragged(event -> {
-            if (event.isShiftDown()) {
+            if (event.isSecondaryButtonDown()) {
+                rotateX.setAngle(anchor[2] + (event.getSceneY() - anchor[1]));
+                rotateY.setAngle(anchor[3] - (event.getSceneX() - anchor[0]));
+                String face = getVisibleFace(rotateX.getAngle(), rotateY.getAngle());
+                faceLabel.setText("Face atual: " + face);
+            } else if (event.isMiddleButtonDown()) {
                 double dx = event.getSceneX() - lastMouse[0];
                 double dy = event.getSceneY() - lastMouse[1];
                 cameraPanX -= dx * 0.5;
                 cameraPanY -= dy * 0.5;
-                // Limites de panning
                 cameraPanX = Math.max(-200, Math.min(200, cameraPanX));
                 cameraPanY = Math.max(-200, Math.min(200, cameraPanY));
                 camera.setTranslateX(cameraPanX);
@@ -645,6 +651,23 @@ public class RubikController {
         rotateY.setAngle(180);
         rotateZ.setAngle(0);
         updateCube3D();
+    }
+
+    // Método utilitário para pegar um arquivo .mod aleatório da pasta music
+    private String getRandomModFile() {
+        try {
+            String musicPath = "/com/univasf/magiccube3d/music";
+            java.net.URL url = getClass().getResource(musicPath);
+            java.io.File musicDir = new java.io.File(url.toURI());
+            String[] modFiles = musicDir.list((_, name) -> name.toLowerCase().endsWith(".mod"));
+            if (modFiles != null && modFiles.length > 0) {
+                int idx = new java.util.Random().nextInt(modFiles.length);
+                return modFiles[idx];
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

@@ -68,6 +68,7 @@
             <Button fx:id="shuffleButton" text="Embaralhar"/>
             <Button fx:id="resetButton" text="Resetar"/>
             <Button fx:id="resetCameraButton" text="Resetar Câmera" />
+            <Button fx:id="musicButton" text="Play Música"/>
         </VBox>
     </right>
 

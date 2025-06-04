@@ -21,7 +21,7 @@ import java.net.URL;
  * </pre>
  * </p>
  *
- * @author SeuNome
+ * @author Anderson Vicente (@4ndersu)
  */
 public class SoundPlayer {
 
@@ -31,6 +31,7 @@ public class SoundPlayer {
             if (soundURL != null) {
                 Media media = new Media(soundURL.toString());
                 MediaPlayer player = new MediaPlayer(media);
+                player.setVolume(AudioConfig.getGlobalVolume()); // Define o volume global
                 player.play();
             } else {
                 System.err.println("Arquivo de som não encontrado: " + fileName);
