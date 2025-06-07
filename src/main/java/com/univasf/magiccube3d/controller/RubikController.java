@@ -93,6 +93,9 @@ public class RubikController {
         cubePane.getChildren().add(cube3D);
         mainPane.setCenter(cubePane);
 
+        // Inicializa os ícones
+        initializeButtonIcons();
+
         setupKeyboardControls();
         cubePane.setFocusTraversable(true);
         // Solicita o foco após a interface estar pronta
@@ -313,28 +316,28 @@ public class RubikController {
     private void setupButtonActions() {
         // In setupButtonActions()
         rotateUButton.setOnAction(_ -> {
-            cube.rotateFace("UP", false); // right/clockwise
+            cube.rotateFace("UP", true); // right/clockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
             cubePane.requestFocus();
         });
         rotateUPrimeButton.setOnAction(_ -> {
-            cube.rotateFace("UP", true); // left/counterclockwise
+            cube.rotateFace("UP", false); // left/counterclockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
             cubePane.requestFocus();
         });
         rotateEButton.setOnAction(_ -> {
-            cube.rotateCenter("X", false); // right/clockwise
+            cube.rotateCenter("X", true); // right/clockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
             cubePane.requestFocus();
         });
         rotateEPrimeButton.setOnAction(_ -> {
-            cube.rotateCenter("X", true); // left/counterclockwise
+            cube.rotateCenter("X", false); // left/counterclockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
@@ -356,28 +359,28 @@ public class RubikController {
         });
         // LEFT (A) - should be counterclockwise (true)
         rotateLButton.setOnAction(_ -> {
-            cube.rotateFace("LEFT", true); // counterclockwise: top moves up
+            cube.rotateFace("LEFT", false); // counterclockwise: top moves up
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
             cubePane.requestFocus();
         });
         rotateLPrimeButton.setOnAction(_ -> {
-            cube.rotateFace("LEFT", false); // clockwise: top moves down
+            cube.rotateFace("LEFT", true); // clockwise: top moves down
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
             cubePane.requestFocus();
         });
         rotateMButton.setOnAction(_ -> {
-            cube.rotateCenter("M", false); // right/clockwise
+            cube.rotateCenter("M", true); // right/clockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
             cubePane.requestFocus();
         });
         rotateMPrimeButton.setOnAction(_ -> {
-            cube.rotateCenter("M", true); // left/counterclockwise
+            cube.rotateCenter("M", false); // left/counterclockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
@@ -426,7 +429,7 @@ public class RubikController {
             cubePane.requestFocus();
         });
         rotateBButton.setOnAction(_ -> {
-            cube.rotateFace("BACK", false); // right/clockwise
+            cube.rotateFace("BACK", true); // right/clockwise
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
@@ -481,6 +484,50 @@ public class RubikController {
             cubePane.requestFocus();
         });
     }
+
+    // Método para inicializar ícones para todos os botões
+    private void initializeButtonIcons() {
+        // Exemplo: Adiciona ícones aos botões de rotação
+        setButtonIcon(rotateUButton, "/com/univasf/magiccube3d/icons/rotateU.png");
+        setButtonIcon(rotateUPrimeButton, "/com/univasf/magiccube3d/icons/rotateUPrime.png");
+        setButtonIcon(rotateEButton, "/com/univasf/magiccube3d/icons/rotateE.png");
+        setButtonIcon(rotateEPrimeButton, "/com/univasf/magiccube3d/icons/rotateEPrime.png");
+        setButtonIcon(rotateDButton, "/com/univasf/magiccube3d/icons/rotateD.png");
+        setButtonIcon(rotateDPrimeButton, "/com/univasf/magiccube3d/icons/rotateDPrime.png");
+        setButtonIcon(rotateLButton, "/com/univasf/magiccube3d/icons/rotateL.png");
+        setButtonIcon(rotateLPrimeButton, "/com/univasf/magiccube3d/icons/rotateLPrime.png");
+        setButtonIcon(rotateMButton, "/com/univasf/magiccube3d/icons/rotateM.png");
+        setButtonIcon(rotateMPrimeButton, "/com/univasf/magiccube3d/icons/rotateMPrime.png");
+        setButtonIcon(rotateRButton, "/com/univasf/magiccube3d/icons/rotateR.png");
+        setButtonIcon(rotateRPrimeButton, "/com/univasf/magiccube3d/icons/rotateRPrime.png");
+        setButtonIcon(rotateFButton, "/com/univasf/magiccube3d/icons/rotateF.png");
+        setButtonIcon(rotateFPrimeButton, "/com/univasf/magiccube3d/icons/rotateFPrime.png");
+        setButtonIcon(rotateSButton, "/com/univasf/magiccube3d/icons/rotateS.png");
+        setButtonIcon(rotateSPrimeButton, "/com/univasf/magiccube3d/icons/rotateSPrime.png");
+        setButtonIcon(rotateBButton, "/com/univasf/magiccube3d/icons/rotateB.png");
+        setButtonIcon(rotateBPrimeButton, "/com/univasf/magiccube3d/icons/rotateBPrime.png");
+        setButtonIcon(shuffleButton, "/com/univasf/magiccube3d/icons/shuffle.png");
+        setButtonIcon(resetButton, "/com/univasf/magiccube3d/icons/reset.png");
+        setButtonIcon(resetCameraButton, "/com/univasf/magiccube3d/icons/resetCamera.png");
+        setButtonIcon(musicButton, "/com/univasf/magiccube3d/icons/music.png");
+
+
+    }
+
+
+
+    // Define um método para adicionar uma imagem ao botão com largura e altura fixas
+    private void setButtonIcon(Button button, String iconPath) {
+        javafx.scene.image.Image image = new javafx.scene.image.Image(
+                getClass().getResourceAsStream(iconPath) // Caminho do ícone
+        );
+        javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView(image);
+        imageView.setFitWidth(50);  // Define largura do ícone (fixa)
+        imageView.setFitHeight(50); // Define altura do ícone (fixa)
+        button.setGraphic(imageView);  // Associa a imagem ao botão
+    }
+
+
 
     // Rotação do grupo em torno do eixo Z
     private void groupRotateZ(double angleDelta) {

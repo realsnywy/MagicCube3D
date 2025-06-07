@@ -30,45 +30,45 @@
         <VBox fx:id="controlsPane" spacing="15" styleClass="controls-pane">
             <Label text="Controles:" styleClass="controls-label"/>
             <HBox spacing="10">
-                <Button fx:id="rotateUButton" text="(U)"/>
-                <Button fx:id="rotateUPrimeButton" text="(U')" />
+                <Button fx:id="rotateUButton"/>
+                <Button fx:id="rotateUPrimeButton"/>
             </HBox>
             <HBox spacing="10">
-                <Button fx:id="rotateEButton" text="(E)"/>
-                <Button fx:id="rotateEPrimeButton" text="(E')" />
+                <Button fx:id="rotateEButton"/>
+                <Button fx:id="rotateEPrimeButton"/>
             </HBox>
             <HBox spacing="10">
-                <Button fx:id="rotateDButton" text="(D)"/>
-                <Button fx:id="rotateDPrimeButton" text="(D')" />
+                <Button fx:id="rotateDButton"/>
+                <Button fx:id="rotateDPrimeButton"/>
             </HBox>
             <HBox spacing="10">
-                <Button fx:id="rotateFButton" text="(F)"/>
-                <Button fx:id="rotateFPrimeButton" text="(F')" />
+                <Button fx:id="rotateFButton"/>
+                <Button fx:id="rotateFPrimeButton"/>
             </HBox>
             <HBox spacing="10">
-                <Button fx:id="rotateSButton" text="(S)"/>
-                <Button fx:id="rotateSPrimeButton" text="(S')" />
+                <Button fx:id="rotateSButton"/>
+                <Button fx:id="rotateSPrimeButton"/>
             </HBox>
             <HBox spacing="10">
-                <Button fx:id="rotateBButton" text="(B)"/>
-                <Button fx:id="rotateBPrimeButton" text="(B')" />
+                <Button fx:id="rotateBButton"/>
+                <Button fx:id="rotateBPrimeButton"/>
             </HBox>
             <HBox spacing="10">
-                <Button fx:id="rotateLButton" text="(L)"/>
-                <Button fx:id="rotateLPrimeButton" text="(L')" />
+                <Button fx:id="rotateLButton"/>
+                <Button fx:id="rotateLPrimeButton"/>
             </HBox>
             <HBox spacing="10">
-                <Button fx:id="rotateMButton" text="(M)"/>
-                <Button fx:id="rotateMPrimeButton" text="(M')" />
+                <Button fx:id="rotateMButton"/>
+                <Button fx:id="rotateMPrimeButton"/>
             </HBox>
             <HBox spacing="10">
-                <Button fx:id="rotateRButton" text="(R)"/>
-                <Button fx:id="rotateRPrimeButton" text="(R')" />
+                <Button fx:id="rotateRButton"/>
+                <Button fx:id="rotateRPrimeButton"/>
             </HBox>
-            <Button fx:id="shuffleButton" text="Embaralhar"/>
-            <Button fx:id="resetButton" text="Resetar"/>
-            <Button fx:id="resetCameraButton" text="Resetar Câmera" />
-            <Button fx:id="musicButton" text="Play Música"/>
+            <Button fx:id="shuffleButton"/>
+            <Button fx:id="resetButton"/>
+            <Button fx:id="resetCameraButton"/>
+            <Button fx:id="musicButton"/>
         </VBox>
     </right>
 

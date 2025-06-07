@@ -61,20 +61,16 @@
     -fx-effect: dropshadow(gaussian, #000, 1, 0.08, 0, 1);
 }
 
-/* Estilo dos botões */
+/* Remove a borda verde de todos os botões */
 .button {
-    -fx-background-color: linear-gradient(to bottom, #43ea7f, #388E3C 80%);
-    -fx-text-fill: #fafafa;
-    -fx-padding: 4 10;
-    -fx-font-size: 14px;
-    -fx-background-radius: 5;
-    -fx-effect: dropshadow(gaussian, #222, 1, 0.08, 0, 1);
-    -fx-cursor: hand;
-    -fx-border-color: #4CAF50;
-    -fx-border-width: 1;
-    -fx-min-width: 60;
-    -fx-transition: all 0.13s cubic-bezier(.4, 0, .2, 1);
+    -fx-background-color: transparent; /* Torna o fundo transparente */
+    -fx-border-color: transparent; /* Remove a cor da borda */
+    -fx-border-width: 0; /* Remove a espessura da borda */
+    -fx-padding: 5; /* Ajusta o preenchimento interno do botão, se necessário */
+    -fx-focus-color: transparent; /* Remove o contorno verde ao focar no botão */
+    -fx-faint-focus-color: transparent; /* Remove o leve contorno de foco */
 }
+
 
 .button:hover {
     -fx-background-color: linear-gradient(to bottom, #4CAF50, #2e7031);
