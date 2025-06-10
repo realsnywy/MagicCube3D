@@ -14,7 +14,7 @@
     <top>
         <VBox alignment="CENTER">
             <StackPane fx:id="title3DPane" minHeight="80" />
-            <Label fx:id="faceLabel" text="Face atual: ???" styleClass="face-label" />
+            <Label fx:id="faceLabel" text="Boas-vindas!" styleClass="face-label" />
         </VBox>
     </top>
 
@@ -26,21 +26,9 @@
         </StackPane>
     </center>
 
-    <right>
-        <VBox fx:id="controlsPane" spacing="15" styleClass="controls-pane">
-            <Label text="Controles:" styleClass="controls-label"/>
-            <HBox spacing="10">
-                <Button fx:id="rotateUButton"/>
-                <Button fx:id="rotateUPrimeButton"/>
-            </HBox>
-            <HBox spacing="10">
-                <Button fx:id="rotateEButton"/>
-                <Button fx:id="rotateEPrimeButton"/>
-            </HBox>
-            <HBox spacing="10">
-                <Button fx:id="rotateDButton"/>
-                <Button fx:id="rotateDPrimeButton"/>
-            </HBox>
+    <left>
+        <VBox fx:id="leftControlsPane" spacing="15" styleClass="controls-pane">
+            <Label styleClass="controls-label"/>
             <HBox spacing="10">
                 <Button fx:id="rotateFButton"/>
                 <Button fx:id="rotateFPrimeButton"/>
@@ -57,6 +45,24 @@
                 <Button fx:id="rotateLButton"/>
                 <Button fx:id="rotateLPrimeButton"/>
             </HBox>
+        </VBox>
+    </left>
+
+    <right>
+        <VBox fx:id="controlsPane" spacing="15" styleClass="controls-pane">
+            <Label styleClass="controls-label"/>
+            <HBox spacing="10">
+                <Button fx:id="rotateUButton"/>
+                <Button fx:id="rotateUPrimeButton"/>
+            </HBox>
+            <HBox spacing="10">
+                <Button fx:id="rotateEButton"/>
+                <Button fx:id="rotateEPrimeButton"/>
+            </HBox>
+            <HBox spacing="10">
+                <Button fx:id="rotateDButton"/>
+                <Button fx:id="rotateDPrimeButton"/>
+            </HBox>
             <HBox spacing="10">
                 <Button fx:id="rotateMButton"/>
                 <Button fx:id="rotateMPrimeButton"/>
@@ -65,11 +71,16 @@
                 <Button fx:id="rotateRButton"/>
                 <Button fx:id="rotateRPrimeButton"/>
             </HBox>
+        </VBox>
+    </right>
+
+    <bottom>
+        <HBox fx:id="bottomControlsPane" spacing="10" styleClass="controls-pane" alignment="CENTER">
             <Button fx:id="shuffleButton"/>
             <Button fx:id="resetButton"/>
             <Button fx:id="resetCameraButton"/>
             <Button fx:id="musicButton"/>
-        </VBox>
-    </right>
+        </HBox>
+    </bottom>
 
 </BorderPane>

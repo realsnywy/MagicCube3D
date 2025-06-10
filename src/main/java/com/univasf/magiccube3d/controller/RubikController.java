@@ -107,8 +107,6 @@ public class RubikController {
             resetCameraButton.setOnAction(_ -> resetCameraPosition());
         }
 
-        musicButton.setText("Play Música");
-
         AudioConfig.setGlobalVolume(0.6); // Define o volume global para 60%
 
         // Cria o texto animado para o título 3D
@@ -474,12 +472,10 @@ public class RubikController {
                 if (modFile != null) {
                     MusicPlayer.playMusic(modFile);
                     isMusicPlaying = true;
-                    musicButton.setText("Parar Música");
                 }
             } else {
                 MusicPlayer.stopMusic();
                 isMusicPlaying = false;
-                musicButton.setText("Play Música");
             }
             cubePane.requestFocus();
         });
@@ -511,23 +507,19 @@ public class RubikController {
         setButtonIcon(resetCameraButton, "/com/univasf/magiccube3d/icons/resetCamera.png");
         setButtonIcon(musicButton, "/com/univasf/magiccube3d/icons/music.png");
 
-
     }
 
-
-
-    // Define um método para adicionar uma imagem ao botão com largura e altura fixas
+    // Define um método para adicionar uma imagem ao botão com largura e altura
+    // fixas
     private void setButtonIcon(Button button, String iconPath) {
         javafx.scene.image.Image image = new javafx.scene.image.Image(
                 getClass().getResourceAsStream(iconPath) // Caminho do ícone
         );
         javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView(image);
-        imageView.setFitWidth(50);  // Define largura do ícone (fixa)
+        imageView.setFitWidth(50); // Define largura do ícone (fixa)
         imageView.setFitHeight(50); // Define altura do ícone (fixa)
-        button.setGraphic(imageView);  // Associa a imagem ao botão
+        button.setGraphic(imageView); // Associa a imagem ao botão
     }
-
-
 
     // Rotação do grupo em torno do eixo Z
     private void groupRotateZ(double angleDelta) {

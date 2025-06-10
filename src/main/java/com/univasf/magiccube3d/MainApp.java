@@ -31,7 +31,7 @@ public class MainApp extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("view/RubikView.fxml"));
 
         // Cria a cena principal com tamanho definido
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 1024, 768);
 
         // Aplica o arquivo de estilos CSS à cena
         scene.getStylesheets().add(getClass().getResource("styles/style.css").toExternalForm());

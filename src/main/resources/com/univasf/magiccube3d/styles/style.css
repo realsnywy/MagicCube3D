@@ -45,7 +45,7 @@
 /* Painel dos controles */
 .controls-pane {
     -fx-padding: 8;
-    -fx-background-color: #23272f;
+    -fx-background-color: transparent;
     -fx-background-radius: 8;
     -fx-effect: dropshadow(gaussian, #111, 6, 0.15, 0, 1);
     -fx-alignment: center;
@@ -63,12 +63,18 @@
 
 /* Remove a borda verde de todos os botões */
 .button {
-    -fx-background-color: transparent; /* Torna o fundo transparente */
-    -fx-border-color: transparent; /* Remove a cor da borda */
-    -fx-border-width: 0; /* Remove a espessura da borda */
-    -fx-padding: 5; /* Ajusta o preenchimento interno do botão, se necessário */
-    -fx-focus-color: transparent; /* Remove o contorno verde ao focar no botão */
-    -fx-faint-focus-color: transparent; /* Remove o leve contorno de foco */
+    -fx-background-color: transparent;
+    /* Torna o fundo transparente */
+    -fx-border-color: transparent;
+    /* Remove a cor da borda */
+    -fx-border-width: 0;
+    /* Remove a espessura da borda */
+    -fx-padding: 5;
+    /* Ajusta o preenchimento interno do botão, se necessário */
+    -fx-focus-color: transparent;
+    /* Remove o contorno verde ao focar no botão */
+    -fx-faint-focus-color: transparent;
+    /* Remove o leve contorno de foco */
 }
 
 
