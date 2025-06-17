@@ -78,6 +78,7 @@
         <HBox fx:id="bottomControlsPane" spacing="10" styleClass="controls-pane" alignment="CENTER">
             <Button fx:id="shuffleButton"/>
             <Button fx:id="resetButton"/>
+            <Button fx:id="controlsButton"/>
             <Button fx:id="resetCameraButton"/>
             <Button fx:id="musicButton"/>
         </HBox>

@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
+import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -26,6 +27,7 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -62,6 +64,9 @@ public class RubikController {
 
     @FXML
     private Button musicButton;
+
+    @FXML
+    private Button controlsButton; // Botão para abrir a aba de controles
 
     // Estado do cubo e elementos auxiliares
     private Cube cube;
@@ -182,7 +187,57 @@ public class RubikController {
         slide.play();
 
         System.out.println("RubikController inicializado.");
+
+        if (controlsButton != null) {
+            controlsButton.setOnAction(_ -> showControlsWindow());
+        }
+
     }
+
+    private void showControlsWindow() {
+        // Criar uma nova janela para exibir os controles
+        Stage controlsStage = new Stage();
+        controlsStage.setTitle("Controles");
+
+        // Adiciona o ícone à janela
+        controlsStage.getIcons().add(new javafx.scene.image.Image(
+                getClass().getResourceAsStream("/com/univasf/magiccube3d/icons/control_icon.png")
+        ));
+
+        // Layout da janela
+        VBox layout = new VBox(10);
+        layout.setPadding(new javafx.geometry.Insets(15));
+        layout.getChildren().add(new Label("Atalhos de Teclado:"));
+
+        // Lista de atalhos
+        String controlsInfo = """
+            Q: Rotacionar para cima (U)
+            W: Rotação do eixo X (E)
+            E: Rotacionar para baixo (D)
+            A: Rotacionar para a esquerda (L)
+            S: Rotação do eixo Y (M)
+            D: Rotacionar para a direita (R)
+            Z: Rotacionar frente (F)
+            X: Rotação do eixo Z (S)
+            C: Rotacionar parte traseira (B)
+            Y: Rotacionar para cima (inverso)
+            U: Rotação do eixo X (inverso)
+            I: Rotacionar para baixo (inverso)
+            SPACE: Embaralhar cubo
+            BACKSPACE: Resetar cubo
+            """;
+
+        Label controlsLabel = new Label(controlsInfo);
+        controlsLabel.setStyle("-fx-font-family: Consolas; -fx-font-size: 14px;");
+        layout.getChildren().add(controlsLabel);
+
+        // Scene e Stage
+        Scene controlsScene = new Scene(layout, 400, 400);
+        controlsStage.setScene(controlsScene);
+        controlsStage.initModality(Modality.APPLICATION_MODAL); // Janela modal
+        controlsStage.showAndWait();
+    }
+
 
     private void showCongratulationsWindow() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -506,7 +561,7 @@ public class RubikController {
         setButtonIcon(resetButton, "/com/univasf/magiccube3d/icons/reset.png");
         setButtonIcon(resetCameraButton, "/com/univasf/magiccube3d/icons/resetCamera.png");
         setButtonIcon(musicButton, "/com/univasf/magiccube3d/icons/music.png");
-
+        setButtonIcon(controlsButton, "/com/univasf/magiccube3d/icons/controls.png");
     }
 
     // Define um método para adicionar uma imagem ao botão com largura e altura
@@ -516,8 +571,8 @@ public class RubikController {
                 getClass().getResourceAsStream(iconPath) // Caminho do ícone
         );
         javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView(image);
-        imageView.setFitWidth(50); // Define largura do ícone (fixa)
-        imageView.setFitHeight(50); // Define altura do ícone (fixa)
+        imageView.setFitWidth(60); // Define largura do ícone (fixa)
+        imageView.setFitHeight(60); // Define altura do ícone (fixa)
         button.setGraphic(imageView); // Associa a imagem ao botão
     }
 
