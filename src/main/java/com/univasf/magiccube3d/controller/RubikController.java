@@ -146,7 +146,7 @@ public class RubikController {
             public void handle(long now) {
                 t += 0.035;
                 rx.setAngle(Math.sin(t * 1.1) * 25);
-                ry.setAngle(Math.sin(t * 0.7) * 65);
+                ry.setAngle(Math.sin(-t * 0.7) * 65);
                 rz.setAngle(Math.cos(t * 0.9) * 18);
 
                 // Animação de cor RGB dinâmica
