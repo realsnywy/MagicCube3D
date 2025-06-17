@@ -201,8 +201,7 @@ public class RubikController {
 
         // Adiciona o ícone à janela
         controlsStage.getIcons().add(new javafx.scene.image.Image(
-                getClass().getResourceAsStream("/com/univasf/magiccube3d/icons/control_icon.png")
-        ));
+                getClass().getResourceAsStream("/com/univasf/magiccube3d/icons/control_icon.png")));
 
         // Layout da janela
         VBox layout = new VBox(10);
@@ -211,21 +210,21 @@ public class RubikController {
 
         // Lista de atalhos
         String controlsInfo = """
-            Q: Rotacionar para cima (U)
-            W: Rotação do eixo X (E)
-            E: Rotacionar para baixo (D)
-            A: Rotacionar para a esquerda (L)
-            S: Rotação do eixo Y (M)
-            D: Rotacionar para a direita (R)
-            Z: Rotacionar frente (F)
-            X: Rotação do eixo Z (S)
-            C: Rotacionar parte traseira (B)
-            Y: Rotacionar para cima (inverso)
-            U: Rotação do eixo X (inverso)
-            I: Rotacionar para baixo (inverso)
-            SPACE: Embaralhar cubo
-            BACKSPACE: Resetar cubo
-            """;
+                Q: Rotacionar para cima (U)
+                W: Rotação do eixo X (E)
+                E: Rotacionar para baixo (D)
+                A: Rotacionar para a esquerda (L)
+                S: Rotação do eixo Y (M)
+                D: Rotacionar para a direita (R)
+                Z: Rotacionar frente (F)
+                X: Rotação do eixo Z (S)
+                C: Rotacionar parte traseira (B)
+                Y: Rotacionar para cima (inverso)
+                U: Rotação do eixo X (inverso)
+                I: Rotacionar para baixo (inverso)
+                SPACE: Embaralhar cubo
+                BACKSPACE: Resetar cubo
+                """;
 
         Label controlsLabel = new Label(controlsInfo);
         controlsLabel.setStyle("-fx-font-family: Consolas; -fx-font-size: 14px;");
@@ -237,7 +236,6 @@ public class RubikController {
         controlsStage.initModality(Modality.APPLICATION_MODAL); // Janela modal
         controlsStage.showAndWait();
     }
-
 
     private void showCongratulationsWindow() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
