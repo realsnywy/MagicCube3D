@@ -140,9 +140,9 @@ public class Cube {
         Facelet[] leftCol = getColumnCopy(left, 1);
 
         if (clockwise) {
-            setRow(up, 1, reverse(leftCol));
+            setRow(up, 1, leftCol);
             setColumn(right, 1, reverse(upRow));
-            setRow(down, 1, reverse(rightCol));
+            setRow(down, 1, rightCol);
             setColumn(left, 1, reverse(downRow));
         } else {
             setRow(up, 1, reverse(rightCol));
