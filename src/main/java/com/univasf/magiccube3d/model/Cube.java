@@ -141,14 +141,14 @@ public class Cube {
 
         if (clockwise) {
             setRow(up, 1, reverse(leftCol));
-            setColumn(right, 1, upRow);
+            setColumn(right, 1, reverse(upRow));
             setRow(down, 1, reverse(rightCol));
-            setColumn(left, 1, downRow);
+            setColumn(left, 1, reverse(downRow));
         } else {
-            setRow(up, 1, rightCol);
-            setColumn(left, 1, reverse(upRow));
-            setRow(down, 1, leftCol);
-            setColumn(right, 1, reverse(downRow));
+            setRow(up, 1, reverse(rightCol));
+            setColumn(left, 1, upRow);
+            setRow(down, 1, reverse(leftCol));
+            setColumn(right, 1, downRow);
         }
     }
 
