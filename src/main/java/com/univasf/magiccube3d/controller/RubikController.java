@@ -193,6 +193,7 @@ public class RubikController {
 
         if (controlsButton != null) {
             controlsButton.setOnAction(_ -> showControlsWindow());
+
         }
 
     }
@@ -238,6 +239,7 @@ public class RubikController {
         controlsStage.setScene(controlsScene);
         controlsStage.initModality(Modality.APPLICATION_MODAL); // Janela modal
         controlsStage.showAndWait();
+        cubePane.requestFocus();
     }
 
     private void showCongratulationsWindow() {
