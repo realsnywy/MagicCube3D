@@ -30,6 +30,8 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.animation.AnimationTimer;
+
 
 public class RubikController {
 
@@ -73,8 +75,19 @@ public class RubikController {
 
     // Estado do cubo e elementos auxiliares
     private Cube cube;
+
     @FXML
     private final StackPane cubePane = new StackPane();
+
+    @FXML
+    private Button startTimerButton;
+
+    @FXML
+    private Label timerLabel;
+
+    private AnimationTimer timer;
+    private long startTime;
+    private boolean timerRunning;
 
     private final Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
     private final Rotate rotateY = new Rotate(180, Rotate.Y_AXIS);
@@ -195,7 +208,58 @@ public class RubikController {
             controlsButton.setOnAction(_ -> showControlsWindow());
 
         }
+        initTimer();
+    }
 
+    private void initTimer() {
+        timerRunning = false;
+
+        // Configura o cronômetro
+        timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                // Calcula o tempo decorrido em segundos
+                long elapsedMillis = (System.currentTimeMillis() - startTime);
+                int minutes = (int) (elapsedMillis / 1000) / 60;
+                int seconds = (int) (elapsedMillis / 1000) % 60;
+                timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
+            }
+        };
+
+        // Define ação no botão
+        startTimerButton.setOnAction(event -> {
+            if (timerRunning) {
+                stopTimer(false);
+            } else {
+                resetTimer();
+                startTimer();
+                startTimerButton.setText("Parar e Salvar Tempo");
+            }
+        });
+    }
+
+    private void startTimer() {
+        startTime = System.currentTimeMillis();
+        timer.start();
+        timerRunning = true;
+    }
+
+    private void stopTimer(boolean displayMessage) {
+        timer.stop();
+        timerRunning = false;
+        startTimerButton.setText("Reiniciar Cronômetro");
+
+        if (displayMessage) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Parabéns");
+            alert.setHeaderText("Você completou o cubo mágico!");
+            alert.setContentText("Tempo final: " + timerLabel.getText());
+            alert.showAndWait();
+            resetTimer();
+        }
+    }
+    private void resetTimer() {
+        timerLabel.setText("00:00");
     }
 
     private void showControlsWindow() {
@@ -260,7 +324,7 @@ public class RubikController {
     private void checkSolved() {
         if (cube.isSolved()) {
             SoundPlayer.playSound("solved.wav");
-            showCongratulationsWindow();
+            stopTimer(true);
             cube = new Cube();
         }
     }

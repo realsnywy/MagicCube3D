@@ -15,6 +15,7 @@
         <VBox alignment="CENTER">
             <StackPane fx:id="title3DPane" minHeight="80" />
             <Label fx:id="faceLabel" text="Boas-vindas!" styleClass="face-label" />
+            <Label fx:id="timerLabel" text="00:00" styleClass="timer-label" />
         </VBox>
     </top>
 
@@ -82,6 +83,7 @@
             <Button fx:id="resetCameraButton"/>
             <Button fx:id="tutorialButton"/>
             <Button fx:id="musicButton"/>
+            <Button fx:id="startTimerButton" text="Iniciar Cronômetro" />
         </HBox>
     </bottom>
 
