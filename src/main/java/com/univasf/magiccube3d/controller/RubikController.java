@@ -60,7 +60,10 @@ public class RubikController {
     private StackPane title3DPane;
 
     @FXML
-    private Button resetCameraButton; // Adicione no seu FXML
+    private Button resetCameraButton;
+
+    @FXML
+    private Button tutorialButton;
 
     @FXML
     private Button musicButton;
@@ -517,7 +520,15 @@ public class RubikController {
             updateCube3D();
             cubePane.requestFocus();
         });
-
+        tutorialButton.setOnAction(_ -> {
+            try {
+                java.awt.Desktop.getDesktop().browse(new java.net.URI(
+                        "https://youtube.com/playlist?list=PLYjrJH3e_wDO9Myj0dpQAr5TvfhGzrSCb"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            cubePane.requestFocus();
+        });
         musicButton.setOnAction(_ -> {
             if (!isMusicPlaying) {
                 String modFile = getRandomModFile();
@@ -559,6 +570,8 @@ public class RubikController {
         setButtonIcon(resetButton, "/com/univasf/magiccube3d/icons/reset.png");
         setButtonIcon(resetCameraButton, "/com/univasf/magiccube3d/icons/resetCamera.png");
         setButtonIcon(musicButton, "/com/univasf/magiccube3d/icons/music.png");
+        setButtonIcon(tutorialButton, "/com/univasf/magiccube3d/icons/tutorial.png");
+        setButtonIcon(tutorialButton, "/com/univasf/magiccube3d/icons/tutorial.png");
         setButtonIcon(controlsButton, "/com/univasf/magiccube3d/icons/controls.png");
     }
 
