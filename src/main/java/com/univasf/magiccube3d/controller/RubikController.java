@@ -233,7 +233,7 @@ public class RubikController {
             } else {
                 resetTimer();
                 startTimer();
-                startTimerButton.setText("Parar e Salvar Tempo");
+                setButtonIcon(startTimerButton, "/com/univasf/magiccube3d/icons/stop_timer.png");
             }
         });
     }
@@ -247,7 +247,8 @@ public class RubikController {
     private void stopTimer(boolean displayMessage) {
         timer.stop();
         timerRunning = false;
-        startTimerButton.setText("Reiniciar Cronômetro");
+        setButtonIcon(startTimerButton, "/com/univasf/magiccube3d/icons/restart_timer.png");
+
 
         if (displayMessage) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -260,6 +261,7 @@ public class RubikController {
     }
     private void resetTimer() {
         timerLabel.setText("00:00");
+        setButtonIcon(startTimerButton, "/com/univasf/magiccube3d/icons/start_timer.png");
     }
 
     private void showControlsWindow() {
@@ -639,6 +641,8 @@ public class RubikController {
         setButtonIcon(tutorialButton, "/com/univasf/magiccube3d/icons/tutorial.png");
         setButtonIcon(tutorialButton, "/com/univasf/magiccube3d/icons/tutorial.png");
         setButtonIcon(controlsButton, "/com/univasf/magiccube3d/icons/controls.png");
+        setButtonIcon(startTimerButton, "/com/univasf/magiccube3d/icons/start_timer.png");
+
     }
 
     // Define um método para adicionar uma imagem ao botão com largura e altura

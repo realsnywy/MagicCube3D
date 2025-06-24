@@ -83,7 +83,7 @@
             <Button fx:id="resetCameraButton"/>
             <Button fx:id="tutorialButton"/>
             <Button fx:id="musicButton"/>
-            <Button fx:id="startTimerButton" text="Iniciar Cronômetro" />
+            <Button fx:id="startTimerButton"/>
         </HBox>
     </bottom>
 
