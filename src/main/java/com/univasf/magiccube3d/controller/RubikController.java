@@ -36,64 +36,81 @@ import javafx.animation.AnimationTimer;
 public class RubikController {
 
     // Elementos da interface definidos no FXML
+
+    // Painel principal da interface
     @FXML
     private BorderPane mainPane;
 
+    // Botões de rotação horária do cubo
     @FXML
     private Button rotateEButton, rotateMButton, rotateFButton, rotateSButton, rotateBButton, rotateUButton,
             rotateDButton,
             rotateLButton, rotateRButton;
 
+    // Botões de rotação anti-horária do cubo
     @FXML
     private Button rotateEPrimeButton, rotateMPrimeButton, rotateFPrimeButton, rotateSPrimeButton, rotateBPrimeButton,
             rotateUPrimeButton,
             rotateDPrimeButton, rotateLPrimeButton, rotateRPrimeButton;
 
+    // Botões de embaralhar e resetar o cubo
     @FXML
     private Button shuffleButton, resetButton;
 
+    // Painel lateral com os controles do usuário
     @FXML
     private VBox controlsPane;
 
+    // Rótulo que mostra a face atual selecionada
     @FXML
     private Label faceLabel;
 
+    // Área com o título em 3D
     @FXML
     private StackPane title3DPane;
 
+    // Botão para redefinir a visualização da câmera para o estado inicial
     @FXML
     private Button resetCameraButton;
 
+    // Botão para abrir o tutorial de resolução do cubo
     @FXML
     private Button tutorialButton;
 
+    // Botão para tocar/pausar música de fundo
     @FXML
     private Button musicButton;
 
+    // Botão para mostrar/esconder os controles na interface
     @FXML
-    private Button controlsButton; // Botão para abrir a aba de controles
+    private Button controlsButton;
+
+    // Painel central onde o cubo 3D será renderizado
+    @FXML
+    private final StackPane cubePane = new StackPane();
+
+    // Botão para iniciar/parar o cronômetro do cubo
+    @FXML
+    private Button startTimerButton;
+
+    // Rótulo para exibir o tempo decorrido
+    @FXML
+    private Label timerLabel;
+
 
     // Estado do cubo e elementos auxiliares
     private Cube cube;
 
-    @FXML
-    private final StackPane cubePane = new StackPane();
+    private AnimationTimer timer; // Timer do JavaFX para atualizar o tempo em tempo real
+    private long startTime; // Tempo em que o cronômetro foi iniciado
+    private boolean timerRunning; // Boolean que indica se o cronômetro está em execução
 
-    @FXML
-    private Button startTimerButton;
-
-    @FXML
-    private Label timerLabel;
-
-    private AnimationTimer timer;
-    private long startTime;
-    private boolean timerRunning;
-
+    // Transforms para manipulação 3D do cubo (rotação em X, Y e Z)
     private final Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
     private final Rotate rotateY = new Rotate(180, Rotate.Y_AXIS);
     private final Rotate rotateZ = new Rotate(0, Rotate.Z_AXIS);
 
-    // Adicione estas variáveis de câmera:
+    // Variáveis de câmera: define a câmera 3D, a distância em relação ao cubo, seu campo de visão e deslocamento horizontal e vertical
     private PerspectiveCamera camera;
     private double cameraDistance = -350;
     private double cameraFov = 45;
@@ -104,21 +121,23 @@ public class RubikController {
     private final double CAMERA_DISTANCE_MIN = -800;
     private final double CAMERA_DISTANCE_MAX = -120;
 
+    // Indica se a música de fundo está sendo reproduzida (true) ou pausada (false)
     private boolean isMusicPlaying = false;
 
     // Inicialização do controlador e interface
     @FXML
     public void initialize() {
+        // Cria uma nova instância lógica do cubo mágico, a cena 3D onde o cubo será renderizado, adiciona a cena no painel principal e define o painel central do layout como o local onde o cubo será exibido
         cube = new Cube();
         SubScene cube3D = createCube3D(cube);
         cubePane.getChildren().add(cube3D);
         mainPane.setCenter(cubePane);
 
-        // Inicializa os ícones
+        // Inicializa os ícones, configura os controles de teclado para manipular o cubo e permite que o painel do cubo receba o foco do teclado
         initializeButtonIcons();
-
         setupKeyboardControls();
         cubePane.setFocusTraversable(true);
+
         // Solicita o foco após a interface estar pronta
         javafx.application.Platform.runLater(() -> cubePane.requestFocus());
         setupButtonActions();
@@ -205,14 +224,278 @@ public class RubikController {
         System.out.println("RubikController inicializado.");
 
         if (controlsButton != null) {
+            // Define a ação do botão "Controles" para abrir a janela com instruções de uso
             controlsButton.setOnAction(_ -> showControlsWindow());
-
         }
-        initTimer();
+        initTimer(); // Inicializa o cronômetro
+    }
+
+    // Método que redefine a posição inicial da câmera
+    @FXML
+    private void resetCameraPosition() {
+        cameraDistance = -350;
+        cameraFov = 45;
+        cameraPanX = 0;
+        cameraPanY = 0;
+        rotateX.setAngle(0);
+        rotateY.setAngle(180);
+        rotateZ.setAngle(0);
+        updateCube3D(); // Atualiza a visualização 3D com os novos parâmetros da câmera
+    }
+
+    // Cria um retângulo colorido para representar uma face do cubo
+    private Rectangle createFaceRect(
+            // Tamanho do lado do quadrado (facelet), cor da face, posições em x, y e z e também seus angulos e eixos de rotação
+            double size,
+            javafx.scene.paint.Paint color,
+            double tx, double ty, double tz,
+            double angle, Point3D axis) {
+        // Cria um quadrado com tamanho e cor definidos
+        Rectangle face = new Rectangle(size, size);
+        face.setFill(color);
+
+        // Centraliza o retângulo no plano X e Y, e posiciona no eixo Z
+        face.setTranslateX(tx - size / 2);
+        face.setTranslateY(ty - size / 2);
+        face.setTranslateZ(tz);
+
+        // Se um eixo de rotação for definido, aplica a rotação correspondente
+        if (axis != null) {
+            face.setRotationAxis(axis);
+            face.setRotate(angle);
+        }
+        return face; // Retorna o retângulo configurado
+    }
+
+    // Retorna o nome da face visível do cubo com base nos ângulos de rotação em X e Y
+    private String getVisibleFace(double angleX, double angleY) {
+        // Normaliza os ângulos para ficarem no intervalo [0, 360)
+        double ax = (angleX % 360 + 360) % 360;
+        double ay = (angleY % 360 + 360) % 360;
+
+        // Verifica se a câmera está "de cabeça para baixo", ou seja, visualizando o cubo por trás
+        boolean flipped = ax > 90 && ax < 270;
+
+        // Define qual face está visível com base nos ângulos de rotação:
+        if (ax >= 45 && ax <= 135) {
+            return "UP"; // Visão de cima do cubo
+        } else if (ax >= 225 && ax <= 315) {
+            return "DOWN"; // Visão de baixo do cubo
+        } else if (ay >= 45 && ay <= 135) {
+            return "LEFT"; // Visão do lado esquerdo
+        } else if (ay >= 225 && ay <= 315) {
+            return "RIGHT"; // Visão do lado direito
+        } else if ((ay <= 45 || ay >= 315)) {
+            return flipped ? "FRONT" : "BACK"; // Inverte entre frente e trás se a câmera estiver "por trás"
+        } else { // (135 <= ay <= 225)
+            return flipped ? "BACK" : "FRONT"; // Inverte também neste intervalo se estiver "virado"
+        }
+    }
+
+    // Cria a sub-cena 3D do cubo mágico
+    private SubScene createCube3D(Cube cube) {
+
+        // Define o grupo que conterá todos os elementos 3D do cubo, tamanho da peça, espaçamento e distância das faces em relação a peça
+        Group group = new Group();
+        double size = 30, gap = 2, offset = (size + gap);
+        double faceOffset = 0.5;
+
+        // Loop para montar o cubo 3x3x3
+        for (int x = 0; x < 3; x++) {
+            for (int y = 0; y < 3; y++) {
+                for (int z = 0; z < 3; z++) {
+                    // Só desenha peças da borda (não o centro invisível)
+                    if (x == 0 || x == 2 || y == 0 || y == 2 || z == 0 || z == 2) {
+                        Box box = new Box(size, size, size); // Cria uma peça do cubo
+
+                        // Calcula a posição central da peça
+                        double boxCenterX = (x - 1) * offset;
+                        double boxCenterY = (y - 1) * offset;
+                        double boxCenterZ = (z - 1) * offset;
+
+                        box.setTranslateX(boxCenterX);
+                        box.setTranslateY(boxCenterY);
+                        box.setTranslateZ(boxCenterZ);
+                        // Cor base (cinza) da peça
+                        box.setMaterial(new PhongMaterial(javafx.scene.paint.Color.web("7D7D7D")));
+
+                        // Adiciona as faces coloridas de acordo com a posição
+                        if (z == 2) // Face FRONTAL(vermelho)
+                            group.getChildren().add(createFaceRect(
+                                    size,
+                                    cube.getFace(FaceType.FRONT).getFacelet(y, x).getColor(),
+                                    boxCenterX, boxCenterY, boxCenterZ + size / 2 + faceOffset,
+                                    0, null));
+                        if (z == 0) // Face TRASEIRA(laranja)
+                            group.getChildren().add(createFaceRect(
+                                    size,
+                                    cube.getFace(FaceType.BACK).getFacelet(y, 2 - x).getColor(),
+                                    boxCenterX, boxCenterY, boxCenterZ - size / 2 - faceOffset,
+                                    180, new Point3D(0, 1, 0)));
+                        if (y == 0) // Face SUPERIOR(amarelo)
+                            group.getChildren().add(createFaceRect(
+                                    size,
+                                    cube.getFace(FaceType.UP).getFacelet(z, x).getColor(),
+                                    boxCenterX, boxCenterY - size / 2 - faceOffset, boxCenterZ,
+                                    -90, new Point3D(1, 0, 0)));
+                        if (y == 2) // Face INFERIOR(branco)
+                            group.getChildren().add(createFaceRect(
+                                    size,
+                                    cube.getFace(FaceType.DOWN).getFacelet(2 - z, x).getColor(),
+                                    boxCenterX, boxCenterY + size / 2 + faceOffset, boxCenterZ,
+                                    90, new Point3D(1, 0, 0)));
+                        if (x == 2) // Face ESQUERDA(azul)
+                            group.getChildren().add(createFaceRect(
+                                    size,
+                                    cube.getFace(FaceType.LEFT).getFacelet(y, z).getColor(),
+                                    boxCenterX + size / 2 + faceOffset, boxCenterY, boxCenterZ,
+                                    90, new Point3D(0, 1, 0)));
+                        if (x == 0) // Face DIREITA(verde)
+                            group.getChildren().add(createFaceRect(
+                                    size,
+                                    cube.getFace(FaceType.RIGHT).getFacelet(y, 2 - z).getColor(),
+                                    boxCenterX - size / 2 - faceOffset, boxCenterY, boxCenterZ,
+                                    -90, new Point3D(0, 1, 0)));
+                        // Adiciona a peça ao grupo
+                        group.getChildren().add(box);
+                    }
+                }
+            }
+        }
+
+        // Aplica rotações globais do cubo
+        group.getTransforms().addAll(rotateX, rotateY, rotateZ);
+
+        // Cria a sub-cena 3D com câmera e antialiasing
+        SubScene subScene = new SubScene(group, 500, 500, true, javafx.scene.SceneAntialiasing.BALANCED);
+
+        // Inicializa e configura a câmera
+        camera = new PerspectiveCamera(true);
+        camera.setFieldOfView(cameraFov);
+        camera.setTranslateZ(cameraDistance);
+        camera.setTranslateX(cameraPanX);
+        camera.setTranslateY(cameraPanY);
+        camera.setNearClip(0.1);
+        camera.setFarClip(1000.0);
+        subScene.setCamera(camera);
+
+        // Eventos de zoom e pan
+        subScene.setOnScroll(event -> {
+            double delta = event.getDeltaY();
+            cameraDistance += delta * 0.7;
+            // Aplica limites ao zoom
+            cameraDistance = Math.max(CAMERA_DISTANCE_MIN, Math.min(CAMERA_DISTANCE_MAX, cameraDistance));
+            camera.setTranslateZ(cameraDistance);
+        });
+
+        // Variáveis auxiliares para rotação e pan
+        final double[] lastMouse = new double[2];
+        final double[] anchor = new double[4]; // [0]=X, [1]=Y, [2]=angleX, [3]=angleY
+
+        // Quando o botão do mouse é pressionado
+        subScene.setOnMousePressed(event -> {
+            if (event.getButton() == javafx.scene.input.MouseButton.SECONDARY) {
+                // Inicia rotação (botão direito)
+                anchor[0] = event.getSceneX();
+                anchor[1] = event.getSceneY();
+                anchor[2] = rotateX.getAngle();
+                anchor[3] = rotateY.getAngle();
+            } else if (event.getButton() == javafx.scene.input.MouseButton.MIDDLE) {
+                // Inicia pan (botão do meio)
+                lastMouse[0] = event.getSceneX();
+                lastMouse[1] = event.getSceneY();
+            }
+        });
+
+        // Enquanto o mouse é arrastado
+        subScene.setOnMouseDragged(event -> {
+            if (event.isSecondaryButtonDown()) {
+                // Atualiza a rotação com base na movimentação do mouse
+                rotateX.setAngle(anchor[2] + (event.getSceneY() - anchor[1]));
+                rotateY.setAngle(anchor[3] - (event.getSceneX() - anchor[0]));
+                String face = getVisibleFace(rotateX.getAngle(), rotateY.getAngle());
+                // Atualiza o rótulo da face visível
+                faceLabel.setText("Face atual: " + face);
+            } else if (event.isMiddleButtonDown()) {
+                // Atualiza o pan com base no movimento do mouse
+                double dx = event.getSceneX() - lastMouse[0];
+                double dy = event.getSceneY() - lastMouse[1];
+                cameraPanX -= dx * 0.5;
+                cameraPanY -= dy * 0.5;
+
+                // Aplica limites ao pan
+                cameraPanX = Math.max(-200, Math.min(200, cameraPanX));
+                cameraPanY = Math.max(-200, Math.min(200, cameraPanY));
+
+                // Atualiza a posição da câmera
+                camera.setTranslateX(cameraPanX);
+                camera.setTranslateY(cameraPanY);
+                lastMouse[0] = event.getSceneX();
+                lastMouse[1] = event.getSceneY();
+            }
+        });
+
+        return subScene; // Retorna a sub-cena pronta para ser exibida na interface
+    }
+
+
+    // Atualiza a visualização 3D do cubo
+    private void updateCube3D() {
+        cubePane.getChildren().clear();
+        cubePane.getChildren().add(createCube3D(cube));
+    }
+
+    // Rotação do grupo em torno do eixo Z
+    private void groupRotateZ(double angleDelta) {
+        rotateZ.setAngle(rotateZ.getAngle() + angleDelta);
+        updateCube3D();
+    }
+
+    // Método para inicializar ícones para todos os botões
+    private void initializeButtonIcons() {
+        // Exemplo: Adiciona ícones aos botões de rotação
+        setButtonIcon(rotateUButton, "/com/univasf/magiccube3d/icons/rotateU.png");
+        setButtonIcon(rotateUPrimeButton, "/com/univasf/magiccube3d/icons/rotateUPrime.png");
+        setButtonIcon(rotateEButton, "/com/univasf/magiccube3d/icons/rotateE.png");
+        setButtonIcon(rotateEPrimeButton, "/com/univasf/magiccube3d/icons/rotateEPrime.png");
+        setButtonIcon(rotateDButton, "/com/univasf/magiccube3d/icons/rotateD.png");
+        setButtonIcon(rotateDPrimeButton, "/com/univasf/magiccube3d/icons/rotateDPrime.png");
+        setButtonIcon(rotateLButton, "/com/univasf/magiccube3d/icons/rotateL.png");
+        setButtonIcon(rotateLPrimeButton, "/com/univasf/magiccube3d/icons/rotateLPrime.png");
+        setButtonIcon(rotateMButton, "/com/univasf/magiccube3d/icons/rotateM.png");
+        setButtonIcon(rotateMPrimeButton, "/com/univasf/magiccube3d/icons/rotateMPrime.png");
+        setButtonIcon(rotateRButton, "/com/univasf/magiccube3d/icons/rotateR.png");
+        setButtonIcon(rotateRPrimeButton, "/com/univasf/magiccube3d/icons/rotateRPrime.png");
+        setButtonIcon(rotateFButton, "/com/univasf/magiccube3d/icons/rotateF.png");
+        setButtonIcon(rotateFPrimeButton, "/com/univasf/magiccube3d/icons/rotateFPrime.png");
+        setButtonIcon(rotateSButton, "/com/univasf/magiccube3d/icons/rotateS.png");
+        setButtonIcon(rotateSPrimeButton, "/com/univasf/magiccube3d/icons/rotateSPrime.png");
+        setButtonIcon(rotateBButton, "/com/univasf/magiccube3d/icons/rotateB.png");
+        setButtonIcon(rotateBPrimeButton, "/com/univasf/magiccube3d/icons/rotateBPrime.png");
+        setButtonIcon(shuffleButton, "/com/univasf/magiccube3d/icons/shuffle.png");
+        setButtonIcon(resetButton, "/com/univasf/magiccube3d/icons/reset.png");
+        setButtonIcon(resetCameraButton, "/com/univasf/magiccube3d/icons/resetCamera.png");
+        setButtonIcon(musicButton, "/com/univasf/magiccube3d/icons/music.png");
+        setButtonIcon(tutorialButton, "/com/univasf/magiccube3d/icons/tutorial.png");
+        setButtonIcon(tutorialButton, "/com/univasf/magiccube3d/icons/tutorial.png");
+        setButtonIcon(controlsButton, "/com/univasf/magiccube3d/icons/controls.png");
+        setButtonIcon(startTimerButton, "/com/univasf/magiccube3d/icons/start_timer.png");
+
+    }
+
+    // Método para adicionar uma imagem ao botão com largura e altura fixas
+    private void setButtonIcon(Button button, String iconPath) {
+        javafx.scene.image.Image image = new javafx.scene.image.Image(
+                getClass().getResourceAsStream(iconPath) // Caminho do ícone
+        );
+        javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView(image);
+        imageView.setFitWidth(60); // Define largura do ícone
+        imageView.setFitHeight(60); // Define altura do ícone
+        button.setGraphic(imageView); // Associa a imagem ao botão
     }
 
     private void initTimer() {
-        timerRunning = false;
+        timerRunning = false; //Estado inicial desligado
 
         // Configura o cronômetro
         timer = new AnimationTimer() {
@@ -229,41 +512,52 @@ public class RubikController {
         // Define ação no botão
         startTimerButton.setOnAction(event -> {
             if (timerRunning) {
-                stopTimer(false);
+                stopTimer(false); // Para o cronômetro se já estiver rodando
             } else {
-                resetTimer();
-                startTimer();
+                resetTimer(); // Reinicia valores
+                startTimer(); // Inicia o cronômetro
+                // Altera o ícone do botão para indicar "parar"
                 setButtonIcon(startTimerButton, "/com/univasf/magiccube3d/icons/stop_timer.png");
             }
         });
     }
 
+    // Método para iniciar o cronômetro
     private void startTimer() {
-        startTime = System.currentTimeMillis();
-        timer.start();
-        timerRunning = true;
+        startTime = System.currentTimeMillis(); // Registra o momento exato em que o cronômetro começou
+        timer.start();  // Atualiza o tempo em tela a cada frame através do AnimationTimer
+        timerRunning = true; // Indica que o cronômetro está em execução
     }
 
+    // Método para parar o cronômetro
     private void stopTimer(boolean displayMessage) {
-        timer.stop();
-        timerRunning = false;
+
+        timer.stop(); // Interrompe a animação de contagem de tempo
+        timerRunning = false; // Para o cronômetro
+        // Altera o ícone do botão para indicar "reiniciar"
         setButtonIcon(startTimerButton, "/com/univasf/magiccube3d/icons/restart_timer.png");
 
-
+        // Verifica se é para exibir mensagem ao parar (quando o cubo for resolvido ou não)
         if (displayMessage) {
+            // Cria um alerta informativo, sinalizando que o cubo foi resolvido, exibe a mensagem de parabéns e o tempo decorrido caso o timer tenha sido ativado
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Parabéns");
             alert.setHeaderText("Você completou o cubo mágico!");
             alert.setContentText("Tempo final: " + timerLabel.getText());
             alert.showAndWait();
-            resetTimer();
+
+            resetTimer(); // Reinicia o cronômetro
         }
     }
+
+    // Método para reiniciar o cronômetro
     private void resetTimer() {
-        timerLabel.setText("00:00");
+        timerLabel.setText("00:00"); // Redefine o rótulo do cronômetro para o tempo inicial
+        // Altera o ícone do botão para indicar "iniciar"
         setButtonIcon(startTimerButton, "/com/univasf/magiccube3d/icons/start_timer.png");
     }
 
+    // Método para mostrar os controles de manipulação do cubo no teclado
     private void showControlsWindow() {
         // Criar uma nova janela para exibir os controles
         Stage controlsStage = new Stage();
@@ -296,6 +590,7 @@ public class RubikController {
                 BACKSPACE: Resetar cubo
                 """;
 
+        // Label que exibe a lista de atalhos
         Label controlsLabel = new Label(controlsInfo);
         controlsLabel.setStyle("-fx-font-family: Consolas; -fx-font-size: 14px;");
         layout.getChildren().add(controlsLabel);
@@ -305,10 +600,20 @@ public class RubikController {
         controlsStage.setScene(controlsScene);
         controlsStage.initModality(Modality.APPLICATION_MODAL); // Janela modal
         controlsStage.showAndWait();
-        cubePane.requestFocus();
+        cubePane.requestFocus(); // Retorna o foco para o painel principal do cubo após fechar a janela
     }
 
+    private void checkSolved() {
+        if (cube.isSolved()) {
+            SoundPlayer.playSound("solved.wav");
+            stopTimer(true);
+            cube = new Cube();
+        }
+    }
+
+    // Método de mostrar uma janela de parabéns quando o cubo for resolvido
     private void showCongratulationsWindow() {
+        // Alerta informativo para parabenizar o usuário
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Parabéns!");
         alert.setHeaderText(null);
@@ -323,13 +628,6 @@ public class RubikController {
         alert.showAndWait();
     }
 
-    private void checkSolved() {
-        if (cube.isSolved()) {
-            SoundPlayer.playSound("solved.wav");
-            stopTimer(true);
-            cube = new Cube();
-        }
-    }
 
     // Configura rotação do cubo via teclado numérico
     private void setupKeyboardControls() {
@@ -365,7 +663,7 @@ public class RubikController {
                 case C:
                     rotateBButton.fire();
                     break;
-                // Inverses: Y, U, I, H, J, K, B, N, M
+                // Inversos: Y, U, I, H, J, K, B, N, M
                 case Y:
                     rotateUPrimeButton.fire();
                     break;
@@ -393,18 +691,18 @@ public class RubikController {
                 case M:
                     rotateBPrimeButton.fire();
                     break;
-                // Reset camera: R
+                // Resetar camera: R
                 case R:
                     resetCameraButton.fire();
                     break;
-                // Shuffle and reset
+                // Embaralhar e resetar cubo
                 case SPACE:
                     shuffleButton.fire();
                     break;
                 case BACK_SPACE:
                     resetButton.fire();
                     break;
-                // Optional: keep numpad for view rotation if desired
+                // MOver a camera com o numpad
                 case NUMPAD8:
                     rotateX.setAngle(rotateX.getAngle() - 10);
                     break;
@@ -423,41 +721,50 @@ public class RubikController {
                 case NUMPAD9:
                     groupRotateZ(10);
                     break;
+                    // Tocar musica: P
                 case P:
                     musicButton.fire();
                     break;
                 default:
                     break;
             }
+            // Mostra a face atual que está virada para a câmera
             String face = getVisibleFace(rotateX.getAngle(), rotateY.getAngle());
             faceLabel.setText("Face atual: " + face);
         });
     }
 
     // Define ações dos botões de rotação, embaralhar e resetar
+    // Define a ação do botão que rotaciona a face, seu respectivo sentido(Horário ou anti-horário)
+    // Toda vez que algum botão de movimento, embaralhar e resetar é clicado, toca um som do formato .wav através de uma função da classe utilitaria SOundPlayer.java
+    // Atualiza a visualização 3d na interface
+    // Verifica se o cubo foi resolvido e garante que o painel continue com o foco (para atalhos de teclado)
     private void setupButtonActions() {
-        // In setupButtonActions()
+        // Rotação UP(sentido horário)
         rotateUButton.setOnAction(_ -> {
-            cube.rotateFace("UP", true); // right/clockwise
+            cube.rotateFace("UP", true);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
             cubePane.requestFocus();
         });
+        // Rotação UP(sentido anti-horário)
         rotateUPrimeButton.setOnAction(_ -> {
-            cube.rotateFace("UP", false); // left/counterclockwise
+            cube.rotateFace("UP", false);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
             cubePane.requestFocus();
         });
+        // Rotação MEIO(horizontal)(sentido horário)
         rotateEButton.setOnAction(_ -> {
-            cube.rotateCenter("X", true); // right/clockwise
+            cube.rotateCenter("X", true);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
             cubePane.requestFocus();
         });
+        // Rotação MEIO(horizontal)(sentido anti-horário)
         rotateEPrimeButton.setOnAction(_ -> {
             cube.rotateCenter("X", false); // left/counterclockwise
             SoundPlayer.playSound("move.wav");
@@ -465,6 +772,7 @@ public class RubikController {
             checkSolved();
             cubePane.requestFocus();
         });
+        // Rotação DOWN(sentido horário)
         rotateDButton.setOnAction(_ -> {
             cube.rotateFace("DOWN", true); // was false, now true
             SoundPlayer.playSound("move.wav");
@@ -472,6 +780,7 @@ public class RubikController {
             checkSolved();
             cubePane.requestFocus();
         });
+        // Rotação DOWN(sentido anti-horário)
         rotateDPrimeButton.setOnAction(_ -> {
             cube.rotateFace("DOWN", false); // was true, now false
             SoundPlayer.playSound("move.wav");
@@ -479,21 +788,23 @@ public class RubikController {
             checkSolved();
             cubePane.requestFocus();
         });
-        // LEFT (A) - should be counterclockwise (true)
+        // Rotação LEFT(sentido horário)
         rotateLButton.setOnAction(_ -> {
-            cube.rotateFace("LEFT", false); // counterclockwise: top moves up
+            cube.rotateFace("LEFT", false);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
             cubePane.requestFocus();
         });
+        // Rotação LEFT(sentido anti-horário)
         rotateLPrimeButton.setOnAction(_ -> {
-            cube.rotateFace("LEFT", true); // clockwise: top moves down
+            cube.rotateFace("LEFT", true);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
             cubePane.requestFocus();
         });
+        // Rotação MEIO(vertical)(sentido horário)
         rotateMButton.setOnAction(_ -> {
             cube.rotateCenter("M", true); // right/clockwise
             SoundPlayer.playSound("move.wav");
@@ -501,6 +812,7 @@ public class RubikController {
             checkSolved();
             cubePane.requestFocus();
         });
+        // Rotação MEIO(vertical)(sentido anti-horário)
         rotateMPrimeButton.setOnAction(_ -> {
             cube.rotateCenter("M", false); // left/counterclockwise
             SoundPlayer.playSound("move.wav");
@@ -508,34 +820,39 @@ public class RubikController {
             checkSolved();
             cubePane.requestFocus();
         });
+        // Rotação RIGHT(sentido horário)
         rotateRButton.setOnAction(_ -> {
-            cube.rotateFace("RIGHT", false); // was true, now false
+            cube.rotateFace("RIGHT", false);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
             cubePane.requestFocus();
         });
+        // Rotação RIGHT(sentido anti-horário)
         rotateRPrimeButton.setOnAction(_ -> {
-            cube.rotateFace("RIGHT", true); // was false, now true
+            cube.rotateFace("RIGHT", true);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
             cubePane.requestFocus();
         });
+        // Rotação FRONT(sentido horário)
         rotateFButton.setOnAction(_ -> {
-            cube.rotateFace("FRONT", true); // Rotação da face frontal
+            cube.rotateFace("FRONT", true);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
             cubePane.requestFocus();
         });
+        // Rotação FRONT(sentido anti-horário)
         rotateFPrimeButton.setOnAction(_ -> {
-            cube.rotateFace("FRONT", false); // Rotação inversa da face frontal
+            cube.rotateFace("FRONT", false);
             SoundPlayer.playSound("move.wav");
             updateCube3D();
             checkSolved();
             cubePane.requestFocus();
         });
+        // Rotação MEIO(horizontal a UP)(sentido horário)
         rotateSButton.setOnAction(_ -> {
             cube.rotateCenter("S", true);
             SoundPlayer.playSound("move.wav");
@@ -543,6 +860,7 @@ public class RubikController {
             checkSolved();
             cubePane.requestFocus();
         });
+        // Rotação MEIO(horizontal a UP)(sentido anti-horário)
         rotateSPrimeButton.setOnAction(_ -> {
             cube.rotateCenter("S", false);
             SoundPlayer.playSound("move.wav");
@@ -550,6 +868,7 @@ public class RubikController {
             checkSolved();
             cubePane.requestFocus();
         });
+        // Rotação BACK(sentido horário)
         rotateBButton.setOnAction(_ -> {
             cube.rotateFace("BACK", true); // right/clockwise
             SoundPlayer.playSound("move.wav");
@@ -557,6 +876,7 @@ public class RubikController {
             checkSolved();
             cubePane.requestFocus();
         });
+        // Rotação BACK(sentido anti-horário)
         rotateBPrimeButton.setOnAction(_ -> {
             cube.rotateFace("BACK", false); // left/counterclockwise
             SoundPlayer.playSound("move.wav");
@@ -564,10 +884,13 @@ public class RubikController {
             checkSolved();
             cubePane.requestFocus();
         });
+        // Embaralhar o cubo com movimentos aleatórios
         shuffleButton.setOnAction(_ -> {
-            // Embaralha o cubo com movimentos aleatórios
+            // Define as faces possíveis do cubo para rotação
             String[] faces = { "FRONT", "BACK", "UP", "DOWN", "LEFT", "RIGHT" };
             java.util.Random rand = new java.util.Random();
+
+            // Executa 20 movimentos aleatórios para embaralhar o cubo
             for (int i = 0; i < 20; i++) {
                 // 60% de chance de girar uma face, 40% de girar um centro
                 if (rand.nextInt(10) < 6) {
@@ -588,265 +911,37 @@ public class RubikController {
             updateCube3D();
             cubePane.requestFocus();
         });
+        // Abre o link do tutorial quando o botão for clicado
         tutorialButton.setOnAction(_ -> {
             try {
+                // Usa a API Desktop do Java para abrir o navegador padrão e acessar o link do tutorial (YouTube)
                 java.awt.Desktop.getDesktop().browse(new java.net.URI(
                         "https://youtube.com/playlist?list=PLYjrJH3e_wDO9Myj0dpQAr5TvfhGzrSCb"));
             } catch (Exception e) {
+                // Em caso de erro (URI inválida ou ambiente sem suporte), imprime a exceção no console
                 e.printStackTrace();
             }
             cubePane.requestFocus();
         });
+        // Define a ação para o botão de música (play/pause)
         musicButton.setOnAction(_ -> {
             if (!isMusicPlaying) {
+                // Se a música não está tocando, seleciona um arquivo aleatório
                 String modFile = getRandomModFile();
                 System.out.println("Arquivo escolhido: " + modFile); // Debug
+
+                // Se encontrou um arquivo válido, inicia a reprodução
                 if (modFile != null) {
                     MusicPlayer.playMusic(modFile);
                     isMusicPlaying = true;
                 }
+                // Se já está tocando, para a música
             } else {
                 MusicPlayer.stopMusic();
-                isMusicPlaying = false;
+                isMusicPlaying = false; // Atualiza o estado para "parado"
             }
             cubePane.requestFocus();
         });
-    }
-
-    // Método para inicializar ícones para todos os botões
-    private void initializeButtonIcons() {
-        // Exemplo: Adiciona ícones aos botões de rotação
-        setButtonIcon(rotateUButton, "/com/univasf/magiccube3d/icons/rotateU.png");
-        setButtonIcon(rotateUPrimeButton, "/com/univasf/magiccube3d/icons/rotateUPrime.png");
-        setButtonIcon(rotateEButton, "/com/univasf/magiccube3d/icons/rotateE.png");
-        setButtonIcon(rotateEPrimeButton, "/com/univasf/magiccube3d/icons/rotateEPrime.png");
-        setButtonIcon(rotateDButton, "/com/univasf/magiccube3d/icons/rotateD.png");
-        setButtonIcon(rotateDPrimeButton, "/com/univasf/magiccube3d/icons/rotateDPrime.png");
-        setButtonIcon(rotateLButton, "/com/univasf/magiccube3d/icons/rotateL.png");
-        setButtonIcon(rotateLPrimeButton, "/com/univasf/magiccube3d/icons/rotateLPrime.png");
-        setButtonIcon(rotateMButton, "/com/univasf/magiccube3d/icons/rotateM.png");
-        setButtonIcon(rotateMPrimeButton, "/com/univasf/magiccube3d/icons/rotateMPrime.png");
-        setButtonIcon(rotateRButton, "/com/univasf/magiccube3d/icons/rotateR.png");
-        setButtonIcon(rotateRPrimeButton, "/com/univasf/magiccube3d/icons/rotateRPrime.png");
-        setButtonIcon(rotateFButton, "/com/univasf/magiccube3d/icons/rotateF.png");
-        setButtonIcon(rotateFPrimeButton, "/com/univasf/magiccube3d/icons/rotateFPrime.png");
-        setButtonIcon(rotateSButton, "/com/univasf/magiccube3d/icons/rotateS.png");
-        setButtonIcon(rotateSPrimeButton, "/com/univasf/magiccube3d/icons/rotateSPrime.png");
-        setButtonIcon(rotateBButton, "/com/univasf/magiccube3d/icons/rotateB.png");
-        setButtonIcon(rotateBPrimeButton, "/com/univasf/magiccube3d/icons/rotateBPrime.png");
-        setButtonIcon(shuffleButton, "/com/univasf/magiccube3d/icons/shuffle.png");
-        setButtonIcon(resetButton, "/com/univasf/magiccube3d/icons/reset.png");
-        setButtonIcon(resetCameraButton, "/com/univasf/magiccube3d/icons/resetCamera.png");
-        setButtonIcon(musicButton, "/com/univasf/magiccube3d/icons/music.png");
-        setButtonIcon(tutorialButton, "/com/univasf/magiccube3d/icons/tutorial.png");
-        setButtonIcon(tutorialButton, "/com/univasf/magiccube3d/icons/tutorial.png");
-        setButtonIcon(controlsButton, "/com/univasf/magiccube3d/icons/controls.png");
-        setButtonIcon(startTimerButton, "/com/univasf/magiccube3d/icons/start_timer.png");
-
-    }
-
-    // Define um método para adicionar uma imagem ao botão com largura e altura
-    // fixas
-    private void setButtonIcon(Button button, String iconPath) {
-        javafx.scene.image.Image image = new javafx.scene.image.Image(
-                getClass().getResourceAsStream(iconPath) // Caminho do ícone
-        );
-        javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView(image);
-        imageView.setFitWidth(60); // Define largura do ícone (fixa)
-        imageView.setFitHeight(60); // Define altura do ícone (fixa)
-        button.setGraphic(imageView); // Associa a imagem ao botão
-    }
-
-    // Rotação do grupo em torno do eixo Z
-    private void groupRotateZ(double angleDelta) {
-        rotateZ.setAngle(rotateZ.getAngle() + angleDelta);
-        updateCube3D();
-    }
-
-    // Atualiza a visualização 3D do cubo
-    private void updateCube3D() {
-        cubePane.getChildren().clear();
-        cubePane.getChildren().add(createCube3D(cube));
-    }
-
-    // Atualize o método createCube3D:
-    private SubScene createCube3D(Cube cube) {
-        Group group = new Group();
-        double size = 30, gap = 2, offset = (size + gap);
-        double faceOffset = 0.5;
-
-        for (int x = 0; x < 3; x++) {
-            for (int y = 0; y < 3; y++) {
-                for (int z = 0; z < 3; z++) {
-                    // Só desenha peças da borda (não o centro invisível)
-                    if (x == 0 || x == 2 || y == 0 || y == 2 || z == 0 || z == 2) {
-                        Box box = new Box(size, size, size);
-                        double boxCenterX = (x - 1) * offset;
-                        double boxCenterY = (y - 1) * offset;
-                        double boxCenterZ = (z - 1) * offset;
-
-                        box.setTranslateX(boxCenterX);
-                        box.setTranslateY(boxCenterY);
-                        box.setTranslateZ(boxCenterZ);
-                        box.setMaterial(new PhongMaterial(javafx.scene.paint.Color.web("7D7D7D")));
-
-                        // Adiciona as faces coloridas de acordo com a posição
-                        if (z == 2) // Face FRONTAL
-                            group.getChildren().add(createFaceRect(
-                                    size,
-                                    cube.getFace(FaceType.FRONT).getFacelet(y, x).getColor(),
-                                    boxCenterX, boxCenterY, boxCenterZ + size / 2 + faceOffset,
-                                    0, null));
-                        if (z == 0) // Face TRASEIRA
-                            group.getChildren().add(createFaceRect(
-                                    size,
-                                    cube.getFace(FaceType.BACK).getFacelet(y, 2 - x).getColor(),
-                                    boxCenterX, boxCenterY, boxCenterZ - size / 2 - faceOffset,
-                                    180, new Point3D(0, 1, 0)));
-                        if (y == 0) // Face SUPERIOR
-                            group.getChildren().add(createFaceRect(
-                                    size,
-                                    cube.getFace(FaceType.UP).getFacelet(z, x).getColor(),
-                                    boxCenterX, boxCenterY - size / 2 - faceOffset, boxCenterZ,
-                                    -90, new Point3D(1, 0, 0)));
-                        if (y == 2) // Face INFERIOR
-                            group.getChildren().add(createFaceRect(
-                                    size,
-                                    cube.getFace(FaceType.DOWN).getFacelet(2 - z, x).getColor(),
-                                    boxCenterX, boxCenterY + size / 2 + faceOffset, boxCenterZ,
-                                    90, new Point3D(1, 0, 0)));
-                        if (x == 2) // Face ESQUERDA
-                            group.getChildren().add(createFaceRect(
-                                    size,
-                                    cube.getFace(FaceType.LEFT).getFacelet(y, z).getColor(),
-                                    boxCenterX + size / 2 + faceOffset, boxCenterY, boxCenterZ,
-                                    90, new Point3D(0, 1, 0)));
-                        if (x == 0) // Face DIREITA
-                            group.getChildren().add(createFaceRect(
-                                    size,
-                                    cube.getFace(FaceType.RIGHT).getFacelet(y, 2 - z).getColor(),
-                                    boxCenterX - size / 2 - faceOffset, boxCenterY, boxCenterZ,
-                                    -90, new Point3D(0, 1, 0)));
-                        group.getChildren().add(box);
-                    }
-                }
-            }
-        }
-
-        group.getTransforms().addAll(rotateX, rotateY, rotateZ);
-
-        // Cria a sub-cena 3D com câmera e antialiasing
-        SubScene subScene = new SubScene(group, 500, 500, true, javafx.scene.SceneAntialiasing.BALANCED);
-
-        // Revamp da câmera
-        camera = new PerspectiveCamera(true);
-        camera.setFieldOfView(cameraFov);
-        camera.setTranslateZ(cameraDistance);
-        camera.setTranslateX(cameraPanX);
-        camera.setTranslateY(cameraPanY);
-        camera.setNearClip(0.1);
-        camera.setFarClip(1000.0);
-        subScene.setCamera(camera);
-
-        // Eventos de zoom e pan
-        subScene.setOnScroll(event -> {
-            double delta = event.getDeltaY();
-            cameraDistance += delta * 0.7;
-            // Aplica limites ao zoom
-            cameraDistance = Math.max(CAMERA_DISTANCE_MIN, Math.min(CAMERA_DISTANCE_MAX, cameraDistance));
-            camera.setTranslateZ(cameraDistance);
-        });
-
-        final double[] lastMouse = new double[2];
-        final double[] anchor = new double[4]; // [0]=X, [1]=Y, [2]=angleX, [3]=angleY
-
-        subScene.setOnMousePressed(event -> {
-            if (event.getButton() == javafx.scene.input.MouseButton.SECONDARY) {
-                anchor[0] = event.getSceneX();
-                anchor[1] = event.getSceneY();
-                anchor[2] = rotateX.getAngle();
-                anchor[3] = rotateY.getAngle();
-            } else if (event.getButton() == javafx.scene.input.MouseButton.MIDDLE) {
-                lastMouse[0] = event.getSceneX();
-                lastMouse[1] = event.getSceneY();
-            }
-        });
-
-        subScene.setOnMouseDragged(event -> {
-            if (event.isSecondaryButtonDown()) {
-                rotateX.setAngle(anchor[2] + (event.getSceneY() - anchor[1]));
-                rotateY.setAngle(anchor[3] - (event.getSceneX() - anchor[0]));
-                String face = getVisibleFace(rotateX.getAngle(), rotateY.getAngle());
-                faceLabel.setText("Face atual: " + face);
-            } else if (event.isMiddleButtonDown()) {
-                double dx = event.getSceneX() - lastMouse[0];
-                double dy = event.getSceneY() - lastMouse[1];
-                cameraPanX -= dx * 0.5;
-                cameraPanY -= dy * 0.5;
-                cameraPanX = Math.max(-200, Math.min(200, cameraPanX));
-                cameraPanY = Math.max(-200, Math.min(200, cameraPanY));
-                camera.setTranslateX(cameraPanX);
-                camera.setTranslateY(cameraPanY);
-                lastMouse[0] = event.getSceneX();
-                lastMouse[1] = event.getSceneY();
-            }
-        });
-
-        return subScene;
-    }
-
-    // Cria um retângulo colorido para representar uma face do cubo
-    private Rectangle createFaceRect(
-            double size,
-            javafx.scene.paint.Paint color,
-            double tx, double ty, double tz,
-            double angle, Point3D axis) {
-        Rectangle face = new Rectangle(size, size);
-        face.setFill(color);
-
-        face.setTranslateX(tx - size / 2);
-        face.setTranslateY(ty - size / 2);
-        face.setTranslateZ(tz);
-
-        if (axis != null) {
-            face.setRotationAxis(axis);
-            face.setRotate(angle);
-        }
-        return face;
-    }
-
-    private String getVisibleFace(double angleX, double angleY) {
-        double ax = (angleX % 360 + 360) % 360;
-        double ay = (angleY % 360 + 360) % 360;
-
-        // Câmera está de cabeça para baixo (atrás do cubo)
-        boolean flipped = ax > 90 && ax < 270;
-
-        if (ax >= 45 && ax <= 135) {
-            return "UP";
-        } else if (ax >= 225 && ax <= 315) {
-            return "DOWN";
-        } else if (ay >= 45 && ay <= 135) {
-            return "LEFT";
-        } else if (ay >= 225 && ay <= 315) {
-            return "RIGHT";
-        } else if ((ay <= 45 || ay >= 315)) {
-            return flipped ? "FRONT" : "BACK"; // vermelho = FRONT, mesmo com rotação inicial
-        } else { // (135 <= ay <= 225)
-            return flipped ? "BACK" : "FRONT"; // laranja vira FRONT só se não estiver "por trás"
-        }
-    }
-
-    @FXML
-    private void resetCameraPosition() {
-        cameraDistance = -350;
-        cameraFov = 45;
-        cameraPanX = 0;
-        cameraPanY = 0;
-        rotateX.setAngle(0);
-        rotateY.setAngle(180);
-        rotateZ.setAngle(0);
-        updateCube3D();
     }
 
     // Método utilitário para pegar um arquivo .mod aleatório da pasta music
