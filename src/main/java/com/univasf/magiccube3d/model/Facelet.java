@@ -1,9 +1,11 @@
 package com.univasf.magiccube3d.model;
 
+// Importa a classe Color do pacote javafx.scene.paint, utilizada para representar e manipular cores no JavaFX.
 import javafx.scene.paint.Color;
 
 // Representa um quadrado colorido em uma das faces do cubo mágico.
 public class Facelet {
+
     private Color color;
 
     // Construtor que define a cor do facelet.

@@ -30,7 +30,9 @@ import javax.sound.sampled.*;
  */
 public class MusicPlayer {
 
+  // Taxa de amostragem utilizada para reprodução de áudio, definida como 48000 Hz, que é uma taxa comum para som de alta qualidade.
   private static final int SAMPLING_RATE = 48000;
+  // Referência para a thread de reprodução de música atual, responsável por executar a lógica de reprodução e controle do áudio.
   private static MediaPlayerThread currentPlayerThread;
 
   /**
