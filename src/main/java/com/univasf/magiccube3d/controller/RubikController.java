@@ -586,6 +586,14 @@ public class RubikController {
                 Y: Rotacionar para cima (inverso)
                 U: Rotação do eixo X (inverso)
                 I: Rotacionar para baixo (inverso)
+                H: Rotacionar para a esquerda (inverso)
+                J: Rotação do eixo Y (inverso)
+                K: Rotacionar para a direita (inverso)
+                B: Rotacionar frente (inverso)
+                N: Rotação do eixo Z (inverso)
+                M: Rotacionar parte traseira (inverso)
+                
+                R: Resetar câmera
                 SPACE: Embaralhar cubo
                 BACKSPACE: Resetar cubo
                 """;
@@ -596,7 +604,7 @@ public class RubikController {
         layout.getChildren().add(controlsLabel);
 
         // Scene e Stage
-        Scene controlsScene = new Scene(layout, 400, 400);
+        Scene controlsScene = new Scene(layout, 400, 500);
         controlsStage.setScene(controlsScene);
         controlsStage.initModality(Modality.APPLICATION_MODAL); // Janela modal
         controlsStage.showAndWait();
