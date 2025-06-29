@@ -128,10 +128,14 @@ public class RubikController {
     @FXML
     public void initialize() {
         // Cria uma nova instância lógica do cubo mágico, a cena 3D onde o cubo será renderizado, adiciona a cena no painel principal e define o painel central do layout como o local onde o cubo será exibido
-        cube = new Cube();
-        SubScene cube3D = createCube3D(cube);
-        cubePane.getChildren().add(cube3D);
-        mainPane.setCenter(cubePane);
+        try {
+            cube = new Cube();
+            SubScene cube3D = createCube3D(cube);
+            cubePane.getChildren().add(cube3D);
+            mainPane.setCenter(cubePane);
+        } catch (Exception e) {
+            showError("Erro ao inicializar o cubo 3D", e);
+        }
 
         // Inicializa os ícones, configura os controles de teclado para manipular o cubo e permite que o painel do cubo receba o foco do teclado
         initializeButtonIcons();
@@ -144,7 +148,13 @@ public class RubikController {
 
         // Botão para resetar a câmera
         if (resetCameraButton != null) {
-            resetCameraButton.setOnAction(_ -> resetCameraPosition());
+            resetCameraButton.setOnAction(_ -> {
+                try {
+                    resetCameraPosition();
+                } catch (Exception e) {
+                    showError("Erro ao resetar a câmera", e);
+                }
+            });
         }
 
         AudioConfig.setGlobalVolume(0.6); // Define o volume global para 60%
@@ -370,6 +380,7 @@ public class RubikController {
         SubScene subScene = new SubScene(group, 500, 500, true, javafx.scene.SceneAntialiasing.BALANCED);
 
         // Inicializa e configura a câmera
+        try {
         camera = new PerspectiveCamera(true);
         camera.setFieldOfView(cameraFov);
         camera.setTranslateZ(cameraDistance);
@@ -378,6 +389,9 @@ public class RubikController {
         camera.setNearClip(0.1);
         camera.setFarClip(1000.0);
         subScene.setCamera(camera);
+        } catch (Exception e) {
+            showError("Erro ao configurar a câmera", e);
+        }
 
         // Eventos de zoom e pan
         subScene.setOnScroll(event -> {
@@ -441,8 +455,12 @@ public class RubikController {
 
     // Atualiza a visualização 3D do cubo
     private void updateCube3D() {
-        cubePane.getChildren().clear();
-        cubePane.getChildren().add(createCube3D(cube));
+        try {
+            cubePane.getChildren().clear();
+            cubePane.getChildren().add(createCube3D(cube));
+        } catch (Exception e) {
+            showError("Erro ao atualizar o cubo", e);
+        }
     }
 
     // Rotação do grupo em torno do eixo Z
@@ -485,13 +503,17 @@ public class RubikController {
 
     // Método para adicionar uma imagem ao botão com largura e altura fixas
     private void setButtonIcon(Button button, String iconPath) {
-        javafx.scene.image.Image image = new javafx.scene.image.Image(
-                getClass().getResourceAsStream(iconPath) // Caminho do ícone
-        );
-        javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView(image);
-        imageView.setFitWidth(60); // Define largura do ícone
-        imageView.setFitHeight(60); // Define altura do ícone
-        button.setGraphic(imageView); // Associa a imagem ao botão
+        try {
+            javafx.scene.image.Image image = new javafx.scene.image.Image(
+                    getClass().getResourceAsStream(iconPath));
+            javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView(image);
+            imageView.setFitWidth(60);
+            imageView.setFitHeight(60);
+            button.setGraphic(imageView);
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar ícone: " + iconPath);
+            e.printStackTrace();
+        }
     }
 
     private void initTimer() {
@@ -540,12 +562,23 @@ public class RubikController {
         // Verifica se é para exibir mensagem ao parar (quando o cubo for resolvido ou não)
         if (displayMessage) {
             // Cria um alerta informativo, sinalizando que o cubo foi resolvido, exibe a mensagem de parabéns e o tempo decorrido caso o timer tenha sido ativado
+            try{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
             alert.setTitle("Parabéns");
             alert.setHeaderText("Você completou o cubo mágico!");
             alert.setContentText("Tempo final: " + timerLabel.getText());
+            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.getIcons().add(
+            new javafx.scene.image.Image(
+            getClass().getResourceAsStream("/com/univasf/magiccube3d/icons/icon.png"))
+            );
             alert.showAndWait();
 
+            } catch (Exception e) {
+                System.err.println("Erro ao exibir alerta de resolução:");
+                e.printStackTrace();
+            }
             resetTimer(); // Reinicia o cronômetro
         }
     }
@@ -564,9 +597,13 @@ public class RubikController {
         controlsStage.setTitle("Controles");
 
         // Adiciona o ícone à janela
-        controlsStage.getIcons().add(new javafx.scene.image.Image(
-                getClass().getResourceAsStream("/com/univasf/magiccube3d/icons/control_icon.png")));
-
+        try {
+            controlsStage.getIcons().add(new javafx.scene.image.Image(
+                    getClass().getResourceAsStream("/com/univasf/magiccube3d/icons/control_icon.png")));
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar ícone da janela de controles");
+            e.printStackTrace();
+        }
         // Layout da janela
         VBox layout = new VBox(10);
         layout.setPadding(new javafx.geometry.Insets(15));
@@ -612,10 +649,14 @@ public class RubikController {
     }
 
     private void checkSolved() {
-        if (cube.isSolved()) {
-            SoundPlayer.playSound("solved.wav");
-            stopTimer(true);
-            cube = new Cube();
+        try {
+            if (cube.isSolved()) {
+                SoundPlayer.playSound("solved.wav");
+                stopTimer(true);
+                cube = new Cube();
+            }
+        } catch (Exception e) {
+            showError("Erro ao verificar resolução do cubo", e);
         }
     }
 
@@ -628,11 +669,15 @@ public class RubikController {
         alert.setContentText("Você resolveu o Cubo Mágico!");
 
         // Define o ícone do alerta igual ao da aplicação
-        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-        alertStage.getIcons().add(
-                new javafx.scene.image.Image(
-                        getClass().getResourceAsStream("/com/univasf/magiccube3d/icons/icon.png")));
-
+        try {
+            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.getIcons().add(
+                    new javafx.scene.image.Image(
+                            getClass().getResourceAsStream("/com/univasf/magiccube3d/icons/icon.png")));
+        } catch (Exception e) {
+            System.err.println("Erro ao definir o ícone da janela de parabéns:");
+            e.printStackTrace();
+        }
         alert.showAndWait();
     }
 
@@ -640,6 +685,7 @@ public class RubikController {
     // Configura rotação do cubo via teclado numérico
     private void setupKeyboardControls() {
         cubePane.setOnKeyPressed(event -> {
+            try {
             switch (event.getCode()) {
                 // Q, W, E: Up, rotate X center, Down
                 case Q:
@@ -737,8 +783,14 @@ public class RubikController {
                     break;
             }
             // Mostra a face atual que está virada para a câmera
-            String face = getVisibleFace(rotateX.getAngle(), rotateY.getAngle());
-            faceLabel.setText("Face atual: " + face);
+                String face = getVisibleFace(rotateX.getAngle(), rotateY.getAngle());
+                if (faceLabel != null) {
+                    faceLabel.setText("Face atual: " + face);
+                }
+            } catch (Exception e) {
+                System.err.println("Erro ao processar entrada de teclado:");
+                e.printStackTrace();
+            }
         });
     }
 
@@ -967,6 +1019,16 @@ public class RubikController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void showError(String message, Exception e) {
+        e.printStackTrace();
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erro");
+        alert.setHeaderText(message);
+        alert.setContentText(e.getMessage());
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.showAndWait();
     }
 
 }

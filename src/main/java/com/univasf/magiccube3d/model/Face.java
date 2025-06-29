@@ -13,12 +13,20 @@ public class Face {
     public Facelet getFacelet(int row, int col) {
         if (row < 0 || row >= SIZE || col < 0 || col >= SIZE)
             // Validação dos índices fornecidos (verifica se estão dentro dos limites da matriz) e Retorna o facelet correspondente à posição especificada.
-            throw new IllegalArgumentException("Invalid indices");
+            throw new IllegalArgumentException("Indice invalido: " + row + " " + col + "");
         return facelets[row][col];
     }
 
     // Define o facelet na posição especificada
     public void setFacelet(int row, int col, Facelet facelet) {
+
+        if (row < 0 || row >= SIZE || col < 0 || col >= SIZE) {
+            throw new IllegalArgumentException("Indice invalido");
+        }
+        if (facelet == null) {
+            throw new IllegalArgumentException("facelet não pode ser Null");
+        }
+
         facelets[row][col] = facelet;
     }
 
@@ -29,6 +37,10 @@ public class Face {
 
     // Construtor: inicializa a face com todos os facelets da mesma cor
     public Face(FaceType faceType, Color initialColor) {
+        //Tratamento de exceção caso algum dos parametros seja nulo
+        if (faceType == null) throw new IllegalArgumentException("faceType não pode ser Null");
+        if (initialColor == null) throw new IllegalArgumentException("initialColor não pode ser Null");
+
         // Define o tipo da face e Inicializa a matriz de facelets com o tamanho padrão SIZE x SIZE.
         this.faceType = faceType;
         facelets = new Facelet[SIZE][SIZE];

@@ -98,8 +98,13 @@ public class Cube {
     // Rotaciona uma face do cubo no sentido horário ou anti-horário
     public void rotateFace(String face, boolean clockwise) {
 
-        // Obtém o tipo da face a partir do nome informado e recupera a face específica correspondente ao FaceType
-        FaceType faceType = FaceType.valueOf(face.toUpperCase());
+        FaceType faceType;
+        try {
+            faceType = FaceType.valueOf(face.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Face inválida: " + face);
+        }
+
         Face faceToRotate = faces.get(faceType);
 
         if (clockwise) {
