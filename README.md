@@ -33,24 +33,36 @@ projeto-ccmp0151/
 │   ├── main/
 │   │   ├── java/
 │   │   │   └── com/univasf/magiccube3d/
-│   │   │       ├── MainApp.java
+│   │   │       ├── MainApp.java                   // Classe com método main, inicia a aplicação
+│   │   │       ├── Application.java               // Subclasse de JavaFX Application, define o start()
 │   │   │       ├── model/
-│   │   │       │   ├── Cube.java
-│   │   │       │   └── Facelet.java
+│   │   │       │   ├── Cube.java                  // Representa o cubo inteiro com suas faces
+│   │   │       │   ├── Face.java                  // Representa uma face do cubo (3x3 Facelets)
+│   │   │       │   ├── Facelet.java               // Representa um quadrado colorido da face
+│   │   │       │   ├── FaceType.java              // Enum com os lados do cubo (UP, DOWN etc.)
 │   │   │       ├── controller/
-│   │   │       │   └── RubikController.java
-│   │   │       └── view/
-│   │   │           └── CubeView.java
+│   │   │       │   └── RubikController.java       // Controlador da interface, manipula eventos e botões
+│   │   │       ├── view/
+│   │   │       │   ├── CubeView.java              
+│   │   │       └── util/
+│   │   │           ├── AudioConfig.java           // Configura e armazena volume global
+│   │   │           ├── ModPlay3.java              // Toca arquivos .mod (música estilo tracker)
+│   │   │           ├── MusicPlayer.java           // Gerencia reprodução musical e volume
+│   │   │           └── SoundPlayer.java           // Toca efeitos sonoros curtos (ex: cliques)
 │   │   └── resources/
 │   │       └── com/univasf/magiccube3d/
 │   │           ├── view/
-│   │           │   └── RubikView.fxml
+│   │           │   └── RubikView.fxml             // Layout da interface em FXML
 │   │           ├── styles/
-│   │           │   └── style.css
+│   │           │   └── style.css                  // Estilo visual (cores, fontes etc.)
 │   │           └── music/
-│   │               └── *.mod
-├── .gitignore
-└── README.md
+│   │               └── *.mod                      // Arquivos de música para fundo do jogo
+├── .gitattributes                                 // Define regras de formatação para Git
+├── .gitignore                                     // Arquivos e pastas ignoradas pelo Git
+├── mvnw                                           // Wrapper para usar Maven localmente
+├── mvnw.cmd                                       // Versão Windows do wrapper Maven
+├── pom.xml                                        // Configuração do projeto Maven (dependências etc.)
+└── README.md                                      // Informações e instruções do projeto
 ```
 
 ## 🚀 Execução
