@@ -17,23 +17,24 @@ public class Cube {
         return faces.get(type);
     }
 
-    // Constutor que chama o metodo initializeSolvedState() para inicializar o cubo no estado resolvido
+    // Constutor que chama o metodo initializeSolvedState() para inicializar o cubo
+    // no estado resolvido
     public Cube() {
         initializeSolvedState();
     }
 
     // Inicializa o cubo no estado resolvido (cada face com uma cor uniforme)
     public void initializeSolvedState() {
-        faces.put(FaceType.UP, new Face(FaceType.UP, Color.web("FFD600")));      // Amarelo - TOP
-        faces.put(FaceType.DOWN, new Face(FaceType.DOWN, Color.web("FFFFFF")));  // Branco - DOWN
+        faces.put(FaceType.UP, new Face(FaceType.UP, Color.web("FFD600"))); // Amarelo - TOP
+        faces.put(FaceType.DOWN, new Face(FaceType.DOWN, Color.web("FFFFFF"))); // Branco - DOWN
         faces.put(FaceType.FRONT, new Face(FaceType.FRONT, Color.web("E53935"))); // Vermelho - FRONT
-        faces.put(FaceType.BACK, new Face(FaceType.BACK, Color.web("FF9800")));   // Laranja - BACK
-        faces.put(FaceType.LEFT, new Face(FaceType.LEFT, Color.web("1E88E5")));   // Azul - LEFT
+        faces.put(FaceType.BACK, new Face(FaceType.BACK, Color.web("FF9800"))); // Laranja - BACK
+        faces.put(FaceType.LEFT, new Face(FaceType.LEFT, Color.web("1E88E5"))); // Azul - LEFT
         faces.put(FaceType.RIGHT, new Face(FaceType.RIGHT, Color.web("43A047"))); // Verde - RIGHT
         System.out.println("Cubo inicializado no estado resolvido.");
     }
 
-    //Método que verifica se o cubo está resolvido
+    // Método que verifica se o cubo está resolvido
     public boolean isSolved() {
 
         // Percorre todas as faces do cubo
@@ -157,13 +158,15 @@ public class Cube {
 
         // Atualiza as fileiras das faces baseadas na direção da rotação
         if (clockwise) {
-            // Sentido horário: troca as fileiras na ordem apropriada, invertendo se necessário
+            // Sentido horário: troca as fileiras na ordem apropriada, invertendo se
+            // necessário
             setRow(front, y, reverse(rightRow)); // Front recebe right
             setRow(left, y, reverse(frontRow)); // Left recebe front
             setRow(back, y, reverse(leftRow)); // Back recebe left
             setRow(right, y, reverse(backRow)); // Right recebe back
         } else {
-            // Sentido antihorário: troca as fileiras na ordem apropriada, invertendo se necessário
+            // Sentido antihorário: troca as fileiras na ordem apropriada, invertendo se
+            // necessário
             setRow(front, y, reverse(leftRow)); // Front recebe left
             setRow(right, y, reverse(frontRow)); // Right recebe front
             setRow(back, y, reverse(rightRow)); // Back recebe right
@@ -187,13 +190,15 @@ public class Cube {
 
         // Atualiza as fileiras das faces baseadas na direção da rotação
         if (clockwise) {
-            // Sentido horário: troca as fileiras na ordem apropriada, invertendo se necessário
+            // Sentido horário: troca as fileiras na ordem apropriada, invertendo se
+            // necessário
             setColumn(up, x, reverse(backCol)); // Up recebe back
             setColumn(front, x, upCol); // Front recebe up
             setColumn(down, x, frontCol); // Down recebe front
             setColumn(back, 2 - x, reverse(downCol)); // Back recebe down
         } else {
-            // Sentido antihorário: troca as fileiras na ordem apropriada, invertendo se necessário
+            // Sentido antihorário: troca as fileiras na ordem apropriada, invertendo se
+            // necessário
             setColumn(up, x, frontCol); // Up recebe front
             setColumn(back, 2 - x, reverse(upCol)); // Back recebe up
             setColumn(down, x, reverse(backCol)); // Down recebe back
@@ -201,7 +206,8 @@ public class Cube {
         }
     }
 
-    // Rotaciona a camada intermediária paralela à face FRONT (z=1) ao redor do eixo S
+    // Rotaciona a camada intermediária paralela à face FRONT (z=1) ao redor do eixo
+    // S
     private void rotateSliceS(int z, boolean clockwise) {
         // Envolve as faces UP, RIGHT, DOWN, LEFT (linha/coluna na camada do meio)
         Face up = faces.get(FaceType.UP);
@@ -216,13 +222,15 @@ public class Cube {
         Facelet[] leftCol = getColumnCopy(left, 1);
 
         if (clockwise) {
-            // Sentido horário: troca as fileiras na ordem apropriada, invertendo se necessário
+            // Sentido horário: troca as fileiras na ordem apropriada, invertendo se
+            // necessário
             setRow(up, 1, leftCol); // Up recebe left
             setColumn(right, 1, reverse(upRow)); // Right recebe up
             setRow(down, 1, rightCol); // Down recebe right
             setColumn(left, 1, reverse(downRow)); // Left recebe down
         } else {
-            // Sentido antihorário: troca as fileiras na ordem apropriada, invertendo se necessário
+            // Sentido antihorário: troca as fileiras na ordem apropriada, invertendo se
+            // necessário
             setRow(up, 1, reverse(rightCol)); // Up recebe right
             setColumn(left, 1, upRow); // Left recebe up
             setRow(down, 1, reverse(leftCol)); // Down recebe left
@@ -232,7 +240,8 @@ public class Cube {
 
     // Rotaciona as bordas adjacentes à face especificada
     private void rotateAdjacentEdges(FaceType face, boolean clockwise) {
-        // Determina quais arestas adjacentes serão rotacionadas com base na face e no sentido da rotação
+        // Determina quais arestas adjacentes serão rotacionadas com base na face e no
+        // sentido da rotação
         switch (face) {
             case FRONT -> {
                 // Se a face for FRONT, rotaciona no sentido horário ou anti-horário
@@ -297,19 +306,18 @@ public class Cube {
         Face right = faces.get(FaceType.RIGHT);
 
         // Copia as bordas adjacentes especificadas
-        Facelet[] upRow = getRowCopy(up, 2);         // linha inferior do UP
-        Facelet[] leftCol = getColumnCopy(left, 2);  // coluna direita do LEFT
-        Facelet[] downRow = getRowCopy(down, 0);     // linha superior do DOWN
+        Facelet[] upRow = getRowCopy(up, 2); // linha inferior do UP
+        Facelet[] leftCol = getColumnCopy(left, 2); // coluna direita do LEFT
+        Facelet[] downRow = getRowCopy(down, 0); // linha superior do DOWN
         Facelet[] rightCol = getColumnCopy(right, 0); // coluna esquerda do RIGHT
 
         // Atualizando as bordas adjacentes no sentido horário
         setRow(up, 2, leftCol); // UP recebe a última coluna de LEFT
         setColumn(left, 2, reverse(downRow)); // LEFT recebe a linha superior de DOWN (invertida)
-        setRow(down, 0, rightCol);  // DOWN recebe a primeira coluna de RIGHT
+        setRow(down, 0, rightCol); // DOWN recebe a primeira coluna de RIGHT
         setColumn(right, 0, reverse(upRow)); // RIGHT recebe a linha inferior de UP (invertida)
 
     }
-
 
     // Rotaciona as bordas ao redor da face FRONT no sentido anti-horário
     private void rotateFrontPrime() {
@@ -320,10 +328,10 @@ public class Cube {
         Face right = faces.get(FaceType.RIGHT);
 
         // Copia as bordas adjacentes especificadas
-        Facelet[] upRow = getRowCopy(up, 2);           // Última linha (inferior) do UP
-        Facelet[] rightCol = getColumnCopy(right, 0);  // Primeira coluna (esquerda) do RIGHT
-        Facelet[] downRow = getRowCopy(down, 0);       // Primeira linha (superior) do DOWN
-        Facelet[] leftCol = getColumnCopy(left, 2);    // Última coluna (direita) do LEFT
+        Facelet[] upRow = getRowCopy(up, 2); // Última linha (inferior) do UP
+        Facelet[] rightCol = getColumnCopy(right, 0); // Primeira coluna (esquerda) do RIGHT
+        Facelet[] downRow = getRowCopy(down, 0); // Primeira linha (superior) do DOWN
+        Facelet[] leftCol = getColumnCopy(left, 2); // Última coluna (direita) do LEFT
 
         // Atualizando as bordas adjacentes no sentido anti-horário
         setRow(up, 2, reverse(rightCol)); // UP recebe a primeira coluna de RIGHT (invertida)
@@ -350,12 +358,11 @@ public class Cube {
 
         // Atualizando as bordas adjacentes no sentido horário
         setRow(up, 0, reverse(rightCol)); // UP recebe a última coluna de RIGHT (invertida)
-        setColumn(left, 0, upRow);  // LEFT recebe a primeira linha de UP
+        setColumn(left, 0, upRow); // LEFT recebe a primeira linha de UP
         setRow(down, 2, reverse(leftCol)); // DOWN recebe a primeira coluna de LEFT (invertida)
         setColumn(right, 2, downRow); // RIGHT recebe a última linha de DOWN
 
     }
-
 
     // Rotaciona as bordas ao redor da face BACK no sentido anti-horário
     private void rotateBackPrime() {
@@ -376,7 +383,6 @@ public class Cube {
         setColumn(right, 2, reverse(upRow)); // RIGHT recebe a primeira linha de UP (invertida)
         setRow(down, 2, rightCol); // DOWN recebe a última linha de RIGHT
         setColumn(left, 0, reverse(downRow)); // LEFT recebe a primeira linha de DOWN (invertida)
-
 
     }
 
@@ -422,7 +428,7 @@ public class Cube {
         setRow(front, 0, reverse(leftRow)); // FRONT recebe a primeira linha de LEFT (invertida)
         setRow(right, 0, reverse(frontRow)); // RIGHT recebe a primeira linha de FRONT (invertida)
         setRow(back, 0, reverse(rightRow)); // BACK recebe a primeira linha de RIGHT (invertida)
-        setRow(left, 0, reverse(backRow));  // LEFT recebe a primeira linha de BACK (invertida)
+        setRow(left, 0, reverse(backRow)); // LEFT recebe a primeira linha de BACK (invertida)
 
     }
 
@@ -445,10 +451,9 @@ public class Cube {
         setRow(front, 2, reverse(leftRow)); // FRONT recebe a última linha de LEFT (invertida)
         setRow(right, 2, reverse(frontRow)); // RIGHT recebe a última linha de FRONT (invertida)
         setRow(back, 2, reverse(rightRow)); // BACK recebe a última linha de RIGHT (invertida)
-        setRow(left, 2, reverse(backRow));  // LEFT recebe a última linha de BACK (invertida)
+        setRow(left, 2, reverse(backRow)); // LEFT recebe a última linha de BACK (invertida)
 
     }
-
 
     // Rotaciona as bordas ao redor da face DOWN no sentido anti-horário
     private void rotateDownPrime() {
@@ -468,7 +473,7 @@ public class Cube {
         // Atualizando as bordas adjacentes no sentido anti-horário
         setRow(front, 2, reverse(rightRow)); // FRONT recebe a última linha de RIGHT (invertida)
         setRow(right, 2, reverse(backRow)); // RIGHT recebe a última linha de BACK (invertida)
-        setRow(back, 2, reverse(leftRow));  // BACK recebe a última linha de LEFT (invertida)
+        setRow(back, 2, reverse(leftRow)); // BACK recebe a última linha de LEFT (invertida)
         setRow(left, 2, reverse(frontRow)); // LEFT recebe a última linha de FRONT (invertida)
 
     }
@@ -527,11 +532,11 @@ public class Cube {
         Face down = faces.get(FaceType.DOWN);
         Face back = faces.get(FaceType.BACK);
 
-        //Copia as bordas adjacentes especificadas
+        // Copia as bordas adjacentes especificadas
         Facelet[] upCol = getColumnCopy(up, 0); // Primeira coluna de UP
         Facelet[] frontCol = getColumnCopy(front, 0); // Primeira coluna de FRONT
         Facelet[] downCol = getColumnCopy(down, 0); // Primeira coluna de DOWN
-        Facelet[] backCol = getColumnCopy(back, 2); //Última coluna de BACK (invertida)
+        Facelet[] backCol = getColumnCopy(back, 2); // Última coluna de BACK (invertida)
 
         // Atualizando as bordas adjacentes no sentido horário
         setColumn(up, 0, reverse(backCol)); // UP recebe a ultima coluna de BACK (invertida)
@@ -550,7 +555,7 @@ public class Cube {
         Face down = faces.get(FaceType.DOWN);
         Face back = faces.get(FaceType.BACK);
 
-        //Copia as bordas adjacentes especificadas
+        // Copia as bordas adjacentes especificadas
         Facelet[] upCol = getColumnCopy(up, 0); // Primeira coluna de UP
         Facelet[] frontCol = getColumnCopy(front, 0); // Primeira coluna de FRONT
         Facelet[] downCol = getColumnCopy(down, 0); // Primeira coluna de DOWN
