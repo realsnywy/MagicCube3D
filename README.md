@@ -1,5 +1,7 @@
 # MagicCube3D
 
+![Screenshot](screenshot.png)
+
 **MagicCube3D** é uma aplicação JavaFX para simulação interativa de um Cubo Mágico 3D. Este projeto é desenvolvido para a disciplina de Programação Orientada a Objetos (CCMP0151).
 
 ## 🎯 Objetivos
@@ -43,7 +45,7 @@ projeto-ccmp0151/
 │   │   │       ├── controller/
 │   │   │       │   └── RubikController.java       // Controlador da interface, manipula eventos e botões
 │   │   │       ├── view/
-│   │   │       │   ├── CubeView.java              
+│   │   │       │   ├── CubeView.java
 │   │   │       └── util/
 │   │   │           ├── AudioConfig.java           // Configura e armazena volume global
 │   │   │           ├── ModPlay3.java              // Toca arquivos .mod (música estilo tracker)
